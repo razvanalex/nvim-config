@@ -19,4 +19,4 @@ Features:
 
 See [init.lua](./lua/plugins/init.lua) for the complete list of plugins.
 
-It uses [vim-plug](https://github.com/junegunn/vim-plug) as plugin maonager. Use Mason to install linters/formatters/LSPs.
+It uses [vim-plug](https://github.com/junegunn/vim-plug) as plugin manager. Use [Mason](https://github.com/williamboman/mason.nvim) to install linters/formatters/LSPs.
