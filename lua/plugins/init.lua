@@ -20,7 +20,7 @@ Plug("theprimeagen/refactoring.nvim") -- refactoring
 Plug("theprimeagen/harpoon") -- manage buffers easier
 Plug("nvim-lua/plenary.nvim") -- dependency for harpoon
 Plug("lukas-reineke/indent-blankline.nvim") -- identation lines
-Plug("lukas-reineke/virt-column.nvim") -- column color
+-- Plug("lukas-reineke/virt-column.nvim") -- column color
 Plug("folke/trouble.nvim") -- shows issues in code (like Problems in vscode)
 Plug("windwp/nvim-autopairs") -- brackets auto-close
 Plug("numToStr/Comment.nvim") -- comment
@@ -65,7 +65,7 @@ require("plugins.vscode_nvim")
 require("plugins.harpoon")
 require("plugins.refactoring")
 require("plugins.indent_blankline")
-require("plugins.virt_column")
+--require("plugins.virt_column")
 require("plugins.lsp")
 require("plugins.trouble")
 require("plugins.rainbow_delimiters")
