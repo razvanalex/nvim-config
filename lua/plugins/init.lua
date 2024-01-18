@@ -16,6 +16,7 @@ Plug("mg979/vim-visual-multi") -- extended multi-line support
 Plug("nvim-telescope/telescope.nvim") -- fuzzy finder
 Plug("mbbill/undotree") -- fancy undo
 Plug("nvim-treesitter/nvim-treesitter", { ["do"] = vim.fn[":TSUpdate"] }) -- nice text coloring
+Plug("nvim-treesitter/nvim-treesitter-context")
 Plug("theprimeagen/refactoring.nvim") -- refactoring
 Plug("theprimeagen/harpoon") -- manage buffers easier
 Plug("nvim-lua/plenary.nvim") -- dependency for harpoon
@@ -41,6 +42,9 @@ Plug("VonHeikemen/lsp-zero.nvim", { ["branch"] = "v3.x" })
 Plug("williamboman/mason.nvim")
 Plug("williamboman/mason-lspconfig.nvim")
 
+-- Others
+Plug("ThePrimeagen/vim-be-good")
+
 -- UI Theme
 Plug("itchyny/lightline.vim") -- powerline
 Plug("ryanoasis/vim-devicons") -- icons
@@ -57,6 +61,7 @@ require("plugins.lightline")
 require("plugins.nerdtree")
 require("plugins.vim_visual_multi")
 require("plugins.remap")
+require("plugins.vim_fugitive")
 require("plugins.nvim_treesitter_context")
 require("plugins.undotree")
 --require('plugins.fzf')
