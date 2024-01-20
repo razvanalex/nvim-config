@@ -29,7 +29,7 @@ cmp.setup({
 		["<C-u>"] = cmp.mapping.scroll_docs(-4),
 		["<C-d>"] = cmp.mapping.scroll_docs(4),
 		["<CR>"] = cmp.mapping.confirm({ select = false }),
-		["<TAB>"] = cmp.mapping.confirm({ select = true }),
+		["C-y"] = cmp.mapping.confirm({ select = true }),
 	}),
 	sources = cmp.config.sources({
 		{ name = "path" },

@@ -7,12 +7,9 @@ Plug("airblade/vim-gitgutter") -- line changes/added/removed, diffs, etc
 Plug("tpope/vim-fugitive") -- git commands inside vim (e.g., diff, commit, mergetool, blame)
 
 -- IDE stuff
-Plug("scrooloose/nerdtree") -- nerdtree file navigation left bar
+Plug("nvim-tree/nvim-tree.lua") -- file navigation left bar
 Plug("tpope/vim-surround") -- handle surroundings (e.g., tags, parentheses, etc)
-Plug("tpope/vim-eunuch") -- offers support for unix commands (e.g., SudoWrite)
 Plug("mg979/vim-visual-multi") -- extended multi-line support
---Plug('junegunn/fzf', {['do'] = vim.fn['fzf#install']})  -- fuzzy finder
---Plug 'junegunn/fzf.vim'  -- vim integration for fzf
 Plug("nvim-telescope/telescope.nvim") -- fuzzy finder
 Plug("mbbill/undotree") -- fancy undo
 Plug("nvim-treesitter/nvim-treesitter", { ["do"] = vim.fn[":TSUpdate"] }) -- nice text coloring
@@ -44,10 +41,11 @@ Plug("williamboman/mason-lspconfig.nvim")
 
 -- Others
 Plug("ThePrimeagen/vim-be-good")
+Plug("tpope/vim-obsession")
 
 -- UI Theme
-Plug("itchyny/lightline.vim") -- powerline
-Plug("ryanoasis/vim-devicons") -- icons
+Plug("nvim-lualine/lualine.nvim") -- powerline
+Plug("kyazdani42/nvim-web-devicons") -- icons
 Plug("bagrat/vim-buffet") -- tabline
 Plug("Mofiqul/vscode.nvim") -- color theme
 Plug("HiPhish/rainbow-delimiters.nvim") -- color theme
@@ -57,20 +55,18 @@ vim.call("plug#end")
 
 -- Plugin Configs
 require("plugins.set")
-require("plugins.lightline")
-require("plugins.nerdtree")
+require("plugins.lualine")
+require("plugins.nvimtree")
 require("plugins.vim_visual_multi")
 require("plugins.remap")
 require("plugins.vim_fugitive")
 require("plugins.nvim_treesitter_context")
 require("plugins.undotree")
---require('plugins.fzf')
 require("plugins.telescope")
 require("plugins.vscode_nvim")
 require("plugins.harpoon")
 require("plugins.refactoring")
 require("plugins.indent_blankline")
---require("plugins.virt_column")
 require("plugins.lsp")
 require("plugins.trouble")
 require("plugins.rainbow_delimiters")
