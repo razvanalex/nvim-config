@@ -90,7 +90,7 @@ lsp.set_sign_icons({
 lsp.setup()
 
 vim.diagnostic.config({
-	virtual_text = true,
+	virtual_text = false,
 })
 
 require("luasnip.loaders.from_vscode").lazy_load()
