@@ -83,11 +83,11 @@ local powerline = {
 
 function show_lsp()
 	-- From https://gist.github.com/l00sed/8cadeb747d24dea37f3e279ce18d8472
-	local msg = 'No LSP'
-	local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
+	local msg = "No LSP"
+	local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
 	local clients = vim.lsp.get_active_clients()
 
-	if next(clients) == nil  then
+	if next(clients) == nil then
 		return msg
 	end
 
@@ -95,7 +95,7 @@ function show_lsp()
 		local filetypes = client.config.filetypes
 
 		if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-			return 'LSP: '..client.name
+			return "⚙ " .. client.name
 		end
 	end
 
@@ -123,21 +123,24 @@ require("lualine").setup({
 	},
 	sections = {
 		lualine_a = { "mode", "paste" },
-		lualine_b = { 
+		lualine_b = {
 			"branch",
 			"diff",
-			"diagnostics",
-		 },
-		 lualine_c = {
+			{
+				"diagnostics",
+				sources = { "nvim_diagnostic", "nvim_lsp" },
+			},
+		},
+		lualine_c = {
 			{
 				"filename",
 				file_status = true,
 				newfile_status = true,
-				path = 1,               -- 0: Just the filename
-										-- 1: Relative path
-										-- 2: Absolute path
-										-- 3: Absolute path, with tilde as the home directory
-										-- 4: Filename and parent dir, with tilde as the home directory
+				path = 1, -- 0: Just the filename
+				-- 1: Relative path
+				-- 2: Absolute path
+				-- 3: Absolute path, with tilde as the home directory
+				-- 4: Filename and parent dir, with tilde as the home directory
 				symbols = {
 					modified = "[+]",
 					readonly = "",
@@ -145,11 +148,10 @@ require("lualine").setup({
 					newfile = "[Nesw]",
 				},
 			},
-			show_lsp,
 			"selectioncount",
 			"searchcount",
 		},
-		lualine_x = { "encoding", "fileformat", "filetype" },
+		lualine_x = { "encoding", "fileformat", show_lsp, "filetype" },
 		lualine_y = { "progress" },
 		lualine_z = { {
 			"location",
@@ -169,46 +171,46 @@ require("lualine").setup({
 	tabline = {
 		lualine_a = {},
 		lualine_b = {
-		    {
-				'tabs',
-				show_filename_only = true,   -- Shows shortened relative path when set to false.
-				hide_filename_extension = false,   -- Hide filename extension when set to true.
+			{
+				"tabs",
+				show_filename_only = true, -- Shows shortened relative path when set to false.
+				hide_filename_extension = false, -- Hide filename extension when set to true.
 				show_modified_status = true, -- Shows indicator when the tab is modified.
-		  
+
 				mode = 2, -- 0: Shows tab name
-						  -- 1: Shows tab index
-						  -- 2: Shows tab name + tab index
-						  -- 3: Shows tab number
-						  -- 4: Shows tab name + tab number
-		  
+				-- 1: Shows tab index
+				-- 2: Shows tab name + tab index
+				-- 3: Shows tab number
+				-- 4: Shows tab name + tab number
+
 				max_length = vim.o.columns * 2 / 3, -- Maximum width of tabs component,
-													-- it can also be a function that returns
-													-- the value of `max_length` dynamically.
+				-- it can also be a function that returns
+				-- the value of `max_length` dynamically.
 				filetype_names = {
-				  TelescopePrompt = 'Telescope',
-				  dashboard = 'Dashboard',
-				  packer = 'Packer',
-				  fzf = 'FZF',
-				  alpha = 'Alpha'
+					TelescopePrompt = "Telescope",
+					dashboard = "Dashboard",
+					packer = "Packer",
+					fzf = "FZF",
+					alpha = "Alpha",
 				}, -- Shows specific tab name for that filetype ( { `filetype` = `tab_name`, ... } )
-		  
+
 				-- Automatically updates active tab color to match color of other components (will be overidden if tabs_color is set)
 				use_mode_colors = true,
-		  
+
 				symbols = {
-				  modified = ' ●',      -- Text to show when the tab is modified
-				  alternate_file = '#', -- Text to show to identify the alternate file
-				  directory =  '',     -- Text to show when the tab is a directory
+					modified = " ●", -- Text to show when the tab is modified
+					alternate_file = "#", -- Text to show to identify the alternate file
+					directory = "", -- Text to show when the tab is a directory
 				},
-			}
+			},
 		},
 		lualine_c = {},
 		lualine_x = {},
 		lualine_y = {},
-		lualine_z = {}	  
+		lualine_z = {},
 	},
 	inactive_winbar = {},
-	extensions = {"trouble", "mason", "fugitive", "quickfix"},
+	extensions = { "trouble", "mason", "fugitive", "quickfix" },
 })
 
 vim.opt.laststatus = 2

@@ -9,6 +9,7 @@ Plug("tpope/vim-fugitive") -- git commands inside vim (e.g., diff, commit, merge
 -- IDE stuff
 Plug("nvim-tree/nvim-tree.lua") -- file navigation left bar
 Plug("tpope/vim-surround") -- handle surroundings (e.g., tags, parentheses, etc)
+Plug("tpope/vim-obsession") -- save session
 Plug("mg979/vim-visual-multi") -- extended multi-line support
 Plug("nvim-telescope/telescope.nvim") -- fuzzy finder
 Plug("mbbill/undotree") -- fancy undo
@@ -35,9 +36,11 @@ Plug("hrsh7th/cmp-path")
 Plug("hrsh7th/cmp-cmdline")
 Plug("saadparwaiz1/cmp_luasnip")
 Plug("L3MON4D3/LuaSnip", { ["do"] = "make install_jsregexp" })
+Plug("rafamadriz/friendly-snippets")
 Plug("VonHeikemen/lsp-zero.nvim", { ["branch"] = "v3.x" })
 Plug("williamboman/mason.nvim")
 Plug("williamboman/mason-lspconfig.nvim")
+Plug("onsails/lspkind.nvim")
 
 -- Others
 Plug("ThePrimeagen/vim-be-good")
