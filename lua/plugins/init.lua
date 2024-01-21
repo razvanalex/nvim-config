@@ -3,7 +3,8 @@ local Plug = vim.fn["plug#"]
 vim.call("plug#begin")
 
 -- Git integration
-Plug("airblade/vim-gitgutter") -- line changes/added/removed, diffs, etc
+--Plug("airblade/vim-gitgutter") -- line changes/added/removed, diffs, etc
+Plug("lewis6991/gitsigns.nvim")
 Plug("tpope/vim-fugitive") -- git commands inside vim (e.g., diff, commit, mergetool, blame)
 
 -- IDE stuff
@@ -23,6 +24,7 @@ Plug("lukas-reineke/indent-blankline.nvim") -- identation lines
 Plug("folke/trouble.nvim") -- shows issues in code (like Problems in vscode)
 Plug("windwp/nvim-autopairs") -- brackets auto-close
 Plug("numToStr/Comment.nvim") -- comment
+Plug("luukvbaal/statuscol.nvim") -- folding code
 
 -- LSP
 Plug("neovim/nvim-lspconfig")
@@ -77,3 +79,5 @@ require("plugins.nvim_autoclose")
 require("plugins.comment")
 require("plugins.lint")
 require("plugins.formatter")
+require("plugins.gitsigns")
+require("plugins.statuscol")

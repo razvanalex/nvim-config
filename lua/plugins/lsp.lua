@@ -93,4 +93,15 @@ vim.diagnostic.config({
 	virtual_text = false,
 })
 
+lsp.set_server_config({
+	capabilities = {
+		textDocument = {
+			foldingRange = {
+				dynamicRegistration = false,
+				lineFoldingOnly = true,
+			},
+		},
+	},
+})
+
 require("luasnip.loaders.from_vscode").lazy_load()
