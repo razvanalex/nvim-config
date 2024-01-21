@@ -1,3 +1,5 @@
+python_env = require("plugins.python_env")
+
 local Colors = {
 	black = "#000000",
 	white = "#ffffff",
@@ -81,7 +83,37 @@ local powerline = {
 	tabline,
 }
 
-function show_lsp()
+local function virtual_env()
+	-- source: https://www.reddit.com/r/neovim/comments/16ya0fr/show_the_current_python_virtual_env_on_statusline/
+	-- only show virtual env for Python
+	if vim.bo.filetype ~= "python" then
+		return ""
+	end
+
+	local conda_env = os.getenv("CONDA_DEFAULT_ENV")
+	local venv_path = os.getenv("VIRTUAL_ENV")
+
+	if venv_path == nil then
+		if conda_env == nil then
+			return ""
+		else
+			return string.format("%s (conda)", conda_env)
+		end
+	else
+		local venv_name = vim.fn.fnamemodify(venv_path, ":t")
+		return string.format("%s (venv)", venv_name)
+	end
+end
+
+local function get_venv()
+	local env = python_env.env(vim.fn.expand("%"))
+	if env == "" then
+		return virtual_env()
+	end
+	return env
+end
+
+local function show_lsp()
 	-- From https://gist.github.com/l00sed/8cadeb747d24dea37f3e279ce18d8472
 	local msg = "No LSP"
 	local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
@@ -95,7 +127,12 @@ function show_lsp()
 		local filetypes = client.config.filetypes
 
 		if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-			return "⚙ " .. client.name
+			local client_name = client.name
+			-- local venv = get_venv()
+			-- if vim.bo.filetype == "python" and venv ~= "" then
+			-- 	client_name = client_name .. "(" .. venv .. ")"
+			-- end
+			return "⚙ " .. client_name
 		end
 	end
 
@@ -151,7 +188,13 @@ require("lualine").setup({
 			"selectioncount",
 			"searchcount",
 		},
-		lualine_x = { "encoding", "fileformat", show_lsp, "filetype" },
+		lualine_x = {
+			"encoding",
+			"fileformat",
+			show_lsp,
+			get_venv,
+			"filetype",
+		},
 		lualine_y = { "progress" },
 		lualine_z = { {
 			"location",
