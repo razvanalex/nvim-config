@@ -3,8 +3,7 @@ local Plug = vim.fn["plug#"]
 vim.call("plug#begin")
 
 -- Git integration
---Plug("airblade/vim-gitgutter") -- line changes/added/removed, diffs, etc
-Plug("lewis6991/gitsigns.nvim")
+Plug("lewis6991/gitsigns.nvim") -- line changes/added/removed, diffs, etc
 Plug("tpope/vim-fugitive") -- git commands inside vim (e.g., diff, commit, mergetool, blame)
 
 -- IDE stuff
@@ -28,9 +27,9 @@ Plug("luukvbaal/statuscol.nvim") -- folding code
 
 -- LSP
 Plug("neovim/nvim-lspconfig")
-Plug("hrsh7th/nvim-cmp")
 Plug("mfussenegger/nvim-lint")
 Plug("mhartington/formatter.nvim")
+Plug("hrsh7th/nvim-cmp")
 Plug("hrsh7th/cmp-nvim-lsp")
 Plug("hrsh7th/cmp-nvim-lua")
 Plug("hrsh7th/cmp-buffer")
@@ -45,16 +44,15 @@ Plug("williamboman/mason-lspconfig.nvim")
 Plug("onsails/lspkind.nvim")
 
 -- Others
-Plug("ThePrimeagen/vim-be-good")
-Plug("tpope/vim-obsession")
+Plug("ThePrimeagen/vim-be-good") -- vim tutorial
+Plug("fladson/vim-kitty") -- syntax highlight for kitty terminal config
 
 -- UI Theme
 Plug("nvim-lualine/lualine.nvim") -- powerline
 Plug("kyazdani42/nvim-web-devicons") -- icons
 Plug("bagrat/vim-buffet") -- tabline
 Plug("Mofiqul/vscode.nvim") -- color theme
-Plug("HiPhish/rainbow-delimiters.nvim") -- color theme
-Plug("fladson/vim-kitty") -- vim kitty theme
+Plug("HiPhish/rainbow-delimiters.nvim") -- colored parentheses
 
 vim.call("plug#end")
 
