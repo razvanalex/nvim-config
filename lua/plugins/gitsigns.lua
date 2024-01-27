@@ -15,7 +15,7 @@ require("gitsigns").setup({
 		follow_files = true,
 	},
 	auto_attach = true,
-	attach_to_untracked = true,
+	attach_to_untracked = false,
 	current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
 	current_line_blame_opts = {
 		virt_text = true,
@@ -58,7 +58,7 @@ require("gitsigns").setup({
 				gs.next_hunk()
 			end)
 			return "<Ignore>"
-		end, { expr = true, { desc = "Next Git Hunk" } })
+		end, { expr = true, desc = "Next Git Hunk" })
 
 		map("n", "[c", function()
 			if vim.wo.diff then

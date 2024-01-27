@@ -2,9 +2,8 @@
 
 My configs for nvim. Some are based on [ThePrimeagen's init.lua](https://github.com/ThePrimeagen/init.lua).
 
-Features:
+Some features:
 - git integration
-- nerd tree
 - telescope fuzzy finder
 - undo tree
 - hapoon

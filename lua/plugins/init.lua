@@ -16,7 +16,7 @@ Plug("mbbill/undotree") -- fancy undo
 Plug("nvim-treesitter/nvim-treesitter", { ["do"] = vim.fn[":TSUpdate"] }) -- nice text coloring
 Plug("nvim-treesitter/nvim-treesitter-context")
 Plug("theprimeagen/refactoring.nvim") -- refactoring
-Plug("theprimeagen/harpoon") -- manage buffers easier
+Plug("theprimeagen/harpoon", { branch = "harpoon2" }) -- manage buffers easier
 Plug("nvim-lua/plenary.nvim") -- dependency for harpoon
 Plug("lukas-reineke/indent-blankline.nvim") -- identation lines
 -- Plug("lukas-reineke/virt-column.nvim") -- column color
@@ -78,5 +78,5 @@ require("plugins.nvim_autoclose")
 require("plugins.comment")
 require("plugins.lint")
 require("plugins.formatter")
-require("plugins.gitsigns")
 require("plugins.statuscol")
+require("plugins.gitsigns")
