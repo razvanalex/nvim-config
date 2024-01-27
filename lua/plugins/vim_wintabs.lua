@@ -1,0 +1,10 @@
+vim.keymap.set({ "n", "v", "s", "o" }, "<C-K>", "<Plug>(wintabs_previous)", { desc = "Previous wintab" })
+vim.keymap.set({ "n", "v", "s", "o" }, "<C-L>", "<Plug>(wintabs_next)", { desc = "Next wintab" })
+vim.keymap.set({ "n", "v", "s", "o" }, "<C-T>c", "<Plug>(wintabs_close)", { desc = "Close wintab" })
+vim.keymap.set({ "n", "v", "s", "o" }, "<C-T>u", "<Plug>(wintabs_undo)", { desc = "Undo wintab" })
+vim.keymap.set({ "n", "v", "s", "o" }, "<C-T>o", "<Plug>(wintabs_only)", { desc = "Only wintabs" })
+vim.keymap.set({ "n", "v", "s", "o" }, "<C-W>c", "<Plug>(wintabs_close_window)", { desc = "Close window" })
+vim.keymap.set({ "n", "v", "s", "o" }, "<C-W>o", "<Plug>(wintabs_only_window)", { desc = "Only window" })
+
+vim.api.nvim_create_user_command("Tabc", "WintabsCloseVimtab", {})
+vim.api.nvim_create_user_command("Tabo", "WintabsOnlyVimtab", {})

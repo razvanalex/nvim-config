@@ -61,23 +61,56 @@ cmp.setup({
 })
 
 lsp.on_attach(function(client, bufnr)
-	lsp.default_keymaps({ buffer = bufnr })
+	local function get_opts(other_opts)
+		local o = { buffer = bufnr, remap = false }
+		for k, v in pairs(other_opts) do
+			o[k] = v
+		end
+		return o
+	end
+
+	vim.keymap.set("n", "K", function()
+		vim.lsp.buf.hover()
+	end, get_opts({ desc = "Hover" }))
+	vim.keymap.set("n", "gd", function()
+		vim.lsp.buf.definition()
+	end, get_opts({ desc = "Go Definition" }))
+	vim.keymap.set("n", "gD", function()
+		vim.lsp.buf.declaration()
+	end, get_opts({ desc = "Go Declaration" }))
+	vim.keymap.set("n", "gi", function()
+		vim.lsp.buf.implementation()
+	end, get_opts({ desc = "List Implementations" }))
+	vim.keymap.set("n", "go", function()
+		vim.lsp.buf.type_definition()
+	end, get_opts({ desc = "Go Type Definition" }))
+	vim.keymap.set("n", "gr", function()
+		vim.lsp.buf.references()
+	end, get_opts({ desc = "Go References" }))
 	vim.keymap.set("i", "<C-h>", function()
 		vim.lsp.buf.signature_help()
-	end, opts)
-
-	-- local opts = {buffer = bufnr, remap = false}
-	--
-	-- vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-	-- vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
-	-- vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
-	-- vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
-	-- vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-	-- vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
-	-- vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
-	-- vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
-	-- vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
-	-- vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+	end, get_opts({ desc = "Signature Help" }))
+	vim.keymap.set("n", "<F2>", function()
+		vim.lsp.buf.rename()
+	end, get_opts({ desc = "Rename Symbol" }))
+	vim.keymap.set("n", "<F3>", function()
+		vim.lsp.buf.format()
+	end, get_opts({ desc = "Format Current Buffer" }))
+	vim.keymap.set("n", "<F4>", function()
+		vim.lsp.buf.code_action()
+	end, get_opts({ desc = "Code Action" }))
+	vim.keymap.set("n", "gl", function()
+		vim.diagnostic.open_float()
+	end, get_opts({ desc = "Show Diagnostics" }))
+	vim.keymap.set("n", "gw", function()
+		vim.lsp.buf.workspace_symbol()
+	end, get_opts({ desc = "Show Workspace Symbols" }))
+	vim.keymap.set("n", "[d", function()
+		vim.diagnostic.goto_next()
+	end, get_opts({ desc = "Next Diagnostic" }))
+	vim.keymap.set("n", "]d", function()
+		vim.diagnostic.goto_prev()
+	end, get_opts({ desc = "Previous Diagnostic" }))
 end)
 
 lsp.set_sign_icons({

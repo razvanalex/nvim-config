@@ -46,6 +46,7 @@ Plug("onsails/lspkind.nvim")
 -- Others
 Plug("ThePrimeagen/vim-be-good") -- vim tutorial
 Plug("fladson/vim-kitty") -- syntax highlight for kitty terminal config
+Plug("folke/which-key.nvim") -- help with key bindings
 
 -- UI Theme
 Plug("nvim-lualine/lualine.nvim") -- powerline
@@ -59,8 +60,8 @@ vim.call("plug#end")
 -- Plugin Configs
 require("plugins.set")
 require("plugins.lualine")
-require("plugins.nvimtree")
-require("plugins.vim_visual_multi")
+require("plugins.which_key")
+require("plugins.vim_wintabs")
 require("plugins.remap")
 require("plugins.vim_fugitive")
 require("plugins.nvim_treesitter_context")

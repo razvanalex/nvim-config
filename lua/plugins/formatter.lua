@@ -86,4 +86,4 @@ autocmd("BufWritePost", {
 	command = ":FormatWrite",
 })
 
-vim.keymap.set("n", "<C-f>", ":Format<CR>")
+vim.keymap.set("n", "<C-f>", ":Format<CR>", { desc = "Format Document" })
