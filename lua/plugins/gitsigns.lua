@@ -1,6 +1,6 @@
 vim.cmd([[ highlight GitSignsAdd    guifg=#6a9955 ]])
 vim.cmd([[ highlight GitSignsChange guifg=#0078d4 ]])
-vim.cmd([[ highlight GitSignsDelete guifg=f85149 ]])
+vim.cmd([[ highlight GitSignsDelete guifg=#f85149 ]])
 
 require("gitsigns").setup({
 	signs = {
