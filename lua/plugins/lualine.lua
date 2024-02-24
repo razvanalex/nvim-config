@@ -1,5 +1,3 @@
-python_env = require("plugins.python_env")
-
 local Colors = {
 	black = "#000000",
 	white = "#ffffff",
@@ -106,6 +104,7 @@ local function virtual_env()
 end
 
 local function get_venv()
+	python_env = require("plugins.python_env")
 	local env = python_env.env(vim.fn.expand("%"))
 	if env == "" then
 		return virtual_env()

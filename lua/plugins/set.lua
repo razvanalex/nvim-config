@@ -9,9 +9,6 @@ vim.opt.termencoding = "utf-8"
 -- Open new vertical splits to the right of current one.
 vim.opt.splitright = true
 
--- cursor
---vim.opt.guicursor = ""
-
 -- line numbers
 vim.opt.nu = true
 vim.opt.relativenumber = true
@@ -22,7 +19,7 @@ vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
--- use intelligent identation
+-- use intelligent indentation
 vim.opt.smartindent = true
 
 -- no line wrap
@@ -50,6 +47,10 @@ vim.opt.colorcolumn = "80"
 vim.opt.listchars = "eol:↵,tab:→ ,nbsp:·,space:·,trail:~"
 vim.opt.foldmethod = "syntax"
 vim.opt.foldenable = false
+
+-- spell check
+vim.opt.spell = true
+vim.api.nvim_set_hl(0, "SpellBad", {undercurl=true, sp='#0faaff'})
 
 -- mouse support
 vim.opt.mouse = "a"
