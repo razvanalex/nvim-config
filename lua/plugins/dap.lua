@@ -72,7 +72,7 @@ vim.fn.sign_define("DapStopped", { text = "→", texthl = "DiagnosticOk", linehl
 vim.fn.sign_define("DapLogPoint", { text = "", texthl = "DiagnosticInfo", linehl = "", numhl = "" })
 
 -- Set highlight
-vim.api.nvim_set_hl(0, "DapStopped", { bg = "#31353f" })
+vim.api.nvim_set_hl(0, "DapStopped", { bg = "#494a10" })
 
 -- Setup Python DAP with default debugpy environment, created with:
 --
