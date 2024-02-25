@@ -26,12 +26,17 @@ vim.keymap.set({ "n", "i" }, "<C-Enter>", "<Esc>o", { desc = "New Line Below" })
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<C-t>n", "<cmd>silent !tmux neww tmux-sessionizer<CR>", { desc = "Sessionize tmux" })
 
-vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz", { desc = "Next quickfix" })
-vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz", { desc = "Prev quickfix" })
-vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz", { desc = "Next location" })
-vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz", { desc = "Prev location" })
+vim.keymap.set("n", "<leader>qk", "<cmd>cnext<CR>zz", { desc = "Next quickfix" })
+vim.keymap.set("n", "<leader>qj", "<cmd>cprev<CR>zz", { desc = "Prev quickfix" })
+vim.keymap.set("n", "<leader>lk", "<cmd>lnext<CR>zz", { desc = "Next location" })
+vim.keymap.set("n", "<leader>lj", "<cmd>lprev<CR>zz", { desc = "Prev location" })
 
-vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Edit all occurences under the coursor" })
+vim.keymap.set(
+	"n",
+	"<leader>s",
+	[[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+	{ desc = "Edit all occurences under the coursor" }
+)
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true }, { desc = "Make current file executable" })
 
 vim.keymap.set("n", "<leader><leader>", function()
@@ -39,8 +44,8 @@ vim.keymap.set("n", "<leader><leader>", function()
 end, { desc = "Reload Current Config File" })
 
 -- wintabs
-vim.keymap.set({ "n", "v", "s", "o" }, "<C-K>", "<Plug>(wintabs_previous)", { desc = "Previous wintab" })
-vim.keymap.set({ "n", "v", "s", "o" }, "<C-L>", "<Plug>(wintabs_next)", { desc = "Next wintab" })
+vim.keymap.set({ "n", "v", "s", "o" }, "<C-T>k", "<Plug>(wintabs_previous)", { desc = "Previous wintab" })
+vim.keymap.set({ "n", "v", "s", "o" }, "<C-T>l", "<Plug>(wintabs_next)", { desc = "Next wintab" })
 vim.keymap.set({ "n", "v", "s", "o" }, "<C-T>c", "<Plug>(wintabs_close)", { desc = "Close wintab" })
 vim.keymap.set({ "n", "v", "s", "o" }, "<C-T>u", "<Plug>(wintabs_undo)", { desc = "Undo wintab" })
 vim.keymap.set({ "n", "v", "s", "o" }, "<C-T>o", "<Plug>(wintabs_only)", { desc = "Only wintabs" })
@@ -49,3 +54,5 @@ vim.keymap.set({ "n", "v", "s", "o" }, "<C-W>o", "<Plug>(wintabs_only_window)", 
 
 vim.api.nvim_create_user_command("Tabc", "WintabsCloseVimtab", {})
 vim.api.nvim_create_user_command("Tabo", "WintabsOnlyVimtab", {})
+
+vim.keymap.set("t", "<ESC>", "<C-\\><C-n>", { desc = "Exit terminal mode", noremap = true })

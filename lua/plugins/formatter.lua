@@ -43,7 +43,6 @@ require("formatter").setup({
 					exe = "black",
 					args = {
 						"-q",
-						"--experimental-string-processing",
 						"--stdin-filename",
 						util.escape_path(util.get_current_buffer_file_name()),
 						"-",

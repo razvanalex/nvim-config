@@ -150,7 +150,7 @@ require("lualine").setup({
 		},
 		ignore_focus = {},
 		always_divide_middle = true,
-		globalstatus = false,
+		globalstatus = true,
 		refresh = {
 			statusline = 1000,
 			tabline = 1000,
@@ -174,7 +174,7 @@ require("lualine").setup({
 			},
 			{
 				"diagnostics",
-				sources = { "nvim_diagnostic", "nvim_lsp" },
+				sources = { "nvim_diagnostic" },
 			},
 		},
 		lualine_c = {
@@ -265,5 +265,5 @@ require("lualine").setup({
 	extensions = { "trouble", "mason", "fugitive", "quickfix" },
 })
 
-vim.opt.laststatus = 2
+vim.opt.laststatus = 3
 vim.opt.showmode = false

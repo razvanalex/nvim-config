@@ -1,4 +1,4 @@
---. NVim configurations
+-- NVim configurations
 -- Author: razvanalex
 
 -- UTF-8 encoding
@@ -47,10 +47,11 @@ vim.opt.colorcolumn = "80"
 vim.opt.listchars = "eol:↵,tab:→ ,nbsp:·,space:·,trail:~"
 vim.opt.foldmethod = "syntax"
 vim.opt.foldenable = false
+vim.opt.cursorline = true
 
 -- spell check
 vim.opt.spell = true
-vim.api.nvim_set_hl(0, "SpellBad", {undercurl=true, sp='#0faaff'})
+vim.api.nvim_set_hl(0, "SpellBad", { undercurl = true, sp = "#0faaff" })
 
 -- mouse support
 vim.opt.mouse = "a"

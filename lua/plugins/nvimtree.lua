@@ -3,6 +3,23 @@ require("nvim-tree").setup({
 		enable = true,
 		auto_open = false,
 	},
+	git = {
+		enable = false,
+		ignore = true,
+	},
+	renderer = {
+		indent_markers = {
+			enable = true,
+		},
+		icons = {
+			show = {
+				file = true,
+				folder = true,
+				folder_arrow = true,
+				git = false,
+			},
+		},
+	},
 })
 
 vim.keymap.set({ "n", "v", "s", "o" }, "<C-b>", ":NvimTreeToggle<CR>")

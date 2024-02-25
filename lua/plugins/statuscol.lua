@@ -38,7 +38,7 @@ require("statuscol").setup({
 			},
 		},
 		{
-			sign = { namespace = { "gitsigns_extmark_signs_" }, maxwidth = 1, colwidth = 1, auto = true },
+			sign = { namespace = { "gitsigns_extmark_signs_" }, maxwidth = 1, colwidth = 1, auto = false },
 			click = "v:lua.ScSa",
 		},
 		{ text = { builtin.foldfunc }, click = "v:lua.ScFa" },
