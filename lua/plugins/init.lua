@@ -59,6 +59,7 @@ Plug("williamboman/mason.nvim") -- package manager for LSP/DAP/linters/formatter
 Plug("williamboman/mason-lspconfig.nvim")
 Plug("onsails/lspkind.nvim") -- LSP pictograms for autocomplete menu
 Plug("folke/neodev.nvim") -- Lua LSP for neovim dev
+Plug("ray-x/lsp_signature.nvim") -- Show function signature
 
 -- LLMs
 Plug("huggingface/llm.nvim")
