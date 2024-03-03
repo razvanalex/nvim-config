@@ -60,6 +60,9 @@ Plug("williamboman/mason-lspconfig.nvim")
 Plug("onsails/lspkind.nvim") -- LSP pictograms for autocomplete menu
 Plug("folke/neodev.nvim") -- Lua LSP for neovim dev
 
+-- LLMs
+Plug("huggingface/llm.nvim")
+
 -- DAP
 Plug("mfussenegger/nvim-dap") -- DAP interface for nvim
 Plug("rcarriga/nvim-dap-ui") -- UI for DAP
@@ -99,3 +102,4 @@ require("plugins.gitsigns")
 require("plugins.lualine")
 require("plugins.barbecue")
 require("plugins.rainbow_delimiters")
+require("plugins.llm")
