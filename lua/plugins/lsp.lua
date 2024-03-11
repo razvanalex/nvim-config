@@ -1,228 +1,263 @@
-require("neodev").setup({
-	-- add any options here, or leave empty to use the default settings
-	library = {
-		enabled = true, -- when not enabled, neodev will not change any settings to the LSP server
-		-- these settings will be used for your Neovim config directory
-		runtime = true, -- runtime path
-		types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
-		plugins = true, -- installed opt or start plugins in packpath
-		-- you can also specify the list of plugins to make available as a workspace library
-		-- plugins = { "nvim-treesitter", "plenary.nvim", "telescope.nvim" },
-	},
-	setup_jsonls = true, -- configures jsonls to provide completion for project specific .luarc.json files
-	-- for your Neovim config directory, the config.library settings will be used as is
-	-- for plugin directories (root_dirs having a /lua directory), config.library.plugins will be disabled
-	-- for any other directory, config.library.enabled will be set to false
-	override = function(root_dir, options) end,
-	-- With lspconfig, Neodev will automatically setup your lua-language-server
-	-- If you disable this, then you have to set {before_init=require("neodev.lsp").before_init}
-	-- in your lsp start options
-	lspconfig = true,
-	-- much faster, but needs a recent built of lua-language-server
-	-- needs lua-language-server >= 3.6.0
-	pathStrict = true,
-})
-
-local lsp = require("lsp-zero")
-
-lsp.preset("recommended")
-
-require("mason").setup({})
-require("mason-lspconfig").setup({
-	ensure_installed = { "tsserver", "pyright", "lua_ls" },
-	handlers = {
-		lsp.default_setup,
-		lua_ls = function()
-			local lua_opts = lsp.nvim_lua_ls()
-			require("lspconfig").lua_ls.setup(lua_opts)
-		end,
-	},
-})
-
-local cmp = require("cmp")
-local cmp_action = lsp.cmp_action()
-local lspkind = require("lspkind")
-
-cmp.setup({
-	window = {
-		completion = cmp.config.window.bordered(),
-		documentation = cmp.config.window.bordered(),
-	},
-	mapping = cmp.mapping.preset.insert({
-		["<C-Space>"] = cmp.mapping.complete(),
-		["<C-f>"] = cmp_action.luasnip_jump_forward(),
-		["<C-b>"] = cmp_action.luasnip_jump_backward(),
-		["<C-u>"] = cmp.mapping.scroll_docs(-4),
-		["<C-d>"] = cmp.mapping.scroll_docs(4),
-		["<CR>"] = cmp.mapping.confirm({ select = false }),
-		["<C-y>"] = cmp.mapping.confirm({ select = true }),
-		["<Tab>"] = cmp_action.luasnip_supertab(),
-		["<S-Tab>"] = cmp_action.luasnip_shift_supertab(),
-	}),
-	sources = cmp.config.sources({
-		{ name = "path" },
-		{ name = "nvim_lsp" },
-		{ name = "nvim_lua" },
-		{ name = "luasnip" },
-		{ name = "buffer" },
-	}),
-	formatting = {
-		format = lspkind.cmp_format({
-			mode = "symbol_text", -- show only symbol annotations
-			preset = "codicons",
-			maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-			-- can also be a function to dynamically calculate max width such as
-			-- maxwidth = function() return math.floor(0.45 * vim.o.columns) end,
-			ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-			show_labelDetails = true, -- show labelDetails in menu. Disabled by default
-
-			-- The function below will be called before any actual modifications from lspkind
-			-- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
-			before = function(entry, vim_item)
-				return vim_item
-			end,
-		}),
-	},
-})
-
-lsp.on_attach(function(client, bufnr)
-	local function get_opts(other_opts)
-		local o = { buffer = bufnr, remap = false }
-		for k, v in pairs(other_opts) do
-			o[k] = v
-		end
-		return o
-	end
-
-	vim.keymap.set("n", "K", function()
-		vim.lsp.buf.hover()
-	end, get_opts({ desc = "Hover" }))
-	vim.keymap.set("n", "gd", function()
-		vim.lsp.buf.definition()
-	end, get_opts({ desc = "Go Definition" }))
-	vim.keymap.set("n", "gD", function()
-		vim.lsp.buf.declaration()
-	end, get_opts({ desc = "Go Declaration" }))
-	vim.keymap.set("n", "gi", function()
-		vim.lsp.buf.implementation()
-	end, get_opts({ desc = "List Implementations" }))
-	vim.keymap.set("n", "go", function()
-		vim.lsp.buf.type_definition()
-	end, get_opts({ desc = "Go Type Definition" }))
-	vim.keymap.set("n", "gr", function()
-		vim.lsp.buf.references()
-	end, get_opts({ desc = "Go References" }))
-	vim.keymap.set("i", "<C-h>", function()
-		vim.lsp.buf.signature_help()
-	end, get_opts({ desc = "Signature Help" }))
-	vim.keymap.set("n", "<F2>", function()
-		vim.lsp.buf.rename()
-	end, get_opts({ desc = "Rename Symbol" }))
-	vim.keymap.set("n", "<F3>", function()
-		vim.lsp.buf.format()
-	end, get_opts({ desc = "Format Current Buffer" }))
-	vim.keymap.set("n", "<F4>", function()
-		vim.lsp.buf.code_action()
-	end, get_opts({ desc = "Code Action" }))
-	vim.keymap.set("n", "gl", function()
-		vim.diagnostic.open_float()
-	end, get_opts({ desc = "Show Diagnostics" }))
-	vim.keymap.set("n", "gw", function()
-		vim.lsp.buf.workspace_symbol()
-	end, get_opts({ desc = "Show Workspace Symbols" }))
-	vim.keymap.set("n", "[d", function()
-		vim.diagnostic.goto_next()
-	end, get_opts({ desc = "Next Diagnostic" }))
-	vim.keymap.set("n", "]d", function()
-		vim.diagnostic.goto_prev()
-	end, get_opts({ desc = "Previous Diagnostic" }))
-end)
-
-lsp.set_sign_icons({
-	error = "",
-	warn = "",
-	hint = "",
-	info = "",
-})
-
-lsp.setup()
-
-vim.diagnostic.config({
-	virtual_text = false,
-})
-
-lsp.set_server_config({
-	capabilities = {
-		textDocument = {
-			foldingRange = {
-				dynamicRegistration = false,
-				lineFoldingOnly = true,
+return {
+	{ -- shows issues in code (like Problems in vscode)
+		"folke/trouble.nvim",
+		dependencies = {
+			{ "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
+		},
+		opts = {
+			signs = {
+				error = "",
+				warning = "",
+				hint = "",
+				information = "",
+				other = "",
 			},
 		},
+		init = function()
+			vim.keymap.set("n", "<leader>tt", function()
+				require("trouble").toggle()
+			end, { silent = true, noremap = true, desc = "[T]rouble [T]oggle" })
+
+			vim.keymap.set("n", "<leader>tw", function()
+				require("trouble").toggle("workspace_diagnostics")
+			end, { silent = true, noremap = true, desc = "[T]rouble [W]orkspace Diagnostics" })
+
+			vim.keymap.set("n", "<leader>td", function()
+				require("trouble").toggle("document_diagnostics")
+			end, { silent = true, noremap = true, desc = "[T]rouble [D]ocument Diagnostics" })
+
+			vim.keymap.set("n", "<leader>tq", function()
+				require("trouble").toggle("quickfix")
+			end, { silent = true, noremap = true, desc = "[T]rouble [Q]uickfix" })
+
+			vim.keymap.set("n", "<leader>tl", function()
+				require("trouble").toggle("loclist")
+			end, { silent = true, noremap = true, desc = "[T]rouble [L]oclist" })
+
+			vim.keymap.set("n", "<leader>tR", function()
+				require("trouble").toggle("lsp_references")
+			end, { silent = true, noremap = true, desc = "[T]rouble LSP [R]eferences" })
+		end,
 	},
-})
+	{
+		"neovim/nvim-lspconfig",
+		dependencies = {
+			-- Automatically install LSPs and related tools to stdpath for neovim
+			"williamboman/mason.nvim",
+			"williamboman/mason-lspconfig.nvim",
+			"WhoIsSethDaniel/mason-tool-installer.nvim",
 
-require("luasnip.loaders.from_vscode").lazy_load()
-require("lsp_signature").setup({
-	debug = false, -- set to true to enable debug logging
-	log_path = vim.fn.stdpath("cache") .. "/lsp_signature.log", -- log dir when debug is on
-	-- default is  ~/.cache/nvim/lsp_signature.log
-	verbose = false, -- show debug line number
+			-- Useful status updates for LSP.
+			-- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
+			{ "j-hui/fidget.nvim", opts = {} },
+		},
+		config = function()
+			vim.diagnostic.config({
+				virtual_text = false,
+			})
 
-	bind = true, -- This is mandatory, otherwise border config won't get registered.
-	-- If you want to hook lspsaga or other signature handler, pls set to false
-	doc_lines = 10, -- will show two lines of comment/doc(if there are more than two lines in doc, will be truncated);
-	-- set to 0 if you DO NOT want any API comments be shown
-	-- This setting only take effect in insert mode, it does not affect signature help in normal
-	-- mode, 10 by default
+			-- init neodev
+			require("neodev").setup({})
+			local lspconfig = require("lspconfig")
+			lspconfig.lua_ls.setup({
+				settings = {
+					Lua = {
+						completion = {
+							callSnippet = "Replace",
+						},
+					},
+				},
+			})
 
-	max_height = 12, -- max height of signature floating_window
-	max_width = 80, -- max_width of signature floating_window, line will be wrapped if exceed max_width
-	-- the value need >= 40
-	wrap = true, -- allow doc/signature text wrap inside floating_window, useful if your lsp return doc/sig is too long
-	floating_window = true, -- show hint in a floating window, set to false for virtual text only mode
+			vim.api.nvim_create_autocmd("LspAttach", {
+				group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
+				callback = function(event)
+					local map = function(keys, func, desc)
+						vim.keymap.set("n", keys, func, { buffer = event.buf, remap = false, desc = "LSP: " .. desc })
+					end
+					local imap = function(keys, func, desc)
+						vim.keymap.set("i", keys, func, { buffer = event.buf, remap = false, desc = "LSP: " .. desc })
+					end
 
-	floating_window_above_cur_line = true, -- try to place the floating above the current line when possible Note:
-	-- will set to true when fully tested, set to false will use whichever side has more space
-	-- this setting will be helpful if you do not want the PUM and floating win overlap
+					-- Jump to the definition of the word under your cursor.
+					--  This is where a variable was first declared, or where a function is defined, etc.
+					--  To jump back, press <C-T>.
+					map("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
 
-	floating_window_off_x = 1, -- adjust float windows x position.
-	-- can be either a number or function
-	floating_window_off_y = 0, -- adjust float windows y position. E.g -2 move window up 2 lines; 2 move down 2 lines
-	-- can be either number or function, see examples
+					--  For example, in C this would take you to the header
+					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
-	close_timeout = 4000, -- close floating window after ms when laster parameter is entered
-	fix_pos = false, -- set to true, the floating window will not auto-close until finish all parameters
-	hint_enable = false, -- virtual hint enable
-	hint_prefix = "🐼 ", -- Panda for parameter, NOTE: for the terminal not support emoji, might crash
-	hint_scheme = "String",
-	hint_inline = function()
-		return false
-	end, -- should the hint be inline(nvim 0.10 only)?  Default false
-	-- return true | 'inline' to show hint inline, return 'eol' to show hint at end of line, return false to disable
-	-- return 'right_align' to display hint right aligned in the current line
-	hi_parameter = "LspSignatureActiveParameter", -- how your parameter will be highlight
-	handler_opts = {
-		border = "rounded", -- double, rounded, single, shadow, none, or a table of borders
+					-- Jump to the implementation of the word under your cursor.
+					--  Useful when your language has ways of declaring types without an actual implementation.
+					map("gi", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
+
+					-- Jump to the type of the word under your cursor.
+					--  Useful when you're not sure what type a variable is and you want to see
+					--  the definition of its *type*, not where it was *defined*.
+					map("go", vim.lsp.buf.type_definition, "Goto Type Definition")
+
+					-- Find references for the word under your cursor.
+					map("gr", vim.lsp.buf.clear_references, "[G]oto [R]eferences")
+
+					-- Show signature help
+					imap("<C-h>", vim.lsp.buf.signature_help, "Signature [H]elp")
+
+					-- Rename the variable under your cursor
+					--  Most Language Servers support renaming across files, etc.
+					map("<F2>", vim.lsp.buf.rename, "Rename Symbol")
+
+					-- Format current buffer by calling the formatter
+					map("<F3>", vim.lsp.buf.format, "Format Current Buffer")
+
+					-- Execute a code action, usually your cursor needs to be on top of an error
+					-- or a suggestion from your LSP for this to activate.
+					map("<F4>", vim.lsp.buf.code_action, "Code Action")
+
+					-- Show the diagnostics
+					map("gl", vim.diagnostic.open_float, "Show Diagnostics")
+
+					-- Next diagnostics
+					map("[d", vim.diagnostic.goto_next, "Next Diagnostic")
+
+					-- Next diagnostics
+					map("]d", vim.diagnostic.goto_prev, "Next Diagnostic")
+
+					-- Fuzzy find all the symbols in your current document.
+					--  Symbols are things like variables, functions, types, etc.
+					map("gs", vim.lsp.buf.document_symbol, "Show All Document [S]ymbols")
+
+					-- Fuzzy find all the symbols in your current workspace
+					--  Similar to document symbols, except searches over your whole project.
+					map("gw", vim.lsp.buf.workspace_symbol, "Show [W]orkspace Symbols")
+
+					-- Opens a popup that displays documentation about the word under your cursor
+					--  See `:help K` for why this keymap
+					map("K", vim.lsp.buf.hover, "Hover Documentation")
+
+					-- Diagnostic icons
+					local symbols = { Error = "󰅙", Info = "󰋼", Hint = "󰌵", Warn = "" }
+
+					for name, icon in pairs(symbols) do
+						local hl = "DiagnosticSign" .. name
+						vim.fn.sign_define(hl, { text = icon, numhl = hl, texthl = hl })
+					end
+
+					-- The following two autocommands are used to highlight references of the
+					-- word under your cursor when your cursor rests there for a little while.
+					--    See `:help CursorHold` for information about when this is executed
+					--
+					-- When you move your cursor, the highlights will be cleared (the second autocommand).
+					local client = vim.lsp.get_client_by_id(event.data.client_id)
+					if client and client.server_capabilities.documentHighlightProvider then
+						vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+							buffer = event.buf,
+							callback = vim.lsp.buf.document_highlight,
+						})
+
+						vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+							buffer = event.buf,
+							callback = vim.lsp.buf.clear_references,
+						})
+					end
+				end,
+			})
+
+			-- LSP servers and clients are able to communicate to each other what features they support.
+			--  By default, Neovim doesn't support everything that is in the LSP Specification.
+			--  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
+			--  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
+			local capabilities = vim.lsp.protocol.make_client_capabilities()
+			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+			-- Enable the following language servers
+			--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
+			--
+			--  Add any additional override configuration in the following tables. Available keys are:
+			--  - cmd (table): Override the default command used to start the server
+			--  - filetypes (table): Override the default list of associated filetypes for the server
+			--  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
+			--  - settings (table): Override the default settings passed when initializing the server.
+			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+			local servers = {
+				-- clangd = {},
+				gopls = {
+					settings = {
+						gopls = {
+							analyses = {
+								unusedparams = true,
+							},
+							staticcheck = true,
+							gofumpt = true,
+						},
+					},
+				},
+				-- pyright = {},
+				-- rust_analyzer = {},
+				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
+				--
+				-- Some languages (like typescript) have entire language plugins that can be useful:
+				--    https://github.com/pmizio/typescript-tools.nvim
+				--
+				-- But for many setups, the LSP (`tsserver`) will work just fine
+				-- tsserver = {},
+				--
+
+				lua_ls = {
+					-- cmd = {...},
+					-- filetypes { ...},
+					-- capabilities = {},
+					settings = {
+						Lua = {
+							runtime = { version = "LuaJIT" },
+							workspace = {
+								checkThirdParty = false,
+								-- Tells lua_ls where to find all the Lua files that you have loaded
+								-- for your neovim configuration.
+								library = {
+									"${3rd}/luv/library",
+									unpack(vim.api.nvim_get_runtime_file("", true)),
+								},
+								-- If lua_ls is really slow on your computer, you can try this instead:
+								-- library = { vim.env.VIMRUNTIME },
+							},
+							completion = {
+								callSnippet = "Replace",
+							},
+							-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+							-- diagnostics = { disable = { 'missing-fields' } },
+						},
+					},
+				},
+			}
+
+			-- Ensure the servers and tools above are installed
+			--  To check the current status of installed tools and/or manually install
+			--  other tools, you can run
+			--    :Mason
+			--
+			--  You can press `g?` for help in this menu
+			require("mason").setup()
+
+			-- You can add other tools here that you want Mason to install
+			-- for you, so that they are available from within Neovim.
+			local ensure_installed = vim.tbl_keys(servers or {})
+			vim.list_extend(ensure_installed, {
+				"stylua", -- Used to format lua code
+			})
+			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+
+			require("mason-lspconfig").setup({
+				ensure_installed = { "tsserver", "pyright", "lua_ls" },
+				handlers = {
+					function(server_name)
+						local server = servers[server_name] or {}
+						-- This handles overriding only values explicitly passed
+						-- by the server configuration above. Useful when disabling
+						-- certain features of an LSP (for example, turning off formatting for tsserver)
+						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+						require("lspconfig")[server_name].setup(server)
+					end,
+				},
+			})
+		end,
 	},
-
-	always_trigger = false, -- sometime show signature on new line or in middle of parameter can be confusing, set it to false for #58
-
-	auto_close_after = nil, -- autoclose signature float win after x sec, disabled if nil.
-	extra_trigger_chars = {}, -- Array of extra characters that will trigger signature completion, e.g., {"(", ","}
-	zindex = 200, -- by default it will be on top of all floating windows, set to <= 50 send it to bottom
-
-	padding = "", -- character to pad on left and right of signature can be ' ', or '|'  etc
-
-	transparency = nil, -- disabled by default, allow floating win transparent value 1~100
-	shadow_blend = 36, -- if you using shadow as border use this set the opacity
-	shadow_guibg = "Black", -- if you using shadow as border use this set the color e.g. 'Green' or '#121315'
-	timer_interval = 200, -- default timer check interval set to lower value if you want to reduce latency
-	toggle_key = nil, -- toggle signature on and off in insert mode,  e.g. toggle_key = '<M-x>'
-	toggle_key_flip_floatwin_setting = false, -- true: toggle floating_windows: true|false setting after toggle key pressed
-	-- false: floating_windows setup will not change, toggle_key will pop up signature helper, but signature
-	-- may not popup when typing depends on floating_window setting
-
-	select_signature_key = nil, -- cycle to next signature, e.g. '<M-n>' function overloading
-	move_cursor_key = nil, -- imap, use nvim_set_current_win to move cursor between current win and floating
-})
+}

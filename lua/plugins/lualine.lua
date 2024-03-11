@@ -48,39 +48,6 @@ local Colors = {
 	green = "#859900",
 }
 
-local powerline = {
-	normal = {
-		a = { fg = Colors.darkestgreen, bg = Colors.brightgreen, gui = "bold" },
-		b = { fg = Colors.white, bg = Colors.gray4 },
-		c = { fg = Colors.gray7, bg = Colors.gray2 },
-		x = { fg = Colors.gray7, bg = Colors.gray2 },
-		y = { fg = Colors.gray9, bg = Colors.gray4 },
-		z = { fg = Colors.gray5, bg = Colors.gray10 },
-	},
-	insert = {
-		a = { fg = Colors.darkestcyan, bg = Colors.white, gui = "bold" },
-		b = { fg = Colors.white, bg = Colors.darkblue },
-		c = { fg = Colors.mediumcyan, bg = Colors.darkestblue },
-		x = { fg = Colors.mediumcyan, bg = Colors.darkestblue },
-		y = { fg = Colors.mediumcyan, bg = Colors.darkblue },
-		z = { fg = Colors.darkestcyan, bg = Colors.mediumcyan },
-	},
-	visual = {
-		a = { fg = Colors.darkred, bg = Colors.brightorange, gui = "bold" },
-		z = { fg = Colors.gray5, bg = Colors.gray10 },
-	},
-	replace = {
-		a = { fg = Colors.white, bg = Colors.brightred, gui = "bold" },
-		z = { fg = Colors.gray5, bg = Colors.gray10 },
-	},
-	inactive = {
-		a = { fg = Colors.gray1, bg = Colors.gray5 },
-		b = { fg = Colors.gray4, bg = Colors.gray5 },
-		c = { bg = Colors.gray4, fg = Colors.gray0 },
-	},
-	tabline,
-}
-
 local function virtual_env()
 	-- source: https://www.reddit.com/r/neovim/comments/16ya0fr/show_the_current_python_virtual_env_on_statusline/
 	-- only show virtual env for Python
@@ -104,7 +71,7 @@ local function virtual_env()
 end
 
 local function get_venv()
-	python_env = require("plugins.python_env")
+	local python_env = require("plugins.python_env")
 	local env = python_env.env(vim.fn.expand("%"))
 	if env == "" then
 		return virtual_env()
@@ -138,132 +105,134 @@ local function show_lsp()
 	return msg
 end
 
-require("lualine").setup({
-	options = {
-		icons_enabled = true,
-		theme = "auto",
-		component_separators = { left = "", right = "" },
-		section_separators = { left = "", right = "" },
-		disabled_filetypes = {
-			statusline = {},
-			winbar = {},
-		},
-		ignore_focus = {},
-		always_divide_middle = true,
-		globalstatus = true,
-		refresh = {
-			statusline = 1000,
-			tabline = 1000,
-			winbar = 1000,
-		},
-	},
-	sections = {
-		lualine_a = { "mode", "paste" },
-		lualine_b = {
-			"branch",
-			{
-				"diff",
-				colored = true, -- Displays a colored diff status if set to true
-				diff_color = {
-					-- Same color values as the general color option can be used here.
-					added = "GitSignsAdd", -- Changes the diff's added color
-					modified = "GitSignsChange", -- Changes the diff's modified color
-					removed = "GitSignsDelete", -- Changes the diff's removed color you
+return {
+	"nvim-lualine/lualine.nvim",
+	config = function()
+		require("lualine").setup({
+			options = {
+				icons_enabled = true,
+				theme = "auto",
+				component_separators = { left = "", right = "" },
+				section_separators = { left = "", right = "" },
+				disabled_filetypes = {
+					statusline = {},
+					winbar = {},
 				},
-				symbols = { added = "+", modified = "~", removed = "-" }, -- Changes the symbols used by the diff.
-			},
-			{
-				"diagnostics",
-				sources = { "nvim_diagnostic" },
-			},
-		},
-		lualine_c = {
-			{
-				"filename",
-				file_status = true,
-				newfile_status = true,
-				path = 1, -- 0: Just the filename
-				-- 1: Relative path
-				-- 2: Absolute path
-				-- 3: Absolute path, with tilde as the home directory
-				-- 4: Filename and parent dir, with tilde as the home directory
-				symbols = {
-					modified = "[+]",
-					readonly = "",
-					unnamed = "[No Name]",
-					newfile = "[Nesw]",
+				ignore_focus = {},
+				always_divide_middle = true,
+				globalstatus = true,
+				refresh = {
+					statusline = 1000,
+					tabline = 1000,
+					winbar = 1000,
 				},
 			},
-			"selectioncount",
-			"searchcount",
-		},
-		lualine_x = {
-			"encoding",
-			"fileformat",
-			show_lsp,
-			get_venv,
-			"filetype",
-		},
-		lualine_y = { "progress" },
-		lualine_z = { {
-			"location",
-			fmt = function(str)
-				return "" .. str
-			end,
-		} },
-	},
-	inactive_sections = {
-		lualine_a = {},
-		lualine_b = {},
-		lualine_c = { "filename" },
-		lualine_x = { "location" },
-		lualine_y = {},
-		lualine_z = {},
-	},
-	tabline = {
-		lualine_a = {},
-		lualine_b = {
-			{
-				"tabs",
-				show_filename_only = true, -- Shows shortened relative path when set to false.
-				hide_filename_extension = false, -- Hide filename extension when set to true.
-				show_modified_status = true, -- Shows indicator when the tab is modified.
-
-				mode = 2, -- 0: Shows tab name
-				-- 1: Shows tab index
-				-- 2: Shows tab name + tab index
-				-- 3: Shows tab number
-				-- 4: Shows tab name + tab number
-
-				max_length = vim.o.columns * 2 / 3, -- Maximum width of tabs component,
-				-- it can also be a function that returns
-				-- the value of `max_length` dynamically.
-				filetype_names = {
-					TelescopePrompt = "Telescope",
-					dashboard = "Dashboard",
-					packer = "Packer",
-					fzf = "FZF",
-					alpha = "Alpha",
-				}, -- Shows specific tab name for that filetype ( { `filetype` = `tab_name`, ... } )
-
-				-- Automatically updates active tab color to match color of other components (will be overidden if tabs_color is set)
-				use_mode_colors = true,
-
-				symbols = {
-					modified = " ●", -- Text to show when the tab is modified
-					alternate_file = "#", -- Text to show to identify the alternate file
-					directory = "", -- Text to show when the tab is a directory
+			sections = {
+				lualine_a = { "mode", "paste" },
+				lualine_b = {
+					"branch",
+					{
+						"diff",
+						colored = true, -- Displays a colored diff status if set to true
+						diff_color = {
+							-- Same color values as the general color option can be used here.
+							added = "GitSignsAdd", -- Changes the diff's added color
+							modified = "GitSignsChange", -- Changes the diff's modified color
+							removed = "GitSignsDelete", -- Changes the diff's removed color you
+						},
+						symbols = { added = "+", modified = "~", removed = "-" }, -- Changes the symbols used by the diff.
+					},
+					{
+						"diagnostics",
+						sources = { "nvim_diagnostic" },
+					},
 				},
+				lualine_c = {
+					{
+						"filename",
+						file_status = true,
+						newfile_status = true,
+						path = 1, -- 0: Just the filename
+						-- 1: Relative path
+						-- 2: Absolute path
+						-- 3: Absolute path, with tilde as the home directory
+						-- 4: Filename and parent dir, with tilde as the home directory
+						symbols = {
+							modified = "[+]",
+							readonly = "",
+							unnamed = "[No Name]",
+							newfile = "[Nesw]",
+						},
+					},
+					"selectioncount",
+					"searchcount",
+				},
+				lualine_x = {
+					"encoding",
+					"fileformat",
+					show_lsp,
+					get_venv,
+					"filetype",
+				},
+				lualine_y = { "progress" },
+				lualine_z = { {
+					"location",
+					fmt = function(str)
+						return "" .. str
+					end,
+				} },
 			},
-		},
-		lualine_c = {},
-		lualine_x = {},
-		lualine_y = {},
-		lualine_z = {},
-	},
-	inactive_winbar = {},
-	extensions = { "trouble", "mason", "fugitive", "quickfix" },
-})
+			inactive_sections = {
+				lualine_a = {},
+				lualine_b = {},
+				lualine_c = { "filename" },
+				lualine_x = { "location" },
+				lualine_y = {},
+				lualine_z = {},
+			},
+			tabline = {
+				lualine_a = {},
+				lualine_b = {
+					{
+						"tabs",
+						show_filename_only = true, -- Shows shortened relative path when set to false.
+						hide_filename_extension = false, -- Hide filename extension when set to true.
+						show_modified_status = true, -- Shows indicator when the tab is modified.
 
-vim.opt.laststatus = 3
-vim.opt.showmode = false
+						mode = 2, -- 0: Shows tab name
+						-- 1: Shows tab index
+						-- 2: Shows tab name + tab index
+						-- 3: Shows tab number
+						-- 4: Shows tab name + tab number
+
+						max_length = vim.o.columns * 2 / 3, -- Maximum width of tabs component,
+						-- it can also be a function that returns
+						-- the value of `max_length` dynamically.
+						filetype_names = {
+							TelescopePrompt = "Telescope",
+							dashboard = "Dashboard",
+							packer = "Packer",
+							fzf = "FZF",
+							alpha = "Alpha",
+						}, -- Shows specific tab name for that filetype ( { `filetype` = `tab_name`, ... } )
+
+						-- Automatically updates active tab color to match color of other components (will be overidden if tabs_color is set)
+						use_mode_colors = true,
+
+						symbols = {
+							modified = " ●", -- Text to show when the tab is modified
+							alternate_file = "#", -- Text to show to identify the alternate file
+							directory = "", -- Text to show when the tab is a directory
+						},
+					},
+				},
+				lualine_c = {},
+				lualine_x = {},
+				lualine_y = {},
+				lualine_z = {},
+			},
+			inactive_winbar = {},
+			extensions = { "trouble", "mason", "fugitive", "quickfix" },
+		})
+	end,
+}

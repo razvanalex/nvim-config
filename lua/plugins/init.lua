@@ -1,106 +1,169 @@
-local Plug = vim.fn["plug#"]
+require("plugins.nvim_options")
+require("plugins.keymaps")
 
-vim.call("plug#begin")
+-- [[ Install `lazy.nvim` plugin manager ]]
+--    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable", -- latest stable release
+		lazypath,
+	})
+end
+vim.opt.rtp:prepend(lazypath)
 
--- Git integration
-Plug("lewis6991/gitsigns.nvim") -- line changes/added/removed, diffs, etc
-Plug("tpope/vim-fugitive") -- git commands inside vim (e.g., diff, commit, mergetool, blame)
-Plug("tpope/vim-rhubarb") -- enable GBrowse to open current repo in GitHub
+-- [[ Configure and install plugins ]]
+--
+--  To check the current status of your plugins, run
+--    :Lazy
+--
+--  You can press `?` in this menu for help. Use `:q` to close the window
+--
+--  To update plugins, you can run
+--    :Lazy update
+--
+-- NOTE: Here is where you install your plugins.
+require("lazy").setup({
+	-- UI Theme
+	require("plugins.vscode_nvim"),
+	require("plugins.rainbow_delimiters"),
 
--- Buffer/File Manager
-Plug("nvim-telescope/telescope.nvim") -- fuzzy finder
-Plug("nvim-lua/plenary.nvim") -- dependency for harpoon
-Plug("theprimeagen/harpoon", { branch = "harpoon2" }) -- manage buffers easier
-Plug("nvim-tree/nvim-tree.lua") -- file navigation left bar
+	-- Useful for getting pretty icons, but requires a Nerd Font.
+	{ "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
+	"fladson/vim-kitty", -- syntax highlight for kitty terminal config
 
--- Editing
-Plug("mbbill/undotree") -- fancy undo
-Plug("numToStr/Comment.nvim") -- comment
-Plug("tpope/vim-surround") -- handle surroundings (e.g., tags, parentheses, etc)
-Plug("theprimeagen/refactoring.nvim") -- refactoring
-Plug("windwp/nvim-autopairs") -- brackets auto-close
-Plug("mg979/vim-visual-multi") -- extended multi-line support
+	-- Buffer/File Manager
+	require("plugins.telescope"),
+	require("plugins.harpoon"),
+	require("plugins.nvimtree"),
 
--- Vim help
-Plug("folke/which-key.nvim") -- help with key bindings
-Plug("ThePrimeagen/vim-be-good") -- vim tutorial
+	-- Editing
+	{ -- fancy undo
+		"mbbill/undotree",
+		event = "VimEnter",
+		config = function()
+			vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = "[U]ndoTree Toggle" })
+		end,
+	},
+	{ "numToStr/Comment.nvim", opts = {} }, -- comments
+	"tpope/vim-surround", -- handle surroundings (e.g., tags, parentheses, etc). FIXME: decide if kept or changed with mini.surround.
+	{ -- refactoring
+		"theprimeagen/refactoring.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/nvim-treesitter",
+		},
+		config = function()
+			---@diagnostic disable-next-line: missing-parameter
+			require("refactoring").setup()
 
--- Save session
-Plug("tpope/vim-obsession") -- save session
+			-- Extract function supports only visual mode
+			vim.keymap.set("x", "<leader>re", function()
+				require("refactoring").refactor("Extract Function")
+			end, { desc = "[R]efactor [E]xtract Function" })
 
--- IDE
-Plug("nvim-treesitter/nvim-treesitter", { ["do"] = vim.fn[":TSUpdate"] }) -- nice text coloring
-Plug("nvim-treesitter/nvim-treesitter-context")
-Plug("folke/trouble.nvim") -- shows issues in code (like Problems in vscode)
-Plug("luukvbaal/statuscol.nvim") -- folding code
-Plug("lukas-reineke/indent-blankline.nvim") -- indentation lines
-Plug("lukas-reineke/virt-column.nvim") -- column color
-Plug("nvim-lualine/lualine.nvim") -- powerline
-Plug("bagrat/vim-buffet") -- tabline
-Plug("lambdalisue/suda.vim") -- Save wit sudo if forgot to open with `sudo nvim ...`
-Plug("SmiteshP/nvim-navic") -- navigator
-Plug("utilyre/barbecue.nvim") -- VS Code like winbar
+			vim.keymap.set("x", "<leader>rf", function()
+				require("refactoring").refactor("Extract Function To File")
+			end, { desc = "[R]efactor Extract [F]unction To File" })
 
--- LSP
-Plug("neovim/nvim-lspconfig")
-Plug("mfussenegger/nvim-lint")
-Plug("mhartington/formatter.nvim") -- use any formatter (e.g., black, isort for python)
-Plug("hrsh7th/nvim-cmp")
-Plug("hrsh7th/cmp-nvim-lsp")
-Plug("hrsh7th/cmp-nvim-lua")
-Plug("hrsh7th/cmp-buffer")
-Plug("hrsh7th/cmp-path")
-Plug("hrsh7th/cmp-cmdline")
-Plug("saadparwaiz1/cmp_luasnip")
-Plug("L3MON4D3/LuaSnip", { ["do"] = "make install_jsregexp" })
-Plug("rafamadriz/friendly-snippets")
-Plug("VonHeikemen/lsp-zero.nvim", { ["branch"] = "v3.x" })
-Plug("williamboman/mason.nvim") -- package manager for LSP/DAP/linters/formatters
-Plug("williamboman/mason-lspconfig.nvim")
-Plug("onsails/lspkind.nvim") -- LSP pictograms for autocomplete menu
-Plug("folke/neodev.nvim") -- Lua LSP for neovim dev
-Plug("ray-x/lsp_signature.nvim") -- Show function signature
+			-- Extract variable supports only visual mode
+			vim.keymap.set("x", "<leader>rv", function()
+				require("refactoring").refactor("Extract Variable")
+			end, { desc = "[R]efactor Extract [V]ariable" })
 
--- LLMs
-Plug("huggingface/llm.nvim")
+			-- Inline func supports only normal
+			vim.keymap.set("n", "<leader>rI", function()
+				require("refactoring").refactor("Inline Function")
+			end, { desc = "[R]efactor [I]nline Function" })
 
--- DAP
-Plug("mfussenegger/nvim-dap") -- DAP interface for nvim
-Plug("rcarriga/nvim-dap-ui") -- UI for DAP
-Plug("mfussenegger/nvim-dap-python") -- Python DAP
-Plug("leoluz/nvim-dap-go") -- Go DAP
+			-- Inline var supports both normal and visual mode
+			vim.keymap.set({ "n", "x" }, "<leader>ri", function()
+				require("refactoring").refactor("Inline Variable")
+			end, { desc = "[R]efactor [I]nline Variable" })
 
--- UI Theme
-Plug("kyazdani42/nvim-web-devicons") -- icons
-Plug("Mofiqul/vscode.nvim") -- color theme
-Plug("HiPhish/rainbow-delimiters.nvim") -- colored parentheses
-Plug("fladson/vim-kitty") -- syntax highlight for kitty terminal config
+			-- Extract block supports only normal mode
+			vim.keymap.set("n", "<leader>rb", function()
+				require("refactoring").refactor("Extract Block")
+			end, { desc = "[R]efactor Extract [B]lock" })
 
-vim.call("plug#end")
+			vim.keymap.set("n", "<leader>rbf", function()
+				require("refactoring").refactor("Extract Block To File")
+			end, { desc = "[R]efactor Extract [B]lock To [F]ile" })
+		end,
+	},
+	{ "windwp/nvim-autopairs", opts = {} }, -- brackets auto-close
+	"mg979/vim-visual-multi", -- extended multi-line support
+	{ -- Highlight todo, notes, etc in comments
+		"folke/todo-comments.nvim",
+		event = "VimEnter",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		opts = {
+			signs = false,
+		},
+		init = function()
+			vim.keymap.set("n", "<leader>tc", [[<Cmd>TodoTrouble<CR>]], { desc = "[T]rouble TODO [C]omments" })
+		end,
+	},
+	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
 
--- Plugin Configs
-require("plugins.vscode_nvim")
-require("plugins.remap")
-require("plugins.vim_fugitive")
-require("plugins.telescope")
-require("plugins.harpoon")
-require("plugins.set")
-require("plugins.nvimtree")
-require("plugins.undotree")
-require("plugins.comment")
-require("plugins.which_key")
-require("plugins.nvim_treesitter_context")
-require("plugins.refactoring")
-require("plugins.trouble")
-require("plugins.nvim_autoclose")
-require("plugins.indent_blankline")
-require("plugins.lsp")
-require("plugins.dap")
-require("plugins.lint")
-require("plugins.formatter")
-require("plugins.statuscol")
-require("plugins.gitsigns")
-require("plugins.lualine")
-require("plugins.barbecue")
-require("plugins.rainbow_delimiters")
-require("plugins.llm")
+	-- Git integration
+	require("plugins.gitsigns"), -- line changes/added/removed, diffs, etc
+	{ -- git commands inside vim (e.g., diff, commit, mergetool, blame)
+		"tpope/vim-fugitive",
+		config = function()
+			vim.keymap.set("n", "<leader>gg", vim.cmd.Git, { desc = "[G]it Sta[g]e Area" })
+		end,
+	},
+	"tpope/vim-rhubarb", -- enable :GBrowse to open current repo in GitHub
+
+	-- Vim help
+	require("plugins.which_key"),
+	"ThePrimeagen/vim-be-good", -- vim tutorial
+
+	-- IDE
+	require("plugins.nvim_treesitter"),
+	require("plugins.statuscol"),
+	require("plugins.lualine"),
+	require("plugins.indent_blankline"),
+	"bagrat/vim-buffet", -- tabline
+	"lambdalisue/suda.vim", -- Save wit sudo if forgot to open with `sudo nvim ...`
+	{ -- VSCode like winbar
+		"utilyre/barbecue.nvim",
+		name = "barbecue",
+		version = "*",
+		dependencies = {
+			"SmiteshP/nvim-navic",
+			"nvim-tree/nvim-web-devicons", -- optional dependency
+		},
+		opts = {
+			-- configurations go here
+		},
+	},
+	{
+		"norcalli/nvim-colorizer.lua",
+		opts = {
+			"*", -- Highlight all files, but customize some others.
+		},
+	},
+
+	-- Session
+	-- Plug("ray-x/lsp_signature.nvim") -- TODO: Show function signature
+
+	-- FIXME: LLMs
+	-- "huggingface/llm.nvim",
+
+	-- LSP
+	require("plugins.lsp"),
+	require("plugins.autocompletion"),
+	require("plugins.formatter"),
+	require("plugins.lint"),
+	{ "folke/neodev.nvim", opts = {} }, --Neovim setup for init.lua
+	-- Plug("ray-x/lsp_signature.nvim") -- TODO: Show function signature
+
+	-- DAP
+	require("plugins.dap"),
+})

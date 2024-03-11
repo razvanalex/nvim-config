@@ -1,7 +1,8 @@
+-- TODO:  
 local llm = require("llm")
 
 llm.setup({
-	model = "starcoder:3b", -- the model ID, behavior depends on backend
+	model = "starcoder2:15b", -- the model ID, behavior depends on backend
 	backend = "ollama", -- backend ID, "huggingface" | "ollama" | "openai" | "tgi"
 	url = "http://localhost:11434/api/generate", -- the http url of the backend
 	tokens_to_clear = { "<|endoftext|>" }, -- tokens to remove from the model's output
@@ -12,7 +13,7 @@ llm.setup({
 		},
 	},
 	tokenizer = {
-		repository = "bigcode/starcoderbase-3b",
+		repository = "bigcode/starcoder2-15b",
 		api_token = nil, -- optional, in case the API token used for the backend is not the same
 	},
 	-- set this if the model supports fill in the middle
