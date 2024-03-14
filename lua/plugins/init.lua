@@ -29,7 +29,7 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require("lazy").setup({
 	-- UI Theme
-	require("plugins.vscode_nvim"),
+	require("plugins.theme"),
 	require("plugins.rainbow_delimiters"),
 
 	-- Useful for getting pretty icons, but requires a Nerd Font.

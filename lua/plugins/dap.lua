@@ -85,7 +85,9 @@ return {
 		config = function()
 			local dap, dapui = require("dap"), require("dapui")
 
-			dapui.setup()
+			dapui.setup({
+				expand_lines = false,
+			})
 
 			dap.listeners.before.attach.dapui_config = function()
 				dapui.open()

@@ -16,17 +16,4 @@ return { -- Autoformat
 			-- javascript = { { "prettierd", "prettier" } },
 		},
 	},
-	-- config = function()
-	-- 	-- autoformat on save
-	-- 	local augroup = vim.api.nvim_create_augroup
-	-- 	local autocmd = vim.api.nvim_create_autocmd
-	--
-	-- 	augroup("__formatter__", { clear = true })
-	-- 	autocmd("BufWritePost", {
-	-- 		group = "__formatter__",
-	-- 		command = ":FormatWrite",
-	-- 	})
-	--
-	-- 	vim.keymap.set("n", "<C-f>", ":Format<CR>", { desc = "[F]ormat Document" })
-	-- end,
 }

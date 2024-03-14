@@ -78,5 +78,24 @@ return { -- fuzzy finder
 		vim.keymap.set("n", "<leader>fn", function()
 			builtin.find_files({ cwd = vim.fn.stdpath("config") })
 		end, { desc = "[F]uzzy [N]eovim files" })
+
+		local C = require("catppuccin.palettes").get_palette()
+		local TelescopeColor = {
+			TelescopeBorder = { fg = C.mantle, bg = C.mantle },
+			TelescopeMatching = { fg = C.blue },
+			TelescopeNormal = { bg = C.mantle },
+			TelescopePromptBorder = { fg = C.surface0, bg = C.surface0 },
+			TelescopePromptNormal = { fg = C.text, bg = C.surface0 },
+			TelescopePromptPrefix = { fg = C.flamingo, bg = C.surface0 },
+			TelescopePreviewTitle = { fg = C.base, bg = C.green },
+			TelescopePromptTitle = { fg = C.base, bg = C.red },
+			TelescopeResultsTitle = { fg = C.mantle, bg = C.lavender },
+			TelescopeSelection = { fg = C.text, bg = C.surface0 },
+			TelescopeSelectionCaret = { fg = C.flamingo },
+		}
+
+		for hl, col in pairs(TelescopeColor) do
+			vim.api.nvim_set_hl(0, hl, col)
+		end
 	end,
 }

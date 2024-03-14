@@ -78,6 +78,7 @@ M.pep582 = function(root_dir)
 	end
 end
 
+---@diagnostic disable-next-line: unused-local
 M.conda = function(root_dir) end
 
 return M

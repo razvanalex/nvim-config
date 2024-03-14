@@ -101,7 +101,6 @@ vim.opt.laststatus = 3
 
 -- spell check
 vim.opt.spell = true
-vim.api.nvim_set_hl(0, "SpellBad", { undercurl = true, sp = "#0faaff" })
 
 -- mouse support
 vim.opt.mouse = "a"
