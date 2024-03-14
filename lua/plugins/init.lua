@@ -151,7 +151,26 @@ require("lazy").setup({
 	},
 
 	-- Session
-	-- Plug("ray-x/lsp_signature.nvim") -- TODO: Show function signature
+	{ -- Show function signature
+		"ray-x/lsp_signature.nvim",
+		event = "VeryLazy",
+		opts = {
+			close_timeout = 1000,
+			hint_enable = false,
+			toggle_key = "<C-k>",
+			toggle_key_flip_floatwin_setting = true,
+			handler_opts = {
+				border = "none", -- double, rounded, single, shadow, none, or a table of borders
+			},
+		},
+		config = function(_, opts)
+			require("lsp_signature").setup(opts)
+
+			vim.keymap.set({ "n" }, "<leader>k", function()
+				require("lsp_signature").toggle_float_win()
+			end, { silent = true, noremap = true, desc = "LSP: Toggle Signature" })
+		end,
+	},
 
 	-- FIXME: LLMs
 	-- "huggingface/llm.nvim",

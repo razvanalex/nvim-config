@@ -38,6 +38,11 @@ return {
 				mason = true,
 				harpoon = true,
 			},
+			custom_highlights = function(C)
+				return {
+					NormalFloat = { fg = C.text, bg = C.mantle }, -- Normal text in floating windows.
+				}
+			end,
 		},
 		lazy = false,
 		init = function()
