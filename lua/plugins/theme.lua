@@ -35,8 +35,8 @@ return {
 		opts = {
 			transparent_background = os.getenv("TRANSPARENT"),
 			integrations = {
-				mason = true,
 				harpoon = true,
+				gitsigns = false,
 			},
 			custom_highlights = function(C)
 				return {
