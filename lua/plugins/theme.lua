@@ -36,7 +36,8 @@ return {
 			transparent_background = os.getenv("TRANSPARENT"),
 			integrations = {
 				harpoon = true,
-				gitsigns = false,
+				gitsigns = true,
+				neotest = true,
 			},
 			custom_highlights = function(C)
 				return {

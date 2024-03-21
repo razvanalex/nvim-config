@@ -34,9 +34,13 @@ return {
 				require("trouble").toggle("loclist")
 			end, { silent = true, noremap = true, desc = "[T]rouble [L]oclist" })
 
-			vim.keymap.set("n", "<leader>tR", function()
-				require("trouble").toggle("lsp_references")
-			end, { silent = true, noremap = true, desc = "[T]rouble LSP [R]eferences" })
+			vim.keymap.set("n", "<leader>]t", function()
+				require("trouble").next({ skip_groups = true, jump = true })
+			end, { silent = true, noremap = true, desc = "[T]rouble Next" })
+
+			vim.keymap.set("n", "<leader>[t", function()
+				require("trouble").previous({ skip_groups = true, jump = true })
+			end, { silent = true, noremap = true, desc = "[T]rouble Previous" })
 		end,
 	},
 	{
@@ -48,7 +52,6 @@ return {
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 
 			-- Useful status updates for LSP.
-			-- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
 			{ "j-hui/fidget.nvim", opts = {} },
 		},
 		config = function()
@@ -94,7 +97,7 @@ return {
 					-- Jump to the type of the word under your cursor.
 					--  Useful when you're not sure what type a variable is and you want to see
 					--  the definition of its *type*, not where it was *defined*.
-					map("go", vim.lsp.buf.type_definition, "Goto Type Definition")
+					map("go", vim.lsp.buf.type_definition, "[G]oto Type [O]bject Definition")
 
 					-- Find references for the word under your cursor.
 					map("gr", vim.lsp.buf.clear_references, "[G]oto [R]eferences")
@@ -168,6 +171,7 @@ return {
 			--  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+
 			-- Enable the following language servers
 			--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
 			--
@@ -258,6 +262,52 @@ return {
 					end,
 				},
 			})
+		end,
+	},
+	{ -- Show function signature
+		"ray-x/lsp_signature.nvim",
+		event = "VeryLazy",
+		opts = {
+			close_timeout = 1000,
+			hint_enable = false,
+			toggle_key = "<C-k>",
+			toggle_key_flip_floatwin_setting = true,
+			handler_opts = {
+				border = "none", -- double, rounded, single, shadow, none, or a table of borders
+			},
+		},
+		config = function(_, opts)
+			require("lsp_signature").setup(opts)
+
+			vim.keymap.set({ "n" }, "<leader>k", function()
+				require("lsp_signature").toggle_float_win()
+			end, { silent = true, noremap = true, desc = "LSP: Toggle Signature" })
+		end,
+	},
+	{ -- auto-generate docstrings
+		"danymat/neogen",
+		config = function()
+			local neogen = require("neogen")
+
+			neogen.setup({
+				snippet_engine = "luasnip",
+			})
+
+			vim.keymap.set("n", "<leader>nf", function()
+				neogen.generate({ type = "func" })
+			end, { desc = "[N]eogen [F]unction" })
+
+			vim.keymap.set("n", "<leader>nt", function()
+				neogen.generate({ type = "type" })
+			end, { desc = "[N]eogen [T]ype" })
+
+			vim.keymap.set("n", "<leader>nc", function()
+				neogen.generate({ type = "class" })
+			end, { desc = "[N]eogen [C]lass" })
+
+			vim.keymap.set("n", "<leader>ni", function()
+				neogen.generate({ type = "file" })
+			end, { desc = "[N]eogen F[i]le" })
 		end,
 	},
 }

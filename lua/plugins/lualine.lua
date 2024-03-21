@@ -1,3 +1,4 @@
+--- Get the activate virtual environment via venv or conda. Shows only if the file is python.
 local function virtual_env()
 	-- source: https://www.reddit.com/r/neovim/comments/16ya0fr/show_the_current_python_virtual_env_on_statusline/
 	-- only show virtual env for Python
@@ -5,28 +6,40 @@ local function virtual_env()
 		return ""
 	end
 
-	local conda_env = os.getenv("CONDA_DEFAULT_ENV")
 	local venv_path = os.getenv("VIRTUAL_ENV")
-
-	if venv_path == nil then
-		if conda_env == nil then
-			return ""
-		else
-			return string.format("%s (conda)", conda_env)
-		end
-	else
+	if venv_path ~= nil then
 		local venv_name = vim.fn.fnamemodify(venv_path, ":t")
-		return string.format("%s (venv)", venv_name)
+		return string.format("(venv) %s", venv_name)
+	end
+
+	local conda_env = os.getenv("CONDA_DEFAULT_ENV")
+	if conda_env ~= nil then
+		return string.format("(conda) %s", conda_env)
 	end
 end
 
 local function get_venv()
-	local python_env = require("plugins.python_env")
-	local env = python_env.env(vim.fn.expand("%"))
-	if env == "" then
-		return virtual_env()
+	-- determine environment from env vars
+	local env = virtual_env()
+	if env ~= nil then
+		return env
 	end
-	return env
+
+	-- determine the environment from venv-selector
+	-- FIXME: not tested on other than venv and conda
+	local active_venv_path = require("venv-selector").get_active_venv()
+	if active_venv_path ~= nil then
+		local dirs = {}
+		for k, _ in string.gmatch(active_venv_path, "[^/]+") do
+			table.insert(dirs, k)
+		end
+		if #dirs > 2 then
+			return dirs[#dirs - 1]
+		end
+		return dirs[#dirs]
+	end
+
+	return ""
 end
 
 local function show_lsp()
