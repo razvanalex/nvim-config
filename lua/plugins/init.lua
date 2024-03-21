@@ -150,7 +150,12 @@ require("lazy").setup({
 		},
 	},
 
-	-- FIXME: Session
+	{ -- Session
+		"rmagatti/auto-session",
+		opts = {
+			auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
+		},
+	},
 
 	-- FIXME: LLMs
 	-- "huggingface/llm.nvim",

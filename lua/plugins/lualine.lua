@@ -70,126 +70,118 @@ end
 
 return {
 	"nvim-lualine/lualine.nvim",
-	config = function()
-		require("lualine").setup({
-			options = {
-				icons_enabled = true,
-				theme = "auto",
-				component_separators = { left = "", right = "" },
-				section_separators = { left = "", right = "" },
-				disabled_filetypes = {
-					statusline = {},
-					winbar = {},
-				},
-				ignore_focus = {},
-				always_divide_middle = true,
-				globalstatus = true,
-				refresh = {
-					statusline = 1000,
-					tabline = 1000,
-					winbar = 1000,
-				},
+	opts = {
+		options = {
+			icons_enabled = true,
+			theme = "auto",
+			component_separators = { left = "", right = "" },
+			section_separators = { left = "", right = "" },
+			disabled_filetypes = {
+				statusline = {},
+				winbar = {},
 			},
-			sections = {
-				lualine_a = { "mode", "paste" },
-				lualine_b = {
-					"branch",
-					{
-						"diff",
-						colored = true, -- Displays a colored diff status if set to true
-						symbols = { added = "+", modified = "~", removed = "-" }, -- Changes the symbols used by the diff.
-					},
-					{
-						"diagnostics",
-						sources = { "nvim_diagnostic" },
-					},
-				},
-				lualine_c = {
-					{
-						"filename",
-						file_status = true,
-						newfile_status = true,
-						path = 1, -- 0: Just the filename
-						-- 1: Relative path
-						-- 2: Absolute path
-						-- 3: Absolute path, with tilde as the home directory
-						-- 4: Filename and parent dir, with tilde as the home directory
-						symbols = {
-							modified = "[+]",
-							readonly = "",
-							unnamed = "[No Name]",
-							newfile = "[Nesw]",
-						},
-					},
-					"selectioncount",
-					"searchcount",
-				},
-				lualine_x = {
-					"encoding",
-					"fileformat",
-					show_lsp,
-					get_venv,
-					"filetype",
-				},
-				lualine_y = { "progress" },
-				lualine_z = { {
-					"location",
-					fmt = function(str)
-						return "" .. str
-					end,
-				} },
+			ignore_focus = {},
+			always_divide_middle = true,
+			globalstatus = true,
+			refresh = {
+				statusline = 1000,
+				tabline = 1000,
+				winbar = 1000,
 			},
-			inactive_sections = {
-				lualine_a = {},
-				lualine_b = {},
-				lualine_c = { "filename" },
-				lualine_x = { "location" },
-				lualine_y = {},
-				lualine_z = {},
-			},
-			tabline = {
-				lualine_a = {},
-				lualine_b = {
-					{
-						"tabs",
-						show_filename_only = true, -- Shows shortened relative path when set to false.
-						hide_filename_extension = false, -- Hide filename extension when set to true.
-						show_modified_status = true, -- Shows indicator when the tab is modified.
-
-						mode = 2, -- 0: Shows tab name
-						-- 1: Shows tab index
-						-- 2: Shows tab name + tab index
-						-- 3: Shows tab number
-						-- 4: Shows tab name + tab number
-
-						max_length = vim.o.columns * 2 / 3, -- Maximum width of tabs component,
-						-- it can also be a function that returns
-						-- the value of `max_length` dynamically.
-						filetype_names = {
-							TelescopePrompt = "Telescope",
-							dashboard = "Dashboard",
-							packer = "Packer",
-							fzf = "FZF",
-							alpha = "Alpha",
-						}, -- Shows specific tab name for that filetype ( { `filetype` = `tab_name`, ... } )
-
-						-- Automatically updates active tab color to match color of other components (will be overidden if tabs_color is set)
-						use_mode_colors = true,
-
-						symbols = {
-							modified = " ●", -- Text to show when the tab is modified
-							alternate_file = "#", -- Text to show to identify the alternate file
-							directory = "", -- Text to show when the tab is a directory
-						},
+		},
+		sections = {
+			lualine_a = { "mode", "paste" },
+			lualine_b = { "branch", "diff", "diagnostics" },
+			lualine_c = {
+				{
+					"filename",
+					file_status = true,
+					newfile_status = true,
+					path = 1,
+					symbols = {
+						modified = "[+]",
+						readonly = "",
+						unnamed = "[No Name]",
+						newfile = "[Nesw]",
 					},
 				},
-				lualine_c = {},
-				lualine_x = {},
-				lualine_y = {},
-				lualine_z = {},
+				"selectioncount",
+				"searchcount",
 			},
-			inactive_winbar = {},
-			extensions = { "trouble", "mason", "fugitive", "quickfix" },
-		})
-	end,
+			lualine_x = {
+				"encoding",
+				"fileformat",
+				show_lsp,
+				get_venv,
+				"filetype",
+			},
+			lualine_y = { "progress" },
+			lualine_z = { {
+				"location",
+				fmt = function(str)
+					return "" .. str
+				end,
+			} },
+		},
+		inactive_sections = {
+			lualine_a = {},
+			lualine_b = {},
+			lualine_c = { "filename" },
+			lualine_x = { "location" },
+			lualine_y = {},
+			lualine_z = {},
+		},
+		tabline = {
+			lualine_a = {},
+			lualine_b = {
+				{
+					"tabs",
+					show_filename_only = true, -- Shows shortened relative path when set to false.
+					hide_filename_extension = false, -- Hide filename extension when set to true.
+					show_modified_status = true, -- Shows indicator when the tab is modified.
+
+					mode = 2, -- 0: Shows tab name
+					-- 1: Shows tab index
+					-- 2: Shows tab name + tab index
+					-- 3: Shows tab number
+					-- 4: Shows tab name + tab number
+
+					max_length = vim.o.columns * 2 / 3, -- Maximum width of tabs component,
+					-- it can also be a function that returns
+					-- the value of `max_length` dynamically.
+					filetype_names = {
+						TelescopePrompt = "Telescope",
+						dashboard = "Dashboard",
+						packer = "Packer",
+						fzf = "FZF",
+						alpha = "Alpha",
+					}, -- Shows specific tab name for that filetype ( { `filetype` = `tab_name`, ... } )
+
+					-- Automatically updates active tab color to match color of other components (will be overidden if tabs_color is set)
+					use_mode_colors = true,
+
+					symbols = {
+						modified = " ●", -- Text to show when the tab is modified
+						alternate_file = "#", -- Text to show to identify the alternate file
+						directory = "", -- Text to show when the tab is a directory
+					},
+				},
+			},
+			lualine_c = {},
+			lualine_x = {},
+			lualine_y = {},
+			lualine_z = {},
+		},
+		inactive_winbar = {},
+		extensions = {
+			"trouble",
+			"mason",
+			"fugitive",
+			"quickfix",
+			"lazy",
+			"nvim-tree",
+			"nvim-dap-ui",
+			"symbols-outline",
+		},
+	},
 }

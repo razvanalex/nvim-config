@@ -33,16 +33,19 @@ return {
 		name = "catppuccin",
 		priority = 1000,
 		opts = {
-			transparent_background = os.getenv("TRANSPARENT"),
+			transparent_background = os.getenv("TRANSPARENT") == "true" and true or false,
 			integrations = {
 				harpoon = true,
-				gitsigns = true,
+				gitsigns = false,
 				neotest = true,
 			},
 			custom_highlights = function(C)
-				return {
-					NormalFloat = { fg = C.text, bg = C.mantle }, -- Normal text in floating windows.
-				}
+				if os.getenv("TRANSPARENT") == "true" then
+					return {
+						NormalFloat = { fg = C.text, bg = C.mantle }, -- Normal text in floating windows.
+					}
+				end
+				return {}
 			end,
 		},
 		lazy = false,
