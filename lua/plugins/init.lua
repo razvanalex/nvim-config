@@ -50,7 +50,12 @@ require("lazy").setup({
 		end,
 	},
 	{ "numToStr/Comment.nvim", opts = {} }, -- comments
-	"tpope/vim-surround", -- handle surroundings (e.g., tags, parentheses, etc). FIXME: decide if kept or changed with mini.surround.
+	{
+		"kylechui/nvim-surround",
+		version = "*", -- Use for stability; omit to use `main` branch for the latest features
+		event = "VeryLazy",
+		opts = {},
+	},
 	{ -- refactoring
 		"theprimeagen/refactoring.nvim",
 		dependencies = {
@@ -149,16 +154,7 @@ require("lazy").setup({
 			"*", -- Highlight all files, but customize some others.
 		},
 	},
-
-	{ -- Session
-		"rmagatti/auto-session",
-		opts = {
-			auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
-		},
-	},
-
-	-- FIXME: LLMs
-	-- "huggingface/llm.nvim",
+	require("plugins.autosession"),
 
 	-- LSP, autocompletion, dap, tests, etc
 	require("plugins.lsp"),
@@ -169,4 +165,7 @@ require("lazy").setup({
 	require("plugins.dap"),
 	require("plugins.test"),
 	require("plugins.venv"),
+
+	-- LLMs
+	require("plugins.llm"),
 })
