@@ -33,6 +33,7 @@ return {
 				highlight = { "LightGrey" },
 			},
 			indent = {
+				char = "▏",
 				smart_indent_cap = true,
 			},
 		})

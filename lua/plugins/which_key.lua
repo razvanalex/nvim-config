@@ -16,6 +16,7 @@ return { -- Useful plugin to show you pending keybinds.
 			["<leader>q"] = { name = "[Q]uickfix", _ = "which_key_ignore" },
 			["<leader>n"] = { name = "[N]eogen", _ = "which_key_ignore" },
 			["<leader>v"] = { name = "[V]irtual Env", _ = "which_key_ignore" },
+			["<leader>U"] = { name = "[U]I", _ = "which_key_ignore" },
 		})
 	end,
 }

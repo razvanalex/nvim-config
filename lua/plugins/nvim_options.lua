@@ -12,8 +12,6 @@ vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
--- NOTE: You can change these options as you wish!
---  For more options, you can see `:help option-list`
 
 -- UTF-8 encoding
 vim.opt.enc = "utf-8"
@@ -90,7 +88,7 @@ vim.opt.foldmethod = "indent"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.foldenable = true
-vim.opt.fillchars = { eob = " ", fold = " ", foldopen = "", foldsep = " ", foldclose = "" }
+vim.opt.fillchars = { eob = " ", fold = " ", foldopen = "", foldsep = " ", foldclose = "", diff = "╱" }
 
 -- Show which line your cursor is on
 vim.opt.cursorline = true
@@ -109,3 +107,15 @@ vim.opt.mouse = "a"
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
 vim.opt.clipboard = "unnamedplus"
+
+-- highlights
+-- Highlight groups for removed lines
+vim.api.nvim_set_hl(0, "DiffviewDiffDelete", { bg = "none", fg = "#3B4252" })
+
+-- Highlight groups for delete
+vim.api.nvim_set_hl(0, "DiffviewDelete", { bg = "#330000" })
+vim.api.nvim_set_hl(0, "DiffviewDeleteText", { bg = "#5C0000" })
+
+-- Highlight groups for right panel
+vim.api.nvim_set_hl(0, "DiffviewAdd", { bg = "#172005" })
+vim.api.nvim_set_hl(0, "DiffviewAddText", { bg = "#304604" })

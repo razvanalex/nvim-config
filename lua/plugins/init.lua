@@ -49,7 +49,7 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = "[U]ndoTree Toggle" })
 		end,
 	},
-	{ "numToStr/Comment.nvim", opts = {} }, -- comments
+	{ "numToStr/Comment.nvim", event = "VeryLazy", opts = {} }, -- comments
 	{
 		"kylechui/nvim-surround",
 		version = "*", -- Use for stability; omit to use `main` branch for the latest features
@@ -62,6 +62,7 @@ require("lazy").setup({
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
 		},
+		event = "VeryLazy",
 		config = function()
 			---@diagnostic disable-next-line: missing-parameter
 			require("refactoring").setup()
@@ -100,7 +101,7 @@ require("lazy").setup({
 			end, { desc = "[R]efactor Extract [B]lock To [F]ile" })
 		end,
 	},
-	{ "windwp/nvim-autopairs", opts = {} }, -- brackets auto-close
+	{ "windwp/nvim-autopairs", event = "VeryLazy", opts = {} }, -- brackets auto-close
 	"mg979/vim-visual-multi", -- extended multi-line support
 	{ -- Highlight todo, notes, etc in comments
 		"folke/todo-comments.nvim",
@@ -133,6 +134,7 @@ require("lazy").setup({
 	require("plugins.nvim_treesitter"),
 	require("plugins.statuscol"),
 	require("plugins.lualine"),
+	require("plugins.ufo"),
 	require("plugins.indent_blankline"),
 	"bagrat/vim-buffet", -- tabline
 	"lambdalisue/suda.vim", -- Save wit sudo if forgot to open with `sudo nvim ...`
@@ -150,10 +152,12 @@ require("lazy").setup({
 	},
 	{
 		"norcalli/nvim-colorizer.lua",
+		event = "VeryLazy",
 		opts = {
 			"*", -- Highlight all files, but customize some others.
 		},
 	},
+	require("plugins.diffview"),
 	require("plugins.autosession"),
 
 	-- LSP, autocompletion, dap, tests, etc

@@ -1,10 +1,6 @@
 return {
 	"lewis6991/gitsigns.nvim",
 	config = function()
-		vim.api.nvim_set_hl(0, "GutSignsAdd", { fg = "#6a9955" })
-		vim.api.nvim_set_hl(0, "GitSignsChange", { fg = "#0078d4" })
-		vim.api.nvim_set_hl(0, "GitSignsDelete", { fg = "#f85149" })
-
 		require("gitsigns").setup({
 			signs = {
 				add = { text = "│" },

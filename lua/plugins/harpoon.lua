@@ -5,13 +5,19 @@ return { -- manage buffers easier
 	config = function()
 		local harpoon = require("harpoon")
 
-		harpoon:setup()
+		harpoon:setup({})
 
 		vim.keymap.set("n", "<leader>a", function()
 			harpoon:list():append()
 		end, { desc = "Harpoon [A]dd Buffer" })
 		vim.keymap.set("n", "<C-e>", function()
-			harpoon.ui:toggle_quick_menu(harpoon:list())
+			harpoon.ui:toggle_quick_menu(harpoon:list(), {
+				title_pos = "center",
+				---@diagnostic disable-next-line: assign-type-mismatch
+				title = { { " Harpoon ", "TelescopePreviewTitle" } },
+				border = { { "+", "TelescopePreviewBorder" } },
+				ui_max_width = 100,
+			})
 		end, { desc = "Open Harpoon List" })
 
 		vim.keymap.set("n", "<C-h>", function()
