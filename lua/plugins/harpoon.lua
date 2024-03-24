@@ -2,6 +2,7 @@ return { -- manage buffers easier
 	"theprimeagen/harpoon",
 	branch = "harpoon2",
 	dependencies = { "nvim-lua/plenary.nvim" },
+	cond = not vim.g.vscode,
 	config = function()
 		local harpoon = require("harpoon")
 

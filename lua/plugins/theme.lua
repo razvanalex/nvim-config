@@ -2,6 +2,7 @@ return {
 	{ -- vscode color theme
 		"Mofiqul/vscode.nvim",
 		priority = 1000, -- make sure to load this before all the other start plugins
+		cond = not vim.g.vscode,
 		opts = {
 			-- Alternatively set style in setup
 			style = "dark",
@@ -32,6 +33,7 @@ return {
 		"catppuccin/nvim",
 		name = "catppuccin",
 		priority = 1000,
+		cond = not vim.g.vscode,
 		opts = {
 			transparent_background = os.getenv("TRANSPARENT") == "true" and true or false,
 			integrations = {

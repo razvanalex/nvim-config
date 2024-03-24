@@ -1,5 +1,6 @@
 return { -- colored parentheses
 	"HiPhish/rainbow-delimiters.nvim",
+	cond = not vim.g.vscode,
 	event = "VimEnter",
 	config = function()
 		vim.api.nvim_set_hl(0, "RainbowDelimiterYellow", { fg = "#f7d700" })

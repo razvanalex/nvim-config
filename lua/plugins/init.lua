@@ -44,20 +44,23 @@ require("lazy").setup({
 	-- Editing
 	{ -- fancy undo
 		"mbbill/undotree",
+		cond = not vim.g.vscode,
 		event = "VimEnter",
 		config = function()
 			vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = "[U]ndoTree Toggle" })
 		end,
 	},
-	{ "numToStr/Comment.nvim", event = "VeryLazy", opts = {} }, -- comments
+	{ "numToStr/Comment.nvim", event = "VeryLazy", cond = not vim.g.vscode, opts = {} }, -- comments
 	{
 		"kylechui/nvim-surround",
+		cond = not vim.g.vscode,
 		version = "*", -- Use for stability; omit to use `main` branch for the latest features
 		event = "VeryLazy",
 		opts = {},
 	},
 	{ -- refactoring
 		"theprimeagen/refactoring.nvim",
+		cond = not vim.g.vscode,
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
@@ -101,10 +104,11 @@ require("lazy").setup({
 			end, { desc = "[R]efactor Extract [B]lock To [F]ile" })
 		end,
 	},
-	{ "windwp/nvim-autopairs", event = "VeryLazy", opts = {} }, -- brackets auto-close
-	"mg979/vim-visual-multi", -- extended multi-line support
+	{ "windwp/nvim-autopairs", event = "VeryLazy", opts = {}, cond = not vim.g.vscode }, -- brackets auto-close
+	{ "mg979/vim-visual-multi", cond = not vim.g.vscode }, -- extended multi-line support
 	{ -- Highlight todo, notes, etc in comments
 		"folke/todo-comments.nvim",
+		cond = not vim.g.vscode,
 		event = "VimEnter",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		opts = {
@@ -114,12 +118,13 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>tc", [[<Cmd>TodoTrouble<CR>]], { desc = "[T]rouble TODO [C]omments" })
 		end,
 	},
-	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
+	{ "tpope/vim-sleuth", cond = not vim.g.vscode }, -- Detect tabstop and shiftwidth automatically
 
 	-- Git integration
 	require("plugins.gitsigns"), -- line changes/added/removed, diffs, etc
 	{ -- git commands inside vim (e.g., diff, commit, mergetool, blame)
 		"tpope/vim-fugitive",
+		cond = not vim.g.vscode,
 		config = function()
 			vim.keymap.set("n", "<leader>gg", vim.cmd.Git, { desc = "[G]it Sta[g]e Area" })
 		end,
@@ -128,7 +133,7 @@ require("lazy").setup({
 
 	-- Vim help
 	require("plugins.which_key"),
-	"ThePrimeagen/vim-be-good", -- vim tutorial
+	{ "ThePrimeagen/vim-be-good", cond = not vim.g.vscode }, -- vim tutorial
 
 	-- IDE
 	require("plugins.nvim_treesitter"),
@@ -136,10 +141,11 @@ require("lazy").setup({
 	require("plugins.lualine"),
 	require("plugins.ufo"),
 	require("plugins.indent_blankline"),
-	"bagrat/vim-buffet", -- tabline
+	{ "bagrat/vim-buffet", cond = not vim.g.vscode }, -- tabline
 	"lambdalisue/suda.vim", -- Save wit sudo if forgot to open with `sudo nvim ...`
 	{ -- VSCode like winbar
 		"utilyre/barbecue.nvim",
+		cond = not vim.g.vscode,
 		name = "barbecue",
 		version = "*",
 		dependencies = {
@@ -152,6 +158,7 @@ require("lazy").setup({
 	},
 	{
 		"norcalli/nvim-colorizer.lua",
+		cond = not vim.g.vscode,
 		event = "VeryLazy",
 		opts = {
 			"*", -- Highlight all files, but customize some others.

@@ -142,6 +142,7 @@ end
 
 return {
 	"sindrets/diffview.nvim",
+	cond = not vim.g.vscode,
 	opts = {
 		hooks = {
 			---@param view StandardView

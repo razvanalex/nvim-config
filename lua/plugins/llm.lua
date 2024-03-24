@@ -161,6 +161,7 @@ end
 return {
 	{
 		"huggingface/llm.nvim",
+		cond = not vim.g.vscode,
 		event = "VeryLazy",
 		opts = {
 			model = "starcoder2:3b", -- the model ID, behavior depends on backend
@@ -194,6 +195,7 @@ return {
 	},
 	{
 		"jackMort/ChatGPT.nvim",
+		cond = not vim.g.vscode,
 		dependencies = {
 			"MunifTanjim/nui.nvim",
 			"nvim-lua/plenary.nvim",

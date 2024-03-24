@@ -1,6 +1,7 @@
 -- NOTE: requires fd to be installed
 return {
 	"linux-cultist/venv-selector.nvim",
+	cond = not vim.g.vscode,
 	dependencies = {
 		"neovim/nvim-lspconfig",
 		"nvim-telescope/telescope.nvim",

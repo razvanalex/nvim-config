@@ -11,6 +11,7 @@ return {
 			"nvim-neotest/neotest-python",
 			"nvim-neotest/neotest-go",
 		},
+		cond = not vim.g.vscode,
 		config = function()
 			local neotest = require("neotest")
 			---@diagnostic disable-next-line: missing-fields

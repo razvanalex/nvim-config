@@ -1,5 +1,6 @@
 return {
 	"nvim-tree/nvim-tree.lua",
+	cond = not vim.g.vscode,
 	config = function()
 		require("nvim-tree").setup({
 			hijack_directories = {

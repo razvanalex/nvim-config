@@ -1,5 +1,6 @@
 return { -- Session
 	"rmagatti/auto-session",
+	cond = not vim.g.vscode,
 	lazy = true,
 	opts = {
 		auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/" },

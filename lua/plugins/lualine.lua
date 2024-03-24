@@ -70,6 +70,7 @@ end
 
 return {
 	"nvim-lualine/lualine.nvim",
+	cond = not vim.g.vscode,
 	opts = {
 		options = {
 			icons_enabled = true,

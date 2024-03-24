@@ -1,6 +1,7 @@
 return {
 	{ -- shows issues in code (like Problems in vscode)
 		"folke/trouble.nvim",
+		cond = not vim.g.vscode,
 		dependencies = {
 			{ "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
 		},
@@ -45,6 +46,7 @@ return {
 	},
 	{
 		"neovim/nvim-lspconfig",
+		cond = not vim.g.vscode,
 		dependencies = {
 			-- Automatically install LSPs and related tools to stdpath for neovim
 			"williamboman/mason.nvim",
@@ -266,6 +268,7 @@ return {
 	},
 	{ -- Show function signature
 		"ray-x/lsp_signature.nvim",
+		cond = not vim.g.vscode,
 		event = "VeryLazy",
 		opts = {
 			close_timeout = 1000,

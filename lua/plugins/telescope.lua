@@ -1,5 +1,6 @@
 return { -- fuzzy finder
 	"nvim-telescope/telescope.nvim",
+	cond = not vim.g.vscode,
 	event = "VimEnter",
 	branch = "0.1.x",
 	dependencies = {

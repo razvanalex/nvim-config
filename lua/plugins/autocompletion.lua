@@ -1,6 +1,7 @@
 return {
 	"hrsh7th/nvim-cmp",
 	event = "InsertEnter",
+	cond = not vim.g.vscode,
 	dependencies = {
 		-- Snippet Engine & its associated nvim-cmp source
 		{

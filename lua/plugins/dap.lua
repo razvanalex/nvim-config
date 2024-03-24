@@ -1,6 +1,7 @@
 return {
 	{
 		"mfussenegger/nvim-dap",
+		cond = not vim.g.vscode,
 		config = function()
 			-- key mappings
 			vim.keymap.set("n", "<F5>", function()
@@ -82,6 +83,7 @@ return {
 	}, -- DAP interface for nvim
 	{ -- UI for DAP
 		"rcarriga/nvim-dap-ui",
+		cond = not vim.g.vscode,
 		config = function()
 			local dap, dapui = require("dap"), require("dapui")
 
@@ -112,9 +114,11 @@ return {
 		-- debugpy/bin/python -m pip install debugpy
 		--
 		"mfussenegger/nvim-dap-python",
+
+		cond = not vim.g.vscode,
 		config = function()
 			require("dap-python").setup("~/.virtualenvs/debugpy/bin/python")
 		end,
 	},
-	{ "leoluz/nvim-dap-go", opts = {} }, -- Go DAP
+	{ "leoluz/nvim-dap-go", opts = {}, cond = not vim.g.vscode }, -- Go DAP
 }
