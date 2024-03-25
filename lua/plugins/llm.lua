@@ -4,8 +4,9 @@ local LLMConfig = {}
 
 --- Get all the available LLMs for a given OpenAI compatible endpoint.
 ---@param endpoint string endpoint URL
+---@param backend string either openai or ollama
 ---@return string[] llms a list of LLMs
-local function get_available_llms(endpoint)
+local function get_available_llms(endpoint, backend)
 	local llms = {}
 
 	local Job = require("plenary.job")
@@ -22,12 +23,17 @@ local function get_available_llms(endpoint)
 	local valid, tags = pcall(function()
 		return vim.json.decode(response, { object = true, array = true })
 	end)
-	if not valid or tags == nil or tags["models"] == nil then
+	if not valid or tags == nil then
 		return llms
 	end
-
-	for _, v in pairs(tags["models"]) do
-		table.insert(llms, v["name"])
+	if backend == "ollama" and tags["models"] ~= nil then
+		for _, v in pairs(tags["models"]) do
+			table.insert(llms, v["name"])
+		end
+	elseif backend == "openai" and tags["data"] ~= nil then
+		for _, v in pairs(tags["data"]) do
+			table.insert(llms, v["id"])
+		end
 	end
 	return llms
 end
@@ -64,7 +70,7 @@ local function load_config()
 		return vim.json.decode(Path:new(config_path):read())
 	end)
 
-	if config == nil or next(config) == nil then
+	if config == nil or (valid and next(config) == nil) then
 		valid = false
 	end
 	if not valid then
@@ -98,7 +104,7 @@ local function get_models_endpoint()
 		return LLMConfig["endpoint"] .. "/api/tags"
 	end
 	-- openai default
-	return LLMConfig["endpoint"] .. "/v1/models"
+	return LLMConfig["endpoint"] .. "/models"
 end
 
 --- Show the available LLMs in a telescope view.
@@ -144,13 +150,14 @@ local function toggle_telescope(available_llms)
 end
 
 --- Return the currently picked model from the config or the first model available.
+---@param backend string either openai or ollama
 ---@return string model_name the name of the model.
-local function get_model()
+local function get_model(backend)
 	if LLMConfig["model"] ~= nil then
 		return LLMConfig["model"]
 	end
 
-	local available_llms = get_available_llms(get_models_endpoint())
+	local available_llms = get_available_llms(get_models_endpoint(), backend)
 	if #available_llms >= 1 then
 		return available_llms[1]
 	end
@@ -188,7 +195,7 @@ return {
 			debounce_ms = 150,
 			accept_keymap = "<C-Y>",
 			dismiss_keymap = "<C-N>",
-			context_window = 1024, -- max number of tokens for the context window
+			context_window = 64, -- max number of tokens for the context window
 			enable_suggestions_on_startup = false,
 			enable_suggestions_on_files = "*", -- pattern matching syntax to enable suggestions on specific files, either a string or a list of strings
 		},
@@ -208,7 +215,7 @@ return {
 			local valid
 
 			LLMConfig, valid = load_config()
-			local llm_name = get_model()
+			local llm_name = get_model(LLMConfig["backend"])
 			local actions_dir = vim.fn.stdpath("config") .. "/lua/plugins/llm_actions"
 			local actions_path = require("plugins.utils").list_dir(actions_dir, true)
 
@@ -218,7 +225,7 @@ return {
 			end
 
 			vim.api.nvim_create_user_command("ChatGPTSelectModel", function()
-				local available_llms = get_available_llms(get_models_endpoint())
+				local available_llms = get_available_llms(get_models_endpoint(), LLMConfig["backend"])
 				toggle_telescope(available_llms)
 			end, {})
 
