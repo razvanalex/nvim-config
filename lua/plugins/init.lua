@@ -176,6 +176,8 @@ require("lazy").setup({
 			"TmuxNavigatePrevious",
 		},
 		init = function()
+			vim.g.tmux_navigator_no_mappings = 1
+
 			if os.getenv("TMUX") ~= nil then
 				vim.keymap.set(
 					"n",
