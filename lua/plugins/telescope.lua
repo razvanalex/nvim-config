@@ -75,6 +75,12 @@ return {
 			vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "[F]uzzy [D]iagnostics" })
 			vim.keymap.set("n", "<leader>fr", builtin.resume, { desc = "[F]uzzy [R]esume" })
 			vim.keymap.set("n", "<leader>f.", builtin.oldfiles, { desc = '[F]uzzy Recent Files ("." for repeat)' })
+			vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "[F]uzzy [K]eymaps" })
+			vim.keymap.set("n", "<leader>fa", function()
+				builtin.find_files({
+					find_command = { "rg", "--files", "--hidden", "--no-ignore-vcs" },
+				})
+			end, { desc = "[F]uzzy Find [A]ll Files" })
 
 			vim.keymap.set("n", "<leader>f/", function()
 				builtin.live_grep({

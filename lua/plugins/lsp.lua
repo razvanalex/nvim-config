@@ -35,11 +35,11 @@ return {
 				require("trouble").toggle("loclist")
 			end, { silent = true, noremap = true, desc = "[T]rouble [L]oclist" })
 
-			vim.keymap.set("n", "<leader>]t", function()
+			vim.keymap.set("n", "<leader>t]", function()
 				require("trouble").next({ skip_groups = true, jump = true })
 			end, { silent = true, noremap = true, desc = "[T]rouble Next" })
 
-			vim.keymap.set("n", "<leader>[t", function()
+			vim.keymap.set("n", "<leader>t[", function()
 				require("trouble").previous({ skip_groups = true, jump = true })
 			end, { silent = true, noremap = true, desc = "[T]rouble Previous" })
 		end,

@@ -5,6 +5,14 @@ return {
 		config = function()
 			-- key mappings
 			vim.keymap.set("n", "<F5>", function()
+				require("dap").set_log_level("TRACE")
+				if vim.fn.filereadable(".vscode/launch.json") then
+					require("dap.ext.vscode").load_launchjs(nil, {
+						-- NOTE: Add missing mappings. Check the type names
+						-- with !lua vim.print(require("dap").configurations)
+						debugpy = { "python" },
+					})
+				end
 				require("dap").continue()
 			end, { desc = "Debug Launch" })
 
@@ -20,43 +28,43 @@ return {
 				require("dap").step_out()
 			end, { desc = "Step Out" })
 
-			vim.keymap.set("n", "<Leader>b", function()
+			vim.keymap.set("n", "<Leader>db", function()
 				require("dap").toggle_breakpoint()
-			end, { desc = "Toggle Breakpoint" })
+			end, { desc = "[D]ebugger Toggle [B]reakpoint" })
 
-			vim.keymap.set("n", "<Leader>B", function()
+			vim.keymap.set("n", "<Leader>dB", function()
 				require("dap").set_breakpoint()
-			end, { desc = "Set Breakpoint" })
+			end, { desc = "[D]ebugger Set [B]reakpoint" })
 
-			vim.keymap.set("n", "<Leader>lp", function()
+			vim.keymap.set("n", "<Leader>dlp", function()
 				require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
-			end, { desc = "Set Log Point" })
+			end, { desc = "[D]ebugger Set [L]og [P]oint" })
 
 			vim.keymap.set("n", "<Leader>dr", function()
 				require("dap").repl.open()
-			end, { desc = "Open REPL" })
+			end, { desc = "[D]ebugger Open [R]EPL" })
 
 			vim.keymap.set("n", "<Leader>dl", function()
 				require("dap").run_last()
-			end, { desc = "Run Last" })
+			end, { desc = "[D]ebugger Run [L]ast" })
 
 			vim.keymap.set({ "n", "v" }, "<Leader>dh", function()
 				require("dap.ui.widgets").hover()
-			end, { desc = "Hover Widget" })
+			end, { desc = "[D]ebugger [H]over Widget" })
 
 			vim.keymap.set({ "n", "v" }, "<Leader>dp", function()
 				require("dap.ui.widgets").preview()
-			end, { desc = "Preview Widget" })
+			end, { desc = "[D]ebugger [P]review Widget" })
 
-			vim.keymap.set("n", "<Leader>df", function()
+			vim.keymap.set("n", "<Leader>dff", function()
 				local widgets = require("dap.ui.widgets")
 				widgets.centered_float(widgets.frames)
-			end, { desc = "Centered Float Widget" })
+			end, { desc = "[D]ebugger [F]loat [F]rames" })
 
-			vim.keymap.set("n", "<Leader>ds", function()
+			vim.keymap.set("n", "<Leader>dfs", function()
 				local widgets = require("dap.ui.widgets")
 				widgets.centered_float(widgets.scopes)
-			end, { desc = "Centered Float Scopes" })
+			end, { desc = "[D]ebugger [F]loat [S]copes" })
 
 			-- Nicer icons. From docs:
 			--  - DapBreakpoint for breakpoints (default: B)
@@ -87,6 +95,7 @@ return {
 		config = function()
 			local dap, dapui = require("dap"), require("dapui")
 
+			---@diagnostic disable-next-line: missing-fields
 			dapui.setup({
 				expand_lines = false,
 			})
@@ -103,6 +112,14 @@ return {
 			dap.listeners.before.event_exited.dapui_config = function()
 				dapui.close()
 			end
+
+			vim.keymap.set("n", "<leader>dd", function()
+				dapui.open()
+			end, { desc = "[D]ebugger Open [D]AP mode" })
+
+			vim.keymap.set("n", "<leader>dc", function()
+				dapui.close()
+			end, { desc = "[D]ebugger [C]lose DAP mode" })
 		end,
 	},
 	{
@@ -114,7 +131,6 @@ return {
 		-- debugpy/bin/python -m pip install debugpy
 		--
 		"mfussenegger/nvim-dap-python",
-
 		cond = not vim.g.vscode,
 		config = function()
 			require("dap-python").setup("~/.virtualenvs/debugpy/bin/python")
