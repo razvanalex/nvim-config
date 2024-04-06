@@ -287,7 +287,7 @@ return {
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 			require("mason-lspconfig").setup({
-				ensure_installed = { "tsserver", "pyright", "lua_ls" },
+				ensure_installed = { "tsserver", "basedpyright", "lua_ls" },
 				handlers = {
 					function(server_name)
 						local server = servers[server_name] or {}

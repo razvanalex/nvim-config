@@ -18,6 +18,7 @@ return { -- Useful plugin to show you pending keybinds.
 			["<leader>n"] = { name = "[N]eogen", _ = "which_key_ignore" },
 			["<leader>v"] = { name = "[V]irtual Env", _ = "which_key_ignore" },
 			["<leader>U"] = { name = "[U]I", _ = "which_key_ignore" },
+			["<leader>z"] = { name = "[Z]en Mode", _ = "which_key_ignore" },
 		})
 	end,
 }
