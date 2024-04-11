@@ -20,10 +20,12 @@ return {
 		-- callback where you can add custom code when the Zen window opens
 		on_open = function(_)
 			vim.cmd(":IBLDisable")
+			vim.cmd(":Gitsigns toggle_current_line_blame")
 		end,
 		-- callback where you can add custom code when the Zen window closes
 		on_close = function()
 			vim.cmd(":IBLEnable")
+			vim.cmd(":Gitsigns toggle_current_line_blame")
 		end,
 	},
 	keys = {

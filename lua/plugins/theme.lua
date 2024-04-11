@@ -47,12 +47,12 @@ return {
 					DiffviewDiffDelete = { bg = "none", fg = "#3B4252" },
 
 					-- Highlight groups for delete
-					DiffviewDelete = { bg = "#330000" },
-					DiffviewDeleteText = { bg = "#5C0000" },
+					DiffviewDelete = { bg = "#500000" },
+					DiffviewDeleteText = { bg = "#d62927" },
 
 					-- Highlight groups for right panel
-					DiffviewAdd = { bg = "#172005" },
-					DiffviewAddText = { bg = "#304604" },
+					DiffviewAdd = { bg = "#043300" },
+					DiffviewAddText = { bg = "#487733" },
 
 					-- Git signs
 					GitSignsAdd = { fg = "#6a9955" },
