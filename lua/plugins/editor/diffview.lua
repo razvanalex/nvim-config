@@ -143,6 +143,16 @@ end
 return {
 	"sindrets/diffview.nvim",
 	cond = not vim.g.vscode,
+	cmd = {
+		"DiffviewClose",
+		"DiffviewFileHistory",
+		"DiffviewFocusFiles",
+		"DiffviewLog",
+		"DiffviewOpen",
+		"DiffviewRefresh",
+		"DiffviewToggleFiles",
+		"DisableAutoSave",
+	},
 	opts = {
 		hooks = {
 			---@param view StandardView

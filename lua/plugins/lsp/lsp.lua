@@ -1,7 +1,13 @@
 return {
+	{
+		"folke/neodev.nvim",
+		lazy = true,
+		opts = {},
+	},
 	{ -- shows issues in code (like Problems in vscode)
 		"folke/trouble.nvim",
 		cond = not vim.g.vscode,
+		event = "VeryLazy",
 		dependencies = {
 			{ "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
 		},
@@ -47,6 +53,7 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		cond = not vim.g.vscode,
+		event = "VeryLazy",
 		dependencies = {
 			-- Automatically install LSPs and related tools to stdpath for neovim
 			"williamboman/mason.nvim",
@@ -54,7 +61,7 @@ return {
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 
 			-- Useful status updates for LSP.
-			{ "j-hui/fidget.nvim", opts = {} },
+			{ "j-hui/fidget.nvim", event = "VeryLazy", opts = {} },
 		},
 		config = function()
 			vim.diagnostic.config({
@@ -324,28 +331,40 @@ return {
 	},
 	{ -- auto-generate docstrings
 		"danymat/neogen",
-		config = function()
-			local neogen = require("neogen")
-
-			neogen.setup({
-				snippet_engine = "luasnip",
-			})
-
-			vim.keymap.set("n", "<leader>nf", function()
-				neogen.generate({ type = "func" })
-			end, { desc = "[N]eogen [F]unction" })
-
-			vim.keymap.set("n", "<leader>nt", function()
-				neogen.generate({ type = "type" })
-			end, { desc = "[N]eogen [T]ype" })
-
-			vim.keymap.set("n", "<leader>nc", function()
-				neogen.generate({ type = "class" })
-			end, { desc = "[N]eogen [C]lass" })
-
-			vim.keymap.set("n", "<leader>ni", function()
-				neogen.generate({ type = "file" })
-			end, { desc = "[N]eogen F[i]le" })
-		end,
+		cmd = "Neogen",
+		opts = {
+			snippet_engine = "luasnip",
+		},
+		lazy = true,
+		keys = {
+			{
+				"<leader>nf",
+				function()
+					require("neogen").generate({ type = "func" })
+				end,
+				desc = "[N]eogen [F]unction",
+			},
+			{
+				"<leader>nt",
+				function()
+					require("neogen").generate({ type = "type" })
+				end,
+				desc = "[N]eogen [T]ype",
+			},
+			{
+				"<leader>nc",
+				function()
+					require("neogen").generate({ type = "class" })
+				end,
+				desc = "[N]eogen [C]lass",
+			},
+			{
+				"<leader>ni",
+				function()
+					require("neogen").generate({ type = "file" })
+				end,
+				desc = "[N]eogen F[i]le",
+			},
+		},
 	},
 }

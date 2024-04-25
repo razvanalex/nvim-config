@@ -2,6 +2,7 @@ return {
 	{ -- vscode color theme
 		"Mofiqul/vscode.nvim",
 		priority = 1000, -- make sure to load this before all the other start plugins
+		lazy = true,
 		cond = not vim.g.vscode,
 		opts = {
 			-- Alternatively set style in setup
@@ -25,13 +26,11 @@ return {
 				SpellLocal = { bg = "NONE", fg = "NONE", undercurl = true, sp = "#0faaff" },
 			},
 		},
-		init = function()
-			-- require("vscode").load()
-		end,
 	},
 	{
 		"catppuccin/nvim",
 		name = "catppuccin",
+		event = "VimEnter",
 		priority = 1000,
 		cond = not vim.g.vscode,
 		opts = {
@@ -70,18 +69,31 @@ return {
 				return common
 			end,
 		},
-		lazy = false,
+		keys = {
+			{
+				"<leader>Ut",
+				function()
+					local cat = require("catppuccin")
+					cat.options.transparent_background = not cat.options.transparent_background
+					cat.compile()
+					vim.cmd.colorscheme(vim.g.colors_name)
+				end,
+				mode = "n",
+				desc = "Toggle [U]I [T]ransparency",
+			},
+		},
 		init = function()
-			local cat = require("catppuccin")
-
-			vim.keymap.set("n", "<leader>Ut", function()
-				cat.options.transparent_background = not cat.options.transparent_background
-				cat.compile()
-				vim.cmd.colorscheme(vim.g.colors_name)
-			end, { desc = "Toggle [U]I [T]ransparency" })
-
-			cat.compile()
 			vim.cmd.colorscheme("catppuccin")
 		end,
+	},
+	{
+		"nvim-tree/nvim-web-devicons",
+		lazy = true,
+		enabled = vim.g.have_nerd_font,
+	},
+	{ -- syntax highlight for kitty terminal config
+		"fladson/vim-kitty",
+		lazy = true,
+		cond = not vim.g.vscode,
 	},
 }

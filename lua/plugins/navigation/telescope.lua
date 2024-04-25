@@ -1,9 +1,12 @@
 return {
-	"nvim-telescope/telescope-media-files.nvim",
+	{
+		"nvim-telescope/telescope-media-files.nvim",
+		lazy = true,
+	},
 	{ -- fuzzy finder
 		"nvim-telescope/telescope.nvim",
 		cond = not vim.g.vscode,
-		event = "VimEnter",
+		cmd = "Telescope",
 		branch = "0.1.x",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
@@ -64,35 +67,6 @@ return {
 			pcall(require("telescope").load_extension, "ui-select")
 			pcall(require("telescope").load_extension, "media_files")
 
-			-- See `:help telescope.builtin`
-			local builtin = require("telescope.builtin")
-			vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "[F]uzzy [H]elp Tags" })
-			vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[F]uzzy File [F]inder" })
-			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "[F]uzzy File [G]rep" })
-			vim.keymap.set("n", "<leader>fv", builtin.git_files, { desc = '[F]uzzy Git Files ("v" for versioning)' })
-			vim.keymap.set("n", "<leader>fs", builtin.builtin, { desc = "[F]uzzy [S]elect Telescope" })
-			vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "[F]uzzy Current [W]ord" })
-			vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "[F]uzzy [D]iagnostics" })
-			vim.keymap.set("n", "<leader>fr", builtin.resume, { desc = "[F]uzzy [R]esume" })
-			vim.keymap.set("n", "<leader>f.", builtin.oldfiles, { desc = '[F]uzzy Recent Files ("." for repeat)' })
-			vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "[F]uzzy [K]eymaps" })
-			vim.keymap.set("n", "<leader>fa", function()
-				builtin.find_files({
-					find_command = { "rg", "--files", "--hidden", "--no-ignore-vcs" },
-				})
-			end, { desc = "[F]uzzy Find [A]ll Files" })
-
-			vim.keymap.set("n", "<leader>f/", function()
-				builtin.live_grep({
-					grep_open_files = true,
-					prompt_title = "Live Grep in Open Files",
-				})
-			end, { desc = "[F]uzzy [/] in Open Files" })
-
-			vim.keymap.set("n", "<leader>fn", function()
-				builtin.find_files({ cwd = vim.fn.stdpath("config") })
-			end, { desc = "[F]uzzy [N]eovim files" })
-
 			local C = require("catppuccin.palettes").get_palette()
 			local TelescopeColor = {
 				TelescopeBorder = { fg = C.mantle, bg = C.mantle },
@@ -112,5 +86,117 @@ return {
 				vim.api.nvim_set_hl(0, hl, col)
 			end
 		end,
+		keys = {
+			{
+				"<leader>fh",
+				function()
+					require("telescope.builtin").help_tags()
+				end,
+				mode = "n",
+				desc = "[F]uzzy [H]elp Tags",
+			},
+			{
+				"<leader>ff",
+				function()
+					local builtin = require("telescope.builtin")
+					builtin.find_files()
+				end,
+				mode = "n",
+				desc = "[F]uzzy File [F]inder",
+			},
+			{
+				"<leader>fg",
+				function()
+					require("telescope.builtin").live_grep()
+				end,
+				mode = "n",
+				desc = "[F]uzzy File [G]rep",
+			},
+			{
+				"<leader>fv",
+				function()
+					require("telescope.builtin").git_files()
+				end,
+				mode = "n",
+				desc = '[F]uzzy Git Files ("v" for versioning)',
+			},
+			{
+				"<leader>fs",
+				function()
+					require("telescope.builtin").builtin()
+				end,
+				mode = "n",
+				desc = "[F]uzzy [S]elect Telescope",
+			},
+			{
+				"<leader>fw",
+				function()
+					require("telescope.builtin").grep_string()
+				end,
+				mode = "n",
+				desc = "[F]uzzy Current [W]ord",
+			},
+			{
+				"<leader>fd",
+				function()
+					require("telescope.builtin").diagnostics()
+				end,
+				mode = "n",
+				desc = "[F]uzzy [D]iagnostics",
+			},
+			{
+				"<leader>fr",
+				function()
+					require("telescope.builtin").resume()
+				end,
+				mode = "n",
+				desc = "[F]uzzy [R]esume",
+			},
+			{
+				"<leader>f.",
+				function()
+					require("telescope.builtin").oldfiles()
+				end,
+				mode = "n",
+				desc = '[F]uzzy Recent Files ("." for repeat)',
+			},
+			{
+				"<leader>fk",
+				function()
+					require("telescope.builtin").keymaps()
+				end,
+				mode = "n",
+				desc = "[F]uzzy [K]eymaps",
+			},
+			{
+				"<leader>fa",
+				function()
+					require("telescope.builtin").find_files({
+						mmand = { "rg", "--files", "--hidden", "--no-ignore-vcs" },
+					})
+				end,
+				mode = "n",
+				desc = "[F]uzzy Find [A]ll Files",
+			},
+			{
+				"<leader>f/",
+				function()
+					require("telescope.builtin").live_grep({
+						en_files = true,
+						prompt_title = "Live Grep in Open Files",
+					})
+				end,
+				mode = "n",
+				desc = "[F]uzzy [/] in Open Files",
+			},
+			{
+				"<leader>fn",
+				function()
+					require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
+				end,
+				mode = "n",
+				desc = "[F]uzzy [N]eovim files",
+			},
+		},
 	},
 }

@@ -169,7 +169,11 @@ return {
 	{
 		"huggingface/llm.nvim",
 		cond = not vim.g.vscode,
-		event = "VeryLazy",
+		lazy = true,
+		cmd = {
+			"LLMSuggestion",
+			"LLMToggleAutoSuggest",
+		},
 		opts = {
 			model = "starcoder2:3b", -- the model ID, behavior depends on backend
 			backend = "ollama", -- backend ID, "huggingface" | "ollama" | "openai" | "tgi"
@@ -203,20 +207,27 @@ return {
 	{
 		"jackMort/ChatGPT.nvim",
 		cond = not vim.g.vscode,
+		cmd = {
+			"ChatGPT",
+			"ChatGPTActAs",
+			"ChatGPTCompleteCode",
+			"ChatGPTEditWithInstructions",
+			"ChatGPTRun",
+			"ChatGPTSelectModel",
+		},
 		dependencies = {
 			"MunifTanjim/nui.nvim",
 			"nvim-lua/plenary.nvim",
 			"folke/trouble.nvim",
 			"nvim-telescope/telescope.nvim",
 		},
-		event = "VeryLazy",
 		config = function()
 			local NuiText = require("nui.text")
 			local valid
 
 			LLMConfig, valid = load_config()
 			local llm_name = get_model(LLMConfig["backend"])
-			local actions_dir = vim.fn.stdpath("config") .. "/lua/plugins/llm_actions"
+			local actions_dir = vim.fn.stdpath("config") .. "/lua/plugins/llm/llm_actions"
 			local actions_path = require("plugins.utils").list_dir(actions_dir, true)
 
 			if not valid then

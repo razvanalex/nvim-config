@@ -1,6 +1,21 @@
 return {
 	"nvim-tree/nvim-tree.lua",
 	cond = not vim.g.vscode,
+	lazy = true,
+	cmd = {
+		"NvimTreeClipboard",
+		"NvimTreeClose",
+		"NvimTreeCollapse",
+		"NvimTreeCollapseKeepBuffers",
+		"NvimTreeFindFile",
+		"NvimTreeFindFileToggle",
+		"NvimTreeFocus",
+		"NvimTreeHiTest",
+		"NvimTreeOpen",
+		"NvimTreeRefresh",
+		"NvimTreeResize",
+		"NvimTreeToggle",
+	},
 	config = function()
 		require("nvim-tree").setup({
 			hijack_directories = {

@@ -57,10 +57,6 @@ local function show_lsp()
 
 		if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
 			local client_name = client.name
-			-- local venv = get_venv()
-			-- if vim.bo.filetype == "python" and venv ~= "" then
-			-- 	client_name = client_name .. "(" .. venv .. ")"
-			-- end
 			return " " .. client_name
 		end
 	end
@@ -110,6 +106,11 @@ return {
 				"searchcount",
 			},
 			lualine_x = {
+				{
+					require("lazy.status").updates,
+					cond = require("lazy.status").has_updates,
+					color = { fg = "#ff9e64" },
+				},
 				"encoding",
 				"fileformat",
 				show_lsp,
