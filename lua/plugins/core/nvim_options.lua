@@ -108,14 +108,13 @@ vim.opt.mouse = "a"
 --  See `:help 'clipboard'`
 vim.opt.clipboard = "unnamedplus"
 
--- highlights
--- Highlight groups for removed lines
-vim.api.nvim_set_hl(0, "DiffviewDiffDelete", { bg = "none", fg = "#3B4252" })
-
--- Highlight groups for delete
-vim.api.nvim_set_hl(0, "DiffviewDelete", { bg = "#330000" })
-vim.api.nvim_set_hl(0, "DiffviewDeleteText", { bg = "#5C0000" })
-
--- Highlight groups for right panel
-vim.api.nvim_set_hl(0, "DiffviewAdd", { bg = "#172005" })
-vim.api.nvim_set_hl(0, "DiffviewAddText", { bg = "#304604" })
+-- Highlight when yanking (copying) text
+--  Try it with `yap` in normal mode
+--  See `:help vim.highlight.on_yank()`
+vim.api.nvim_create_autocmd("TextYankPost", {
+	desc = "Highlight when yanking (copying) text",
+	group = vim.api.nvim_create_augroup("highlight-yank", { clear = true }),
+	callback = function()
+		vim.highlight.on_yank()
+	end,
+})
