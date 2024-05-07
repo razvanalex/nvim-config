@@ -172,7 +172,8 @@ return {
 				"<leader>fa",
 				function()
 					require("telescope.builtin").find_files({
-						mmand = { "rg", "--files", "--hidden", "--no-ignore-vcs" },
+						command = { "rg", "--files", "--hidden", "--no-ignore-vcs" },
+						prompt_title = "Find All",
 					})
 				end,
 				mode = "n",
