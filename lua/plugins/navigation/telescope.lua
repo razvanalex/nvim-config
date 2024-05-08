@@ -24,6 +24,7 @@ return {
 				end,
 			},
 			{ "nvim-telescope/telescope-ui-select.nvim" },
+			{ "nvim-telescope/telescope-live-grep-args.nvim" },
 
 			-- Useful for getting pretty icons, but requires a Nerd Font.
 			{ "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
@@ -66,6 +67,7 @@ return {
 			pcall(require("telescope").load_extension, "fzf")
 			pcall(require("telescope").load_extension, "ui-select")
 			pcall(require("telescope").load_extension, "media_files")
+			pcall(require("telescope").load_extension, "live_grep_args")
 
 			local C = require("catppuccin.palettes").get_palette()
 			local TelescopeColor = {
@@ -107,7 +109,7 @@ return {
 			{
 				"<leader>fg",
 				function()
-					require("telescope.builtin").live_grep()
+					require("telescope").extensions.live_grep_args.live_grep_args()
 				end,
 				mode = "n",
 				desc = "[F]uzzy File [G]rep",
