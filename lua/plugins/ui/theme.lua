@@ -36,7 +36,7 @@ return {
 			transparent_background = os.getenv("TRANSPARENT") == "true" and true or false,
 			integrations = {
 				harpoon = true,
-				gitsigns = false,
+				gitsigns = true,
 				neotest = true,
 			},
 			custom_highlights = function(C)
@@ -56,6 +56,9 @@ return {
 					GitSignsAdd = { fg = "#6a9955" },
 					GitSignsChange = { fg = "#0078d4" },
 					GitSignsDelete = { fg = "#f85149" },
+
+					FloatBorder = { fg = C.mantle, bg = C.mantle },
+					CmpNormal = { bg = C.surface0 },
 				}
 				if os.getenv("TRANSPARENT") == "true" then
 					local transparent_overwrites = {

@@ -46,6 +46,11 @@ return {
 				end,
 			},
 			completion = { completeopt = "menu,menuone,noinsert" },
+			window = {
+				completion = {
+					winhighlight = "Normal:CmpNormal",
+				},
+			},
 
 			-- For an understanding of why these mappings were
 			-- chosen, you will need to read `:help ins-completion`

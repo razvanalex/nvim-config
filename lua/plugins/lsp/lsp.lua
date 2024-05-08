@@ -81,6 +81,18 @@ return {
 				},
 			})
 
+			-- lsp theming
+			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+				border = "single",
+			})
+			vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+				border = "single",
+				focusable = true,
+				relative = "cursor",
+				silent = true,
+			})
+
+			-- attach
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
 				callback = function(event)
@@ -318,7 +330,7 @@ return {
 			toggle_key = "<C-k>",
 			toggle_key_flip_floatwin_setting = true,
 			handler_opts = {
-				border = "none", -- double, rounded, single, shadow, none, or a table of borders
+				border = "single", -- double, rounded, single, shadow, none, or a table of borders
 			},
 		},
 		config = function(_, opts)
