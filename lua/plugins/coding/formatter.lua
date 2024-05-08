@@ -10,16 +10,13 @@ return { -- Autoformat
 		},
 		formatters_by_ft = {
 			lua = { "stylua" },
-			-- Conform can also run multiple formatters sequentially
 			python = { "isort", "black" },
-			--
-			-- You can use a sub-list to tell conform to run *until* a formatter
-			-- is found.
-			-- javascript = { { "prettierd", "prettier" } },
+			json = { "jq" },
 		},
 	},
 	config = function(_, opts)
-		require("conform").setup(opts)
+		local conform = require("conform")
+		conform.setup(opts)
 
 		vim.api.nvim_create_user_command("Format", function(args)
 			local range = nil
@@ -30,7 +27,43 @@ return { -- Autoformat
 					["end"] = { args.line2, end_line:len() },
 				}
 			end
-			require("conform").format({ async = true, lsp_fallback = true, range = range })
+			conform.format({ async = true, lsp_fallback = true, range = range })
 		end, { range = true })
+
+		-- Temporarily disable formatting on save. Useful to avoid git diffs
+		-- when saving a file that does not follow formatting rules.
+		local autoformat_handler = nil
+		vim.api.nvim_create_user_command("DisableFormatOnSave", function()
+			local handlers = vim.api.nvim_get_autocmds({
+				group = "Conform",
+				event = "BufWritePre",
+			})
+			for i, handler in ipairs(handlers) do
+				if i == 1 then
+					autoformat_handler = handler
+				end
+				vim.api.nvim_del_autocmd(handler.id)
+			end
+		end, {})
+
+		-- Re-enable formatting on save. Reverts the effects of
+		-- :DisableFormatOnSave.
+		vim.api.nvim_create_user_command("EnableFormatOnSave", function()
+			if autoformat_handler ~= nil then
+				local handlers = vim.api.nvim_get_autocmds({
+					group = autoformat_handler.group,
+					event = "BufWritePre",
+				})
+				-- Add the handler only once
+				if #handlers == 0 then
+					vim.api.nvim_create_autocmd("BufWritePre", {
+						desc = autoformat_handler.desc,
+						pattern = autoformat_handler.pattern,
+						group = autoformat_handler.group,
+						callback = autoformat_handler.callback,
+					})
+				end
+			end
+		end, {})
 	end,
 }

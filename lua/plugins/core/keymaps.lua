@@ -24,10 +24,10 @@ vim.keymap.set({ "n", "i" }, "<C-Enter>", "<Esc>o", { desc = "New Line Below" })
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<C-t>n", "<cmd>silent !tmux neww tmux-sessionizer<CR>", { desc = "Sessionize tmux" })
 
-vim.keymap.set("n", "<leader>qk", "<cmd>cnext<CR>zz", { desc = "Next quickfix" })
-vim.keymap.set("n", "<leader>qj", "<cmd>cprev<CR>zz", { desc = "Prev quickfix" })
-vim.keymap.set("n", "<leader>lk", "<cmd>lnext<CR>zz", { desc = "Next location" })
-vim.keymap.set("n", "<leader>lj", "<cmd>lprev<CR>zz", { desc = "Prev location" })
+vim.keymap.set("n", "]q", "<cmd>cnext<CR>zz", { desc = "Next [Q]uickfix" })
+vim.keymap.set("n", "[q", "<cmd>cprev<CR>zz", { desc = "Prev [Q]uickfix" })
+vim.keymap.set("n", "]l", "<cmd>lnext<CR>zz", { desc = "Next [L]ocation" })
+vim.keymap.set("n", "[l", "<cmd>lprev<CR>zz", { desc = "Prev [L]ocation" })
 
 vim.keymap.set(
 	"n",
