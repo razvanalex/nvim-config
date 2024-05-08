@@ -64,6 +64,14 @@ local function show_lsp()
 	return msg
 end
 
+local function show_tab_width()
+	if vim.o.expandtab == true then
+		return "space: " .. vim.o.shiftwidth
+	else
+		return "tab: " .. vim.o.tabstop
+	end
+end
+
 return {
 	"nvim-lualine/lualine.nvim",
 	cond = not vim.g.vscode,
@@ -111,6 +119,7 @@ return {
 					cond = require("lazy.status").has_updates,
 					color = { fg = "#ff9e64" },
 				},
+				show_tab_width,
 				"encoding",
 				"fileformat",
 				show_lsp,
