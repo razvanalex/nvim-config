@@ -123,7 +123,7 @@ return {
 				desc = '[F]uzzy Git Files ("v" for versioning)',
 			},
 			{
-				"<leader>fs",
+				"<leader>fS",
 				function()
 					require("telescope.builtin").builtin()
 				end,
@@ -137,6 +137,14 @@ return {
 				end,
 				mode = "n",
 				desc = "[F]uzzy Current [W]ord",
+			},
+			{
+				"<leader>fs",
+				function()
+					require("telescope.builtin").lsp_dynamic_workspace_symbols()
+				end,
+				mode = "n",
+				desc = "[F]uzzy Dynamic Workspace [S]ymbol",
 			},
 			{
 				"<leader>fd",
