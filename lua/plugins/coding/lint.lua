@@ -7,6 +7,7 @@ return {
 			markdown = { "vale" },
 			python = { "pylint" },
 			go = { "staticcheck" },
+			make = { "checkmake" },
 		}
 
 		vim.g.lint = false

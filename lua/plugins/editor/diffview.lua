@@ -184,5 +184,13 @@ return {
 				post_layout()
 			end,
 		}, -- See ':h diffview-config-hooks'
+		view = {
+			default = {
+				winbar_info = true,
+			},
+			file_history = {
+				winbar_info = true,
+			},
+		},
 	},
 }
