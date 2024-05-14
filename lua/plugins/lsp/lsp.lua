@@ -207,6 +207,32 @@ return {
 					keys = {
 						{ "<leader>cR", "<cmd>ClangdSwitchSourceHeader<cr>", desc = "Switch Source/Header (C/C++)" },
 					},
+					commands = {
+						Make = {
+							function()
+								local Job = require("plenary.job")
+								local stderr = ""
+
+								-- FIXME: bear may hang if make fails.
+								Job:new({
+									command = "bash",
+									args = { "-c", "make clean && bear -- make all -j" },
+									on_stderr = function(_, data)
+										stderr = stderr .. data
+									end,
+									on_exit = vim.schedule_wrap(function(_, return_val)
+										if return_val ~= 0 then
+											stderr = vim.notify("Make failed: " .. stderr, vim.log.levels.ERROR)
+											return
+										end
+										vim.notify("Make finished")
+										vim.cmd(":LspRestart")
+									end),
+								}):start()
+							end,
+							description = "Run the makefile and generate compile_commands.json",
+						},
+					},
 					root_dir = function(fname)
 						return require("lspconfig.util").root_pattern(
 							"Makefile",
