@@ -37,10 +37,6 @@ vim.keymap.set(
 )
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true, desc = "Make current file executable" })
 
--- vim.keymap.set("n", "<leader><leader>", function()
--- 	vim.cmd("so")
--- end, { desc = "Reload Current Config File" })
-
 -- wintabs
 vim.keymap.set({ "n", "v", "s", "o" }, "<C-T>k", "<Plug>(wintabs_previous)", { desc = "Previous wintab" })
 vim.keymap.set({ "n", "v", "s", "o" }, "<C-T>l", "<Plug>(wintabs_next)", { desc = "Next wintab" })

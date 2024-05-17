@@ -6,7 +6,7 @@ return {
 	opts = {
 		-- TODO: change folding display
 		provider_selector = function(bufnr, filetype, buftype)
-			return { "treesitter", "indent" }
+			return { "lsp", "indent" }
 		end,
 	},
 }

@@ -127,12 +127,14 @@ return {
 				"filetype",
 			},
 			lualine_y = { "progress" },
-			lualine_z = { {
-				"location",
-				fmt = function(str)
-					return "" .. str
-				end,
-			} },
+			lualine_z = {
+				{
+					"location",
+					fmt = function(str)
+						return "" .. str
+					end,
+				},
+			},
 		},
 		inactive_sections = {
 			lualine_a = {},

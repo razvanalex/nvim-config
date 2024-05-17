@@ -181,6 +181,7 @@ return {
 			tokens_to_clear = { "<|endoftext|>" }, -- tokens to remove from the model's output
 			request_body = {
 				parameters = {
+					max_new_tokens = 100,
 					temperature = 0.2,
 					top_p = 0.95,
 				},
@@ -199,7 +200,7 @@ return {
 			debounce_ms = 150,
 			accept_keymap = "<C-Y>",
 			dismiss_keymap = "<C-N>",
-			context_window = 64, -- max number of tokens for the context window
+			context_window = 4096, -- max number of tokens for the context window
 			enable_suggestions_on_startup = false,
 			enable_suggestions_on_files = "*", -- pattern matching syntax to enable suggestions on specific files, either a string or a list of strings
 		},
@@ -228,7 +229,7 @@ return {
 			LLMConfig, valid = load_config()
 			local llm_name = get_model(LLMConfig["backend"])
 			local actions_dir = vim.fn.stdpath("config") .. "/lua/plugins/llm/llm_actions"
-			local actions_path = require("plugins.utils").list_dir(actions_dir, true)
+			local actions_path = require("plugins.utils.path").list_dir(actions_dir, true)
 
 			if not valid then
 				LLMConfig["model"] = llm_name
