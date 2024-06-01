@@ -19,7 +19,7 @@ return {
 			-- Default segments (fold -> sign -> line number + separator), explained below
 			segments = {
 				{
-					sign = { name = { "Diagnostic" }, maxwidth = 1, colwidth = 1, auto = true },
+					sign = { namespace = { "diagnostic" }, maxwidth = 1, colwidth = 1, auto = true },
 					click = "v:lua.ScSa",
 				},
 				{
@@ -36,7 +36,7 @@ return {
 					},
 				},
 				{
-					sign = { namespace = { "gitsigns_extmark_signs_" }, maxwidth = 1, colwidth = 1, auto = false },
+					sign = { namespace = { "gitsigns" }, maxwidth = 1, colwidth = 1, auto = false },
 					click = "v:lua.ScSa",
 				},
 				{ text = { builtin.foldfunc }, click = "v:lua.ScFa" },
