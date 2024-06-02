@@ -16,7 +16,6 @@ vim.g.have_nerd_font = true
 -- UTF-8 encoding
 vim.opt.enc = "utf-8"
 vim.opt.fenc = "utf-8"
-vim.opt.termencoding = "utf-8"
 
 -- Open new vertical splits to the right of current one.
 vim.opt.splitright = true

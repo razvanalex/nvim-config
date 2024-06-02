@@ -45,8 +45,8 @@ end
 local function show_lsp()
 	-- From https://gist.github.com/l00sed/8cadeb747d24dea37f3e279ce18d8472
 	local msg = "No LSP"
-	local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
-	local clients = vim.lsp.get_active_clients()
+	local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = 0 })
+	local clients = vim.lsp.get_clients()
 
 	if next(clients) == nil then
 		return msg
@@ -192,6 +192,7 @@ return {
 			"fugitive",
 			"quickfix",
 			"lazy",
+			"neo-tree",
 			"nvim-tree",
 			"nvim-dap-ui",
 			"symbols-outline",
