@@ -169,7 +169,7 @@ return {
 	{
 		"huggingface/llm.nvim",
 		cond = not vim.g.vscode,
-		lazy = true,
+		event = "InsertEnter",
 		cmd = {
 			"LLMSuggestion",
 			"LLMToggleAutoSuggest",
