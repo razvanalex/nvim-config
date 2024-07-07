@@ -2,7 +2,7 @@ return {
 	{ -- git commands inside vim (e.g., diff, commit, mergetool, blame)
 		"tpope/vim-fugitive",
 		lazy = true,
-		cmd = { "Git" },
+		cmd = { "Git", "GBrowse" },
 		cond = not vim.g.vscode,
 		keys = {
 			{ "<leader>gg", vim.cmd.Git, desc = "[G]it Sta[g]e Area" },
