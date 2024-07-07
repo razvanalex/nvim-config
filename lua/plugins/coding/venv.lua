@@ -4,6 +4,7 @@ return {
 	ft = "python",
 	branch = "regexp",
 	cond = not vim.g.vscode,
+	event = "VeryLazy",
 	dependencies = {
 		"neovim/nvim-lspconfig",
 		"nvim-telescope/telescope.nvim",
@@ -13,7 +14,4 @@ return {
 		-- Keymap to open VenvSelector to pick a venv.
 		{ "<leader>vs", "<cmd>VenvSelect<cr>", desc = "[V]env [S]elect" },
 	},
-	init = function()
-		require("venv-selector").setup()
-	end,
 }
