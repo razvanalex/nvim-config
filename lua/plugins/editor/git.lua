@@ -1,11 +1,12 @@
 return {
 	{ -- git commands inside vim (e.g., diff, commit, mergetool, blame)
 		"tpope/vim-fugitive",
-		event = "VeryLazy",
+		lazy = true,
+		cmd = { "Git" },
 		cond = not vim.g.vscode,
-		config = function()
-			vim.keymap.set("n", "<leader>gg", vim.cmd.Git, { desc = "[G]it Sta[g]e Area" })
-		end,
+		keys = {
+			{ "<leader>gg", vim.cmd.Git, desc = "[G]it Sta[g]e Area" },
+		},
 	},
 	{ -- enable :GBrowse to open current repo in GitHub
 		"tpope/vim-rhubarb",
@@ -114,5 +115,17 @@ return {
 				end,
 			})
 		end,
+	},
+	{
+		"pwntester/octo.nvim",
+		cmd = {
+			"Octo",
+		},
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-telescope/telescope.nvim",
+			"nvim-tree/nvim-web-devicons",
+		},
+		opts = {},
 	},
 }
