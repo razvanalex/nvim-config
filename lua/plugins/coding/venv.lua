@@ -10,6 +10,7 @@ return {
 		"nvim-telescope/telescope.nvim",
 		"mfussenegger/nvim-dap-python",
 	},
+	opts = {},
 	keys = {
 		-- Keymap to open VenvSelector to pick a venv.
 		{ "<leader>vs", "<cmd>VenvSelect<cr>", desc = "[V]env [S]elect" },
