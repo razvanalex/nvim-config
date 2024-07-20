@@ -27,7 +27,6 @@ return {
 			"Gdrop",
 			"Gwq",
 		},
-		cond = not vim.g.vscode,
 		keys = {
 			{ "<leader>gg", vim.cmd.Git, desc = "[G]it Sta[g]e Area" },
 		},
