@@ -2,6 +2,9 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter-context",
 		cond = not vim.g.vscode,
+		opts = {
+			max_lines = 5,
+		},
 	},
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
