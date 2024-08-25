@@ -78,6 +78,38 @@ return {
 				desc = "Debug Launch",
 			},
 			{
+				"<F6>",
+				function()
+					require("dap").stop()
+				end,
+				mode = "n",
+				desc = "Stop",
+			},
+			{
+				"<F7>",
+				function()
+					require("dap").pause()
+				end,
+				mode = "n",
+				desc = "Pause",
+			},
+			{
+				"<F8>",
+				function()
+					require("dap").restart()
+				end,
+				mode = "n",
+				desc = "Restart",
+			},
+			{
+				"<F9>",
+				function()
+					require("dap").step_back()
+				end,
+				mode = "n",
+				desc = "Step Back",
+			},
+			{
 				"<F10>",
 				function()
 					require("dap").step_over()
