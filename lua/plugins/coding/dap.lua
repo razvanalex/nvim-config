@@ -80,7 +80,7 @@ return {
 			{
 				"<F6>",
 				function()
-					require("dap").stop()
+					require("dap").close()
 				end,
 				mode = "n",
 				desc = "Stop",
@@ -88,18 +88,18 @@ return {
 			{
 				"<F7>",
 				function()
-					require("dap").pause()
-				end,
-				mode = "n",
-				desc = "Pause",
-			},
-			{
-				"<F8>",
-				function()
 					require("dap").restart()
 				end,
 				mode = "n",
 				desc = "Restart",
+			},
+			{
+				"<F8>",
+				function()
+					require("dap").disconnect()
+				end,
+				mode = "n",
+				desc = "Disconnect",
 			},
 			{
 				"<F9>",
@@ -134,7 +134,7 @@ return {
 				desc = "Step Out",
 			},
 			{
-				"<Leader>db",
+				"<leader>db",
 				function()
 					require("dap").toggle_breakpoint()
 				end,
@@ -142,7 +142,7 @@ return {
 				desc = "[D]ebugger Toggle [B]reakpoint",
 			},
 			{
-				"<Leader>dB",
+				"<leader>dB",
 				function()
 					require("dap").set_breakpoint()
 				end,
@@ -150,7 +150,7 @@ return {
 				desc = "[D]ebugger Set [B]reakpoint",
 			},
 			{
-				"<Leader>dlp",
+				"<leader>dlp",
 				function()
 					require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
 				end,
@@ -158,7 +158,7 @@ return {
 				desc = "[D]ebugger Set [L]og [P]oint",
 			},
 			{
-				"<Leader>dr",
+				"<leader>dr",
 				function()
 					require("dap").repl.open()
 				end,
@@ -166,7 +166,7 @@ return {
 				desc = "[D]ebugger Open [R]EPL",
 			},
 			{
-				"<Leader>dl",
+				"<leader>dl",
 				function()
 					require("dap").run_last()
 				end,
@@ -174,7 +174,7 @@ return {
 				desc = "[D]ebugger Run [L]ast",
 			},
 			{
-				"<Leader>dh",
+				"<leader>dh",
 				function()
 					require("dap.ui.widgets").hover()
 				end,
@@ -182,7 +182,7 @@ return {
 				desc = "[D]ebugger [H]over Widget",
 			},
 			{
-				"<Leader>dp",
+				"<leader>dp",
 				function()
 					require("dap.ui.widgets").preview()
 				end,
@@ -190,7 +190,7 @@ return {
 				desc = "[D]ebugger [P]review Widget",
 			},
 			{
-				"<Leader>dff",
+				"<leader>dff",
 				function()
 					local widgets = require("dap.ui.widgets")
 					widgets.centered_float(widgets.frames)
@@ -199,7 +199,23 @@ return {
 				desc = "[D]ebugger [F]loat [F]rames",
 			},
 			{
-				"<Leader>dfs",
+				"<leader>dfu",
+				function()
+					require("dap").up()
+				end,
+				mode = "n",
+				desc = "[D]ebugger [F]rames [U]p",
+			},
+			{
+				"<leader>dfd",
+				function()
+					require("dap").down()
+				end,
+				mode = "n",
+				desc = "[D]ebugger [F]rames [D]own",
+			},
+			{
+				"<leader>dfs",
 				function()
 					local widgets = require("dap.ui.widgets")
 					widgets.centered_float(widgets.scopes)

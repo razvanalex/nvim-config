@@ -12,7 +12,7 @@ return { -- Useful plugin to show you pending keybinds.
 			{ "<leader>T", group = "[T]est" },
 			{ "<leader>U", group = "[U]I" },
 			{ "<leader>d", group = "[D]ebugger" },
-			{ "<leader>df", group = "[D]ebugger [F]loating Window" },
+			{ "<leader>df", group = "[D]ebugger [F]loating Window/[F]rames" },
 			{ "<leader>f", group = "[F]uzzy Finder" },
 			{ "<leader>g", group = "[G]it" },
 			{ "<leader>gt", group = "[G]it [T]oggle" },
