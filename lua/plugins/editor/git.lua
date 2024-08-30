@@ -151,4 +151,37 @@ return {
 		},
 		opts = {},
 	},
+	{
+		"polarmutex/git-worktree.nvim",
+		branch = "main",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-telescope/telescope-ui-select.nvim",
+		},
+		opts = {},
+		lazy = false,
+		config = function(opts)
+			require("telescope").load_extension("git_worktree")
+
+			local hooks = require("git-worktree.hooks")
+
+			hooks.register(hooks.type.SWITCH, hooks.builtins.update_current_buffer_on_switch)
+		end,
+		keys = {
+			{
+				"<leader>gww",
+				function()
+					require("telescope").extensions.git_worktree.git_worktree()
+				end,
+				desc = "[G]it [W]orktrees [W]indow",
+			},
+			{
+				"<leader>gwc",
+				function()
+					require("telescope").extensions.git_worktree.create_git_worktree()
+				end,
+				desc = "[G]it [W]orktrees [C]reate",
+			},
+		},
+	},
 }
