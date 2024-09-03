@@ -64,14 +64,6 @@ return {
 			{
 				"<F5>",
 				function()
-					require("dap").set_log_level("TRACE")
-					if vim.fn.filereadable(".vscode/launch.json") then
-						require("dap.ext.vscode").load_launchjs(nil, {
-							-- NOTE: Add missing mappings. Check the type names
-							-- with !lua vim.print(require("dap").configurations)
-							debugpy = { "python" },
-						})
-					end
 					require("dap").continue()
 				end,
 				mode = "n",
