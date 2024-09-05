@@ -5,12 +5,19 @@ return { -- Session
 	},
 	cond = not vim.g.vscode,
 	opts = {
-		auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
 		session_lens = {
-			load_on_setup = true,
-			theme_conf = { border = true },
-			previewer = false,
 			buftypes_to_ignore = {},
+			load_on_setup = true,
+			previewer = false,
+			theme_conf = {
+				border = true,
+			},
 		},
+		suppressed_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
 	},
+	config = function(opts)
+		vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
+		require("auto-session").setup(opts)
+	end,
 }
