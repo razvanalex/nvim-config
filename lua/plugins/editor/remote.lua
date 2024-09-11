@@ -22,14 +22,5 @@ return {
 				})
 			end,
 		},
-		config = function(_, opts)
-			if os.execute("devpod") ~= 0 then
-				vim.notify(
-					"devpod not found. Please check the documentation to install it https://devpod.sh/docs/getting-started/install#optional-install-devpod-cli"
-				)
-			end
-
-			require("remote-nvim").setup(opts)
-		end,
 	},
 }
