@@ -117,3 +117,13 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 		vim.highlight.on_yank()
 	end,
 })
+
+-- Set line break and wrap text in latex files
+vim.api.nvim_create_autocmd("BufEnter", {
+	desc = "Set line break and wrap text in latex files",
+	pattern = { "*.tex", "*.bib" },
+	callback = function()
+		vim.opt_local.wrap = true
+		vim.opt_local.linebreak = true
+	end,
+})
