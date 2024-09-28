@@ -398,11 +398,20 @@ return {
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format lua code
+				"black", -- Python formatter
+				"isort", -- Python sort imports
+				"jq", -- Format JSON
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 			require("mason-lspconfig").setup({
-				ensure_installed = { "basedpyright", "lua_ls" },
+				ensure_installed = {
+					"lua_ls", -- Lua LSP
+					"basedpyright", -- Python LSP
+					"bashls", -- Bash LSP
+					"texlab", -- LaTeX LSP
+					"ltex", -- Grammar and spelling errors
+				},
 				handlers = {
 					function(server_name)
 						local server = servers[server_name] or {}
