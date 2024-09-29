@@ -7,7 +7,7 @@ return {
 		"nvim-telescope/telescope.nvim",
 		cond = not vim.g.vscode,
 		cmd = "Telescope",
-		branch = "0.1.x",
+		branch = "master", -- stable: 0.1.x
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			{ -- If encountering errors, see telescope-fzf-native README for install instructions
