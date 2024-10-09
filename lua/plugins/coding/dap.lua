@@ -47,18 +47,21 @@ return {
 				expand_lines = false,
 			})
 
-			dap.listeners.before.attach.dapui_config = function()
-				dapui.open()
-			end
-			dap.listeners.before.launch.dapui_config = function()
-				dapui.open()
-			end
-			dap.listeners.before.event_terminated.dapui_config = function()
-				dapui.close()
-			end
-			dap.listeners.before.event_exited.dapui_config = function()
-				dapui.close()
-			end
+			-- FIXME: when starting a new process, DAP flickers (i.e., exits and
+			-- reenters repeatedly, very fast). Thus, open them manually.
+			--
+			-- dap.listeners.before.attach.dapui_config = function()
+			-- 	dapui.open()
+			-- end
+			-- dap.listeners.before.launch.dapui_config = function()
+			-- 	dapui.open()
+			-- end
+			-- dap.listeners.before.event_terminated.dapui_config = function()
+			-- 	dapui.close()
+			-- end
+			-- dap.listeners.before.event_exited.dapui_config = function()
+			-- 	dapui.close()
+			-- end
 		end,
 		keys = {
 			{
