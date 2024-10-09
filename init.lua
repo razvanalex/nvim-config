@@ -28,6 +28,7 @@ vim.opt.rtp:prepend(lazypath)
 --
 require("lazy").setup({
 	{ import = "plugins" },
+	{ import = "plugins.core.luarocks" },
 	{ import = "plugins.coding" },
 	{ import = "plugins.editor" },
 	{ import = "plugins.llm" },
