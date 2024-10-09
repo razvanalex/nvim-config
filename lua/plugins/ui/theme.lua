@@ -45,17 +45,23 @@ return {
 					DiffviewDiffDelete = { bg = "none", fg = "#3B4252" },
 
 					-- Highlight groups for delete
-					DiffviewDelete = { bg = "#500000" },
-					DiffviewDeleteText = { bg = "#902020" },
+					DiffviewDelete = { bg = "#301a1e" },
+					DiffviewDeleteText = { bg = "#7f2f2f" },
 
 					-- Highlight groups for right panel
-					DiffviewAdd = { bg = "#053005" },
-					DiffviewAddText = { bg = "#205010" },
+					DiffviewAdd = { bg = "#12261d" },
+					DiffviewAddText = { bg = "#1c562b" },
 
 					-- Git signs
 					GitSignsAdd = { fg = "#6a9955" },
 					GitSignsChange = { fg = "#0078d4" },
 					GitSignsDelete = { fg = "#f85149" },
+
+					-- Vimdiff
+					DiffAdd = { bg = "#12261d" },
+					DiffDelete = { bg = "#301a1e" },
+					DiffChange = { bg = "#1f2742" },
+					DiffText = { bg = "#2d385d" },
 
 					FloatBorder = { fg = C.mantle, bg = C.mantle },
 					CmpNormal = { bg = C.surface0 },
