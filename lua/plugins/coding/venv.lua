@@ -1,4 +1,3 @@
--- NOTE: requires fd to be installed
 return {
 	"linux-cultist/venv-selector.nvim",
 	ft = "python",

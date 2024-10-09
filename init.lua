@@ -28,11 +28,11 @@ vim.opt.rtp:prepend(lazypath)
 --
 require("lazy").setup({
 	{ import = "plugins" },
-	{ import = "plugins.core.luarocks" },
 	{ import = "plugins.coding" },
+	{ import = "plugins.core.luarocks" },
 	{ import = "plugins.editor" },
+	{ import = "plugins.extras" },
 	{ import = "plugins.llm" },
-	{ import = "plugins.lsp" },
 	{ import = "plugins.navigation" },
 	{ import = "plugins.ui" },
 }, {
