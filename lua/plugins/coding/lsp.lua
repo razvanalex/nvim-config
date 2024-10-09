@@ -42,7 +42,7 @@ return {
 				desc = "[T]rouble [Q]uickfix",
 			},
 			{
-				"<leader>tl",
+				"<leader>tL",
 				function()
 					require("trouble").toggle("loclist")
 				end,
@@ -191,7 +191,9 @@ return {
 					map("go", vim.lsp.buf.type_definition, "[G]oto Type [O]bject Definition")
 
 					-- Find references for the word under your cursor.
-					map("gr", vim.lsp.buf.references, "[G]oto [R]eferences")
+					-- NOTE: Being changed in neovim 0.11 to grr.
+					-- See https://github.com/neovim/neovim/pull/28650
+					-- map("gr", vim.lsp.buf.references, "[G]oto [R]eferences")
 
 					-- Show signature help
 					imap("<C-h>", vim.lsp.buf.signature_help, "Signature [H]elp")
@@ -476,11 +478,11 @@ return {
 				desc = "[N]eogen [C]lass",
 			},
 			{
-				"<leader>ni",
+				"<leader>nF",
 				function()
 					require("neogen").generate({ type = "file" })
 				end,
-				desc = "[N]eogen F[i]le",
+				desc = "[N]eogen [F]ile",
 			},
 		},
 	},

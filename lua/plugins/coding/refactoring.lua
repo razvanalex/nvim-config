@@ -11,61 +11,64 @@ return { -- refactoring
 	keys = {
 		-- Extract function supports only visual mode
 		{
-			"<leader>re",
+			"<leader>ref",
 			function()
 				require("refactoring").refactor("Extract Function")
 			end,
-			desc = "[R]efactor [E]xtract Function",
+			desc = "[R]efactor [E]xtract [F]unction",
+			mode = "v",
 		},
 		{
-			"<leader>rf",
+			"<leader>reF",
 			function()
 				require("refactoring").refactor("Extract Function To File")
 			end,
-			desc = "[R]efactor Extract [F]unction To File",
+			desc = "[R]efactor [E]xtract Function To [F]ile",
+			mode = "v",
 		},
 
 		-- Extract variable supports only visual mode
 		{
-			"<leader>rv",
+			"<leader>rev",
 			function()
 				require("refactoring").refactor("Extract Variable")
 			end,
-			desc = "[R]efactor Extract [V]ariable",
+			desc = "[R]efactor [E]xtract [V]ariable",
+			mode = "v",
 		},
 
 		-- Inline func supports only normal
 		{
-			"<leader>rI",
+			"<leader>rif",
 			function()
 				require("refactoring").refactor("Inline Function")
 			end,
-			desc = "[R]efactor [I]nline Function",
+			desc = "[R]efactor [I]nline [F]unction",
 		},
 
 		-- Inline var supports both normal and visual mode
 		{
-			"<leader>ri",
+			"<leader>riv",
 			function()
 				require("refactoring").refactor("Inline Variable")
 			end,
-			desc = "[R]efactor [I]nline Variable",
+			desc = "[R]efactor [I]nline [V]ariable",
 		},
 
 		-- Extract block supports only normal mode
 		{
-			"<leader>rb",
+			"<leader>reb",
 			function()
 				require("refactoring").refactor("Extract Block")
 			end,
-			desc = "[R]efactor Extract [B]lock",
+			desc = "[R]efactor [E]xtract [B]lock",
 		},
 		{
-			"<leader>rbf",
+			"<leader>reB",
 			function()
 				require("refactoring").refactor("Extract Block To File")
 			end,
-			desc = "[R]efactor Extract [B]lock To [F]ile",
+			desc = "[R]efactor [E]xtract Block To [F]ile",
 		},
 	},
 }

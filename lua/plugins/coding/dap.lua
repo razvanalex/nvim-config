@@ -60,67 +60,83 @@ return {
 		keys = {
 			{
 				"<F5>",
+				"<leader>drl",
 				function()
 					require("dap").continue()
 				end,
 				mode = "n",
-				desc = "Debug Launch",
+				desc = "[D]ebugger [R]un [L]aunch",
+			},
+			{
+				"<leader>drL",
+				function()
+					require("dap").run_last()
+				end,
+				mode = "n",
+				desc = "[D]ebugger [R]un [L]ast",
 			},
 			{
 				"<F6>",
+				"<leader>drs",
 				function()
 					require("dap").close()
 				end,
 				mode = "n",
-				desc = "Stop",
+				desc = "[D]ebugger [R]un [S]top",
 			},
 			{
 				"<F7>",
+				"<leader>drr",
 				function()
 					require("dap").restart()
 				end,
 				mode = "n",
-				desc = "Restart",
+				desc = "[D]ebugger [R]un [R]estart",
 			},
 			{
 				"<F8>",
+				"<leader>drd",
 				function()
 					require("dap").disconnect()
 				end,
 				mode = "n",
-				desc = "Disconnect",
+				desc = "[D]ebugger [R]un [D]isconnect",
 			},
 			{
 				"<F9>",
+				"<leader>dsb",
 				function()
 					require("dap").step_back()
 				end,
 				mode = "n",
-				desc = "Step Back",
+				desc = "[D]ebugger [S]tep [B]ack",
 			},
 			{
 				"<F10>",
+				"<leader>dso",
 				function()
 					require("dap").step_over()
 				end,
 				mode = "n",
-				desc = "Step Over",
+				desc = "[D]ebugger [S]tep [O]ver",
 			},
 			{
 				"<F11>",
+				"<leader>dsi",
 				function()
 					require("dap").step_into()
 				end,
 				mode = "n",
-				desc = "Step In",
+				desc = "[D]ebugger [S]tep [I]n",
 			},
 			{
 				"<F12>",
+				"<leader>dsO",
 				function()
 					require("dap").step_out()
 				end,
 				mode = "n",
-				desc = "Step Out",
+				desc = "[D]ebugger [S]tep [O]ut",
 			},
 			{
 				"<leader>db",
@@ -139,7 +155,7 @@ return {
 				desc = "[D]ebugger Set [B]reakpoint",
 			},
 			{
-				"<leader>dlp",
+				"<leader>dLp",
 				function()
 					require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
 				end,
@@ -147,20 +163,12 @@ return {
 				desc = "[D]ebugger Set [L]og [P]oint",
 			},
 			{
-				"<leader>dr",
+				"<leader>dor",
 				function()
 					require("dap").repl.open()
 				end,
 				mode = "n",
-				desc = "[D]ebugger Open [R]EPL",
-			},
-			{
-				"<leader>dl",
-				function()
-					require("dap").run_last()
-				end,
-				mode = "n",
-				desc = "[D]ebugger Run [L]ast",
+				desc = "[D]ebugger [O]pen [R]EPL",
 			},
 			{
 				"<leader>dh",

@@ -10,18 +10,17 @@ vim.keymap.set("n", "n", "nzzzv", { desc = "Go next search item, center the curs
 vim.keymap.set("n", "N", "Nzzzv", { desc = "Go prev search item, center the cursor, open fold" })
 
 -- greatest remap ever
-vim.keymap.set("x", "<leader>p", [["_dP]])
+vim.keymap.set("x", "<leader>P", [["_dP]], { desc = "[P]aste without overwriting the register" })
 
 -- next greatest remap ever : asbjornHaland
-vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
-vim.keymap.set("n", "<leader>Y", [["+Y]])
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "Yank into the system clipboard" })
+vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Yank current line into the system clipboard" })
 
-vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
+vim.keymap.set({ "n", "v" }, "<leader>D", [["_d]], { desc = "Deletes without saving in clipboard" })
 
 vim.keymap.set("i", "<C-c>", "<Esc>", { desc = "Exit insert mode" })
 vim.keymap.set({ "n", "i" }, "<C-Enter>", "<Esc>o", { desc = "New Line Below" })
 
-vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<C-t>n", "<cmd>silent !tmux neww tmux-sessionizer<CR>", { desc = "Sessionize tmux" })
 
 vim.keymap.set("n", "]q", "<cmd>cnext<CR>zz", { desc = "Next [Q]uickfix" })
