@@ -127,3 +127,12 @@ vim.api.nvim_create_autocmd("BufEnter", {
 		vim.opt_local.linebreak = true
 	end,
 })
+
+vim.g.pyenv = vim.fn.expand("~/.virtualenvs/neovim")
+vim.g.python3_host_prog = vim.fn.expand(vim.g.pyenv .. "/bin/python3")
+
+vim.filetype.add({
+	pattern = {
+		[".*.ipynb"] = "ipynb",
+	},
+})

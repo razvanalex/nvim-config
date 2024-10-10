@@ -85,9 +85,9 @@ return {
 					cat.options.transparent_background = not cat.options.transparent_background
 					cat.compile()
 					if cat.options.transparent_background then
-						vim.notify("Transparent background enabled")
+						vim.notify("Transparent background enabled", vim.log.levels.INFO)
 					else
-						vim.notify("Transparent background disabled")
+						vim.notify("Transparent background disabled", vim.log.levels.INFO)
 					end
 					vim.cmd.colorscheme(vim.g.colors_name)
 				end,

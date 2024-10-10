@@ -297,7 +297,7 @@ return {
 											vim.notify("Make failed: " .. stderr, vim.log.levels.ERROR)
 											return
 										end
-										vim.notify("Make finished")
+										vim.notify("Make finished", vim.log.levels.INFO)
 										vim.cmd(":LspRestart")
 									end),
 								}):start()

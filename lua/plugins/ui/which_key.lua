@@ -27,6 +27,9 @@ return { -- Useful plugin to show you pending keybinds.
 			{ "<leader>tl", group = "[T]rouble [L]SP" },
 			{ "<leader>v", group = "[V]irtual Env" },
 			{ "<leader>z", group = "[Z]en Mode" },
+			{ "<localleader>q", group = "[Q]uarto" },
+			{ "<localleader>qr", group = "[Q]uarto [R]un" },
+			{ "<localleader>qR", group = "[Q]uarto [R]un All Languages" },
 		})
 	end,
 }

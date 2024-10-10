@@ -263,19 +263,9 @@ return {
 		cond = not vim.g.vscode,
 		opts = {},
 		config = function()
-			if os.execute("[ -d ~/.virtualenvs/debugpy ]") ~= 0 then
-				local ret = os.execute("mkdir -p ~/.virtualenvs && \
-						cd ~/.virtualenvs && \
-						python3 -m venv debugpy && \
-						debugpy/bin/python -m pip install debugpy")
-				if ret ~= 0 then
-					vim.notify("Failed to install debugpy in ~/.virtualenvs/debugpy")
-				else
-					vim.notify("Successfully installed debyugpy in ~/.virtualenvs/debugpy")
-				end
-			end
-
-			require("dap-python").setup("~/.virtualenvs/debugpy/bin/python")
+			local jobs = require("plugins.utils.jobs")
+			jobs.maybe_pip_install("debugpy", { pyenv = vim.g.pyenv })
+			require("dap-python").setup(vim.g.pyenv .. "/bin/python")
 		end,
 	},
 	{ -- Go DAP
