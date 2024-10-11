@@ -1,5 +1,6 @@
 return {
 	{
+		-- FIXME: not working yet
 		"nvim-telescope/telescope-media-files.nvim",
 		lazy = true,
 	},
@@ -131,7 +132,19 @@ return {
 					require("telescope").extensions.live_grep_args.live_grep_args()
 				end,
 				mode = "n",
-				desc = "[F]uzzy File [G]rep",
+				desc = "[F]uzzy [G]rep Files",
+			},
+			{
+				"<leader>fG",
+				function()
+					require("telescope").extensions.live_grep_args.live_grep_args({
+						additional_args = { "--hidden", "--no-ignore" },
+						prompt_title = "Live Grep All (Args)",
+						previewer = false,
+					})
+				end,
+				mode = "n",
+				desc = "[F]uzzy [G]rep All Files",
 			},
 			{
 				"<leader>fv",
@@ -156,6 +169,14 @@ return {
 				end,
 				mode = "n",
 				desc = "[F]uzzy Current [W]ord",
+			},
+			{
+				"<leader>fW",
+				function()
+					require("telescope.builtin").grep_string({ search = vim.fn.input("Grep > ") })
+				end,
+				mode = "n",
+				desc = "[F]uzzy [W]ord",
 			},
 			{
 				"<leader>fs",
