@@ -160,7 +160,7 @@ return {
 		},
 		opts = {},
 		lazy = false,
-		config = function(opts)
+		config = function()
 			require("telescope").load_extension("git_worktree")
 
 			local hooks = require("git-worktree.hooks")

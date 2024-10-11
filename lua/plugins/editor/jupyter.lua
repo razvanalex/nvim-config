@@ -239,7 +239,7 @@ return {
 			output_extension = "md",
 			force_ft = "markdown",
 		},
-		config = function(opts)
+		config = function(_, opts)
 			-- Here is where the magic happens:
 			--   - it installs jupytext automatically in the current environment
 			--   - it auto-generates an empty notebook upon file/buffer creation
