@@ -1,3 +1,55 @@
+local function init_molten()
+	-- automatically import output chunks from a jupyter notebook
+	-- tries to find a kernel that matches the kernel in the jupyter notebook
+	-- falls back to a kernel that matches the name of the active venv (if any)
+	local imb = function(e) -- init molten buffer
+		vim.schedule(function()
+			local kernels = vim.fn.MoltenAvailableKernels()
+			local try_kernel_name = function()
+				local metadata = vim.json.decode(io.open(e.file, "r"):read("a"))["metadata"]
+				return metadata.kernelspec.name
+			end
+			local ok, kernel_name = pcall(try_kernel_name)
+			if not ok or not vim.tbl_contains(kernels, kernel_name) then
+				kernel_name = nil
+				local venv = os.getenv("VIRTUAL_ENV") or os.getenv("CONDA_PREFIX")
+				if venv ~= nil then
+					kernel_name = string.match(venv, "/.+/(.+)")
+				end
+			end
+			if kernel_name ~= nil and vim.tbl_contains(kernels, kernel_name) then
+				vim.cmd(("MoltenInit %s"):format(kernel_name))
+			end
+			vim.cmd("MoltenImportOutput")
+		end)
+	end
+
+	-- automatically import output chunks from a jupyter notebook
+	vim.api.nvim_create_autocmd("BufAdd", {
+		pattern = { "*.ipynb" },
+		callback = imb,
+	})
+
+	-- we have to do this as well so that we catch files opened like nvim ./hi.ipynb
+	vim.api.nvim_create_autocmd("BufEnter", {
+		pattern = { "*.ipynb" },
+		callback = function(e)
+			if vim.api.nvim_get_vvar("vim_did_enter") ~= 1 then
+				imb(e)
+			end
+		end,
+	})
+
+	-- automatically export output chunks to a jupyter notebook on write
+	vim.api.nvim_create_autocmd("BufWritePost", {
+		pattern = { "*.ipynb" },
+		callback = function()
+			if require("molten.status").initialized() == "Molten" then
+				vim.cmd("MoltenExportOutput!")
+			end
+		end,
+	})
+end
 --- Add snippet for new files.
 ---@param callback function The function to run after the snippet is added.
 local function new_notebook_snippet(callback)
@@ -111,25 +163,14 @@ return {
 				end,
 			})
 
-			-- TODO: Try to automatically launch the kernel. Save in a file the mapping.
-			-- Also, if no kernel found, prompt the user to select one.
-			--
-			-- vim.api.nvim_create_autocmd({ "BufEnter" }, {
-			-- 	pattern = { "*.ipynb" },
-			-- 	callback = function(_)
-			-- 		local project_name = get_project_name()
-			-- 		if project_name ~= nil then
-			-- 			vim.cmd(("MoltenInit %s"):format(project_name))
-			-- 		end
-			-- 	end,
-			-- })
+			-- FIXME:
+			init_molten()
 		end,
 	},
 	{
 		-- Special format that works the best.
 		"quarto-dev/quarto-nvim",
 		ft = { "quarto", "markdown" },
-		-- event = "VeryLazy",
 		cond = not vim.g.vscode,
 		dependencies = {
 			"jmbuhr/otter.nvim",
@@ -140,7 +181,7 @@ return {
 			closePreviewOnExit = true,
 			lspFeatures = {
 				enabled = true,
-				chunks = "curly",
+				chunks = "all",
 				languages = { "r", "python", "julia", "bash", "html" },
 				diagnostics = {
 					enabled = true,
@@ -150,6 +191,13 @@ return {
 					enabled = true,
 				},
 			},
+			keymap = {
+				hover = "K",
+				definition = "gd",
+				rename = "<F2>",
+				references = "grr",
+				format = "==",
+			},
 			codeRunner = {
 				enabled = true,
 				default_method = "molten", -- 'molten' or 'slime'
@@ -158,6 +206,10 @@ return {
 				never_run = { "yaml" }, -- filetypes which are never sent to a code runner
 			},
 		},
+		config = function(_, opts)
+			require("quarto").setup(opts)
+			require("quarto").activate()
+		end,
 		keys = {
 			{
 				"<localleader>qrc",
