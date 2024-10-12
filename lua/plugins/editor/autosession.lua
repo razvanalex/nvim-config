@@ -6,7 +6,7 @@ return { -- Session
 	cond = not vim.g.vscode,
 	opts = {
 		session_lens = {
-			buftypes_to_ignore = {},
+			buftypes_to_ignore = { ".ipynb" },
 			load_on_setup = true,
 			previewer = false,
 			theme_conf = {
