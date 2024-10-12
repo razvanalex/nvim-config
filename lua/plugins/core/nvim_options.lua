@@ -30,6 +30,9 @@ vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
+-- conceal
+vim.opt.conceallevel = 1
+
 -- use intelligent indentation
 -- vim.opt.smartindent = true
 
