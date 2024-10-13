@@ -59,8 +59,15 @@ return {
 		end,
 		keys = {
 			{
-				"<F5>",
 				"<leader>drl",
+				function()
+					require("dap").continue()
+				end,
+				mode = "n",
+				desc = "[D]ebugger [R]un [L]aunch",
+			},
+			{
+				"<F5>",
 				function()
 					require("dap").continue()
 				end,
@@ -76,7 +83,6 @@ return {
 				desc = "[D]ebugger [R]un [L]ast",
 			},
 			{
-				"<F6>",
 				"<leader>drs",
 				function()
 					require("dap").close()
@@ -85,7 +91,14 @@ return {
 				desc = "[D]ebugger [R]un [S]top",
 			},
 			{
-				"<F7>",
+				"<F6>",
+				function()
+					require("dap").close()
+				end,
+				mode = "n",
+				desc = "[D]ebugger [R]un [S]top",
+			},
+			{
 				"<leader>drr",
 				function()
 					require("dap").restart()
@@ -94,7 +107,14 @@ return {
 				desc = "[D]ebugger [R]un [R]estart",
 			},
 			{
-				"<F8>",
+				"<F7>",
+				function()
+					require("dap").restart()
+				end,
+				mode = "n",
+				desc = "[D]ebugger [R]un [R]estart",
+			},
+			{
 				"<leader>drd",
 				function()
 					require("dap").disconnect()
@@ -103,7 +123,14 @@ return {
 				desc = "[D]ebugger [R]un [D]isconnect",
 			},
 			{
-				"<F9>",
+				"<F8>",
+				function()
+					require("dap").disconnect()
+				end,
+				mode = "n",
+				desc = "[D]ebugger [R]un [D]isconnect",
+			},
+			{
 				"<leader>dsb",
 				function()
 					require("dap").step_back()
@@ -112,7 +139,14 @@ return {
 				desc = "[D]ebugger [S]tep [B]ack",
 			},
 			{
-				"<F10>",
+				"<F9>",
+				function()
+					require("dap").step_back()
+				end,
+				mode = "n",
+				desc = "[D]ebugger [S]tep [B]ack",
+			},
+			{
 				"<leader>dso",
 				function()
 					require("dap").step_over()
@@ -121,7 +155,14 @@ return {
 				desc = "[D]ebugger [S]tep [O]ver",
 			},
 			{
-				"<F11>",
+				"<F10>",
+				function()
+					require("dap").step_over()
+				end,
+				mode = "n",
+				desc = "[D]ebugger [S]tep [O]ver",
+			},
+			{
 				"<leader>dsi",
 				function()
 					require("dap").step_into()
@@ -130,8 +171,23 @@ return {
 				desc = "[D]ebugger [S]tep [I]n",
 			},
 			{
-				"<F12>",
+				"<F11>",
+				function()
+					require("dap").step_into()
+				end,
+				mode = "n",
+				desc = "[D]ebugger [S]tep [I]n",
+			},
+			{
 				"<leader>dsO",
+				function()
+					require("dap").step_out()
+				end,
+				mode = "n",
+				desc = "[D]ebugger [S]tep [O]ut",
+			},
+			{
+				"<F12>",
 				function()
 					require("dap").step_out()
 				end,
