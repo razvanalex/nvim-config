@@ -30,6 +30,7 @@ return { -- Useful plugin to show you pending keybinds.
 			{ "<localleader>q", group = "[Q]uarto" },
 			{ "<localleader>qr", group = "[Q]uarto [R]un" },
 			{ "<localleader>qR", group = "[Q]uarto [R]un All Languages" },
+			{ "<localleader>M", group = "[M]olten" },
 		})
 	end,
 }

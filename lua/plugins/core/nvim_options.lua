@@ -30,9 +30,6 @@ vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
--- conceal
-vim.opt.conceallevel = 1
-
 -- use intelligent indentation
 -- vim.opt.smartindent = true
 
@@ -137,5 +134,7 @@ vim.g.python3_host_prog = vim.fn.expand(vim.g.pyenv .. "/bin/python3")
 vim.filetype.add({
 	pattern = {
 		[".*.ipynb"] = "ipynb",
+		["octo://.*"] = "markdown",
 	},
 })
+vim.treesitter.language.register("markdown", "vimwiki")

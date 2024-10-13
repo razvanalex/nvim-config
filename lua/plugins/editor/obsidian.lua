@@ -32,6 +32,8 @@ return {
 					path = os.getenv("OBSIDIAN_VAULT_PATH"),
 				},
 			},
+			-- It interferes with render-markdown.nvim
+			ui = { enable = false },
 		},
 	},
 }

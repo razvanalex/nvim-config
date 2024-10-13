@@ -2,10 +2,10 @@ return {
 	{
 		"MeanderingProgrammer/render-markdown.nvim",
 		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
-		file_types = { "markdown", "Avante" },
+		file_types = { "markdown", "vimwiki", "Avante" },
 		opts = {
 			code = { sign = false },
-			ft = { "markdown", "Avante" },
+			file_types = { "markdown", "vimwiki", "Avante" },
 			overrides = {
 				buftype = {
 					nofile = {

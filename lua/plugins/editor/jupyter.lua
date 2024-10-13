@@ -170,6 +170,19 @@ return {
 			-- FIXME:
 			init_molten()
 		end,
+		keys = {
+			{ "<localleader>me", ":MoltenEvaluateOperator<CR>", desc = "[M]olten [E]valuate Operator", silent = true },
+			{ "<localleader>mr", ":MoltenReevaluateCell<CR>", desc = "[M]olten [R]e-evaluate Cell", silent = true },
+			{
+				"<localleader>moe",
+				":noautocmd MoltenEnterOutput<CR>",
+				desc = "[M]olten [O]utput [E]nter Window",
+				silent = true,
+			},
+			{ "<localleader>moh", ":MoltenHideOutput<CR>", desc = "[M]olten [O]utput [H]ide Window", silent = true },
+			{ "<localleader>md", ":MoltenDelete<CR>", desc = "[M]olten [D]elete [C]ell", silent = true },
+			{ "<localleader>mx", ":MoltenOpenInBrowser<CR>", desc = "[M]olten Open Output in Browser", silent = true },
+		},
 	},
 	{
 		-- Special format that works the best.
@@ -275,6 +288,7 @@ return {
 		-- LSP inside markdown and quarto
 		"jmbuhr/otter.nvim",
 		event = "VeryLazy",
+		ft = { "quatro", "markdown" },
 		cond = not vim.g.vscode,
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter",
