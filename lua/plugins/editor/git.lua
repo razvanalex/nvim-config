@@ -33,6 +33,9 @@ return {
 	},
 	{ -- enable :GBrowse to open current repo in GitHub
 		"tpope/vim-rhubarb",
+		dependencies = {
+			"tpope/vim-fugitive",
+		},
 		lazy = true,
 		cmd = "GBrowse",
 	},
