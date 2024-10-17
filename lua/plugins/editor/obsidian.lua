@@ -4,8 +4,8 @@ return {
 		version = "*",
 		lazy = true,
 		event = {
-			"BufReadPre " .. os.getenv("OBSIDIAN_VAULT_PATH") .. "*.md",
-			"BufNewFile " .. os.getenv("OBSIDIAN_VAULT_PATH") .. "*.md",
+			"BufReadPre " .. (os.getenv("OBSIDIAN_VAULT_PATH") or "") .. "*.md",
+			"BufNewFile " .. (os.getenv("OBSIDIAN_VAULT_PATH") or "") .. "*.md",
 		},
 		dependencies = {
 			"nvim-lua/plenary.nvim",
