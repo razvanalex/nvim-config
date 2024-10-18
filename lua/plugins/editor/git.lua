@@ -4,7 +4,6 @@ return {
 		lazy = true,
 		cmd = {
 			"Git",
-			"GBrowse",
 			"Gedit",
 			"Gsplit",
 			"Gdiffsplit",
