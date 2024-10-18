@@ -9,7 +9,7 @@ return {
 
 			-- Test Adapters
 			"nvim-neotest/neotest-python",
-			"nvim-neotest/neotest-go",
+			"fredrikaverpil/neotest-golang",
 		},
 		cmd = "Neotest",
 		cond = not vim.g.vscode,
@@ -21,7 +21,7 @@ return {
 					require("neotest-python")({
 						dap = { justMyCode = false },
 					}),
-					require("neotest-go"),
+					require("neotest-golang"),
 				},
 			})
 		end,
