@@ -137,4 +137,4 @@ vim.filetype.add({
 		["octo://.*"] = "markdown",
 	},
 })
-vim.treesitter.language.register("markdown", "vimwiki")
+vim.treesitter.language.register("markdown", { "vimwiki", "octo" })
