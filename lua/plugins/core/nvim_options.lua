@@ -128,13 +128,14 @@ vim.api.nvim_create_autocmd("BufEnter", {
 	end,
 })
 
+-- Set python paths
 vim.g.pyenv = vim.fn.expand("~/.virtualenvs/neovim")
 vim.g.python3_host_prog = vim.fn.expand(vim.g.pyenv .. "/bin/python3")
 
+-- Custom filetypes
 vim.filetype.add({
 	pattern = {
 		[".*.ipynb"] = "ipynb",
-		["octo://.*"] = "markdown",
 	},
 })
 vim.treesitter.language.register("markdown", { "vimwiki", "octo" })
