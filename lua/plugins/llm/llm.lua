@@ -449,7 +449,7 @@ return {
 			end
 
 			opts.openai.model = LLMConfig["model"]
-			opts.openai.endpoint = LLMConfig["backend"]
+			opts.openai.endpoint = LLMConfig["endpoint"] .. "/v1/"
 
 			require("avante").setup(opts)
 		end,
