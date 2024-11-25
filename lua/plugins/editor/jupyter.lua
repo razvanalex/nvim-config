@@ -229,6 +229,16 @@ return {
 		end,
 		keys = {
 			{
+				"<localleader><CR>",
+				function()
+					-- TODO: jump next cell
+					require("quarto.runner").run_cell()
+				end,
+				desc = "Quarto Run Cell",
+				silent = true,
+				mode = "n",
+			},
+			{
 				"<localleader>qrc",
 				function()
 					require("quarto.runner").run_cell()
@@ -243,6 +253,15 @@ return {
 					require("quarto.runner").run_above()
 				end,
 				desc = "[Q]uarto [R]un Cell and [A]bove",
+				silent = true,
+				mode = "n",
+			},
+			{
+				"<localleader>qrb",
+				function()
+					require("quarto.runner").run_below()
+				end,
+				desc = "[Q]uarto [R]un Cell and [B]elow",
 				silent = true,
 				mode = "n",
 			},
@@ -282,6 +301,15 @@ return {
 				silent = true,
 				mode = "n",
 			},
+			{
+				"<localleader>qp",
+				function()
+					require("quarto").quartoPreview()
+				end,
+				desc = "[Q]uarto [P]review",
+				silent = true,
+				mode = "n",
+			},
 		},
 	},
 	{
@@ -301,13 +329,16 @@ return {
 		ft = "ipynb",
 		cond = not vim.g.vscode,
 		opts = {
-			-- style = "hydrogen",
-			-- output_extension = "auto",
-			-- force_ft = nil,
-
-			style = "markdown",
-			output_extension = "md",
-			force_ft = "markdown",
+			custom_language_formatting = {
+				python = {
+					extension = "md",
+					style = "markdown",
+					force_ft = "markdown", -- you can set whatever filetype you want here
+					-- extension = "qmd",
+					-- style = "quarto",
+					-- force_ft = "quarto", -- you can set whatever filetype you want here
+				},
+			},
 		},
 		config = function(_, opts)
 			-- Here is where the magic happens:
