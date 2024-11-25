@@ -9,6 +9,7 @@ return { -- Useful plugin to show you pending keybinds.
 
 		-- Document existing key chains
 		wk.add({
+			{ "<leader>A", group = "[A]vante" },
 			{ "<leader>T", group = "[T]est" },
 			{ "<leader>U", group = "[U]I" },
 			{ "<leader>d", group = "[D]ebugger" },
@@ -27,6 +28,7 @@ return { -- Useful plugin to show you pending keybinds.
 			{ "<leader>tl", group = "[T]rouble [L]SP" },
 			{ "<leader>v", group = "[V]irtual Env" },
 			{ "<leader>z", group = "[Z]en Mode" },
+			{ "<leader>m", group = "[M]olten" },
 			{ "<localleader>q", group = "[Q]uarto" },
 			{ "<localleader>qr", group = "[Q]uarto [R]un" },
 			{ "<localleader>qR", group = "[Q]uarto [R]un All Languages" },
