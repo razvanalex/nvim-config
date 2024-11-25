@@ -119,12 +119,14 @@ local function toggle_telescope(available_llms)
 
 	-- Add (current) to the currently selected LLM
 	local llm_list = {}
+	local llm_listview = {}
 	local current_model = LLMConfig["model"]
 	for _, v in pairs(available_llms) do
+		table.insert(llm_list, v)
 		if v == current_model then
 			v = v .. " (current)"
 		end
-		table.insert(llm_list, v)
+		table.insert(llm_listview, v)
 	end
 
 	-- Show the picker
@@ -132,16 +134,23 @@ local function toggle_telescope(available_llms)
 		.new(opts, {
 			prompt_title = "Pick LLM",
 			finder = finders.new_table({
-				results = llm_list,
+				results = llm_listview,
 			}),
 			sorter = conf.generic_sorter(llm_list),
 			attach_mappings = function(prompt_bufnr, _)
 				actions.select_default:replace(function()
 					actions.close(prompt_bufnr)
 					local selection = action_state.get_selected_entry()
-					LLMConfig["model"] = selection[1]
-					save_config()
-					require("lazy.core.loader").reload("ChatGPT.nvim")
+					local llm_index = selection.index
+
+					if llm_index ~= nil and llm_index < #llm_list then
+						LLMConfig["model"] = llm_list[llm_index]
+						vim.notify(LLMConfig["model"] .. " was selected", vim.log.levels.INFO)
+						save_config()
+						require("lazy.core.loader").reload("ChatGPT.nvim")
+					else
+						vim.notify("Invalid model selected", vim.log.levels.ERROR)
+					end
 				end)
 				return true
 			end,
@@ -340,34 +349,12 @@ return {
 		"yetone/avante.nvim",
 		event = "VeryLazy",
 		lazy = false,
-		version = false, -- set this if you want to always pull the latest change
 		opts = {
-			provider = "ollama", -- Recommend using Claude
-			auto_suggestions_provider = "ollama", -- Since auto-suggestions are a high-frequency operation and therefore expensive, it is recommended to specify an inexpensive provider or even a free provider: copilot
-			vendors = {
-				ollama = {
-					["local"] = true,
-					endpoint = "http://localhost:11434/v1",
-					model = "llama3.1",
-					parse_curl_args = function(opts, code_opts)
-						return {
-							url = opts.endpoint .. "/chat/completions",
-							headers = {
-								["Accept"] = "application/json",
-								["Content-Type"] = "application/json",
-							},
-							body = {
-								model = opts.model,
-								messages = require("avante.providers").openai.parse_message(code_opts), -- you can make your own message, but this is very advanced
-								max_tokens = 8192,
-								stream = true,
-							},
-						}
-					end,
-					parse_response_data = function(data_stream, event_state, opts)
-						require("avante.providers").openai.parse_response(data_stream, event_state, opts)
-					end,
-				},
+			provider = "openai", -- Recommend using Claude
+			auto_suggestions_provider = "openai",
+			openai = {
+				temperature = 0,
+				max_tokens = 8196,
 			},
 			behaviour = {
 				auto_suggestions = false, -- Experimental stage
@@ -409,36 +396,20 @@ return {
 				ask = "<leader>Aa",
 				edit = "<leader>Ae",
 				refresh = "<leader>Ar",
+				focus = "<leader>Af",
 				toggle = {
 					default = "<leader>At",
 					debug = "<leader>Ad",
 					hint = "<leader>Ah",
 					suggestion = "<leader>As",
+					repomap = "<leader>AR",
 				},
 			},
 			hints = { enabled = false },
 			windows = {
-				---@type "right" | "left" | "top" | "bottom"
-				position = "right", -- the position of the sidebar
-				wrap = true, -- similar to vim.o.wrap
-				width = 30, -- default % based on available width
 				sidebar_header = {
-					align = "center", -- left, center, right for title
-					rounded = true,
+					rounded = false,
 				},
-			},
-			highlights = {
-				---@type AvanteConflictHighlights
-				diff = {
-					current = "DiffText",
-					incoming = "DiffAdd",
-				},
-			},
-			--- @class AvanteConflictUserConfig
-			diff = {
-				autojump = true,
-				---@type string | fun(): any
-				list_opener = "copen",
 			},
 		},
 		-- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
@@ -447,7 +418,40 @@ return {
 			"nvim-treesitter/nvim-treesitter",
 			"nvim-lua/plenary.nvim",
 			"MunifTanjim/nui.nvim",
-			"nvim-tree/nvim-web-devicons",
+			{
+				-- support for image pasting
+				"HakonHarnes/img-clip.nvim",
+				event = "VeryLazy",
+				opts = {
+					-- recommended settings
+					default = {
+						embed_image_as_base64 = false,
+						prompt_for_file_name = false,
+						drag_and_drop = {
+							insert_mode = true,
+						},
+						-- required for Windows users
+						use_absolute_path = true,
+					},
+				},
+			},
 		},
+		config = function(_, opts)
+			local is_valid
+
+			LLMConfig, is_valid = load_config()
+			local llm_name = get_model(LLMConfig["backend"])
+
+			if not is_valid then
+				-- Select a default LLM
+				LLMConfig["model"] = llm_name
+				save_config()
+			end
+
+			opts.openai.model = LLMConfig["model"]
+			opts.openai.endpoint = LLMConfig["backend"]
+
+			require("avante").setup(opts)
+		end,
 	},
 }
