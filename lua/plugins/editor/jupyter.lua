@@ -50,6 +50,7 @@ local function init_molten()
 		end,
 	})
 end
+
 --- Add snippet for new files.
 ---@param callback function The function to run after the snippet is added.
 local function new_notebook_snippet(callback)
@@ -172,6 +173,7 @@ return {
 		end,
 		keys = {
 			{ "<localleader>me", ":MoltenEvaluateOperator<CR>", desc = "[M]olten [E]valuate Operator", silent = true },
+			{ "<localleader>mi", ":MoltenInterrupt<CR>", desc = "[M]olten [I]nterrupt", silent = true },
 			{ "<localleader>mr", ":MoltenReevaluateCell<CR>", desc = "[M]olten [R]e-evaluate Cell", silent = true },
 			{
 				"<localleader>moe",
