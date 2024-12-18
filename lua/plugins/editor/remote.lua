@@ -7,6 +7,15 @@ return {
 			"MunifTanjim/nui.nvim", -- To build the plugin UI
 			"nvim-telescope/telescope.nvim", -- For picking b/w different remote methods
 		},
+		lazy = true,
+		cmd = {
+			"RemoteCleanup",
+			"RemoteConfigDel",
+			"RemoteInfo",
+			"RemoteLog",
+			"RemoteStart",
+			"RemoteStop",
+		},
 		opts = {
 			client_callback = function(port, workspace_config)
 				local cmd_nvim = ("nvim --server localhost:%s --remote-ui"):format(port)

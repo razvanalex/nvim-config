@@ -114,7 +114,8 @@ return {
 	{
 		"benlubas/molten-nvim",
 		version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
-		event = "VeryLazy",
+		ft = { "quarto", "markdown", "ipynb" },
+		lazy = true,
 		cond = not vim.g.vscode,
 		dependencies = { "3rd/image.nvim" },
 		build = ":UpdateRemotePlugins",
@@ -189,6 +190,7 @@ return {
 	{
 		-- Special format that works the best.
 		"quarto-dev/quarto-nvim",
+		lazy = true,
 		ft = { "quarto", "markdown" },
 		cond = not vim.g.vscode,
 		dependencies = {
