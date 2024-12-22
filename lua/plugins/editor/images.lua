@@ -2,6 +2,7 @@ return {
 	{
 		"3rd/image.nvim",
 		event = "VeryLazy",
+		cond = not vim.g.vscode,
 		opts = {
 			integrations = {
 				markdown = {

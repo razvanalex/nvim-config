@@ -1,6 +1,7 @@
 return {
 	{ -- git commands inside vim (e.g., diff, commit, mergetool, blame)
 		"tpope/vim-fugitive",
+		cond = not vim.g.vscode,
 		lazy = true,
 		cmd = {
 			"Git",
@@ -32,6 +33,7 @@ return {
 	},
 	{ -- enable :GBrowse to open current repo in GitHub
 		"tpope/vim-rhubarb",
+		cond = not vim.g.vscode,
 		dependencies = {
 			"tpope/vim-fugitive",
 		},
@@ -143,6 +145,7 @@ return {
 	},
 	{
 		"pwntester/octo.nvim",
+		cond = not vim.g.vscode,
 		cmd = {
 			"Octo",
 		},
@@ -155,6 +158,7 @@ return {
 	},
 	{
 		"polarmutex/git-worktree.nvim",
+		cond = not vim.g.vscode,
 		branch = "main",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
