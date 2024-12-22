@@ -2,7 +2,6 @@ return {
 	{
 		"3rd/image.nvim",
 		event = "VeryLazy",
-		dependencies = { "luarocks.nvim" },
 		opts = {
 			integrations = {
 				markdown = {
