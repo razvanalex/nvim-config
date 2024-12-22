@@ -160,7 +160,7 @@ end
 
 --- Return the currently picked model from the config or the first model available.
 ---@param backend string either openai or ollama
----@return string model_name the name of the model.
+---@return string|nil model_name the name of the model.
 local function get_model(backend)
 	if LLMConfig["model"] ~= nil then
 		return LLMConfig["model"]
@@ -171,7 +171,8 @@ local function get_model(backend)
 		return available_llms[1]
 	end
 
-	error("No models available. Please install at least one.")
+	vim.notify_once("LLMs: No models available. Please install at least one.")
+	return nil
 end
 
 return {
@@ -437,10 +438,14 @@ return {
 			},
 		},
 		config = function(_, opts)
+			vim.print()
 			local is_valid
 
 			LLMConfig, is_valid = load_config()
 			local llm_name = get_model(LLMConfig["backend"])
+			if llm_name == nil then
+				return
+			end
 
 			if not is_valid then
 				-- Select a default LLM
