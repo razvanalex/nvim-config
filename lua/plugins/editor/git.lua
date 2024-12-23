@@ -165,7 +165,7 @@ return {
 			"nvim-telescope/telescope-ui-select.nvim",
 		},
 		opts = {},
-		lazy = false,
+		lazy = true,
 		config = function()
 			require("telescope").load_extension("git_worktree")
 

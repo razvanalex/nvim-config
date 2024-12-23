@@ -191,6 +191,9 @@ return {
 			file_history = {
 				winbar_info = true,
 			},
+			merge_tool = {
+				layout = "diff3_mixed",
+			},
 		},
 	},
 }

@@ -1,7 +1,12 @@
 return {
 	{
 		"3rd/image.nvim",
-		event = "VeryLazy",
+		lazy = true,
+		dependencies = {
+			"leafo/magick",
+			"moteus/lua-path",
+		},
+		ft = { "markdown", "vimwiki", "quatro", "norg", "typst", "png", "jpg", "jpeg", "gif", "webp", "avif" },
 		cond = not vim.g.vscode,
 		opts = {
 			integrations = {
