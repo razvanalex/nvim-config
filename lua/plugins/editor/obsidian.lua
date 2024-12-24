@@ -3,6 +3,7 @@ return {
 		"epwalsh/obsidian.nvim",
 		version = "*",
 		lazy = true,
+        cond = (os.getenv("OBSIDIAN_VAULT_PATH") and true or false) and (not vim.g.vscode),
 		event = {
 			"BufReadPre " .. (os.getenv("OBSIDIAN_VAULT_PATH") or "") .. "*.md",
 			"BufNewFile " .. (os.getenv("OBSIDIAN_VAULT_PATH") or "") .. "*.md",

@@ -1,5 +1,6 @@
 return { -- Useful plugin to show you pending keybinds.
-	"folke/which-key.nvim",
+    "folke/which-key.nvim",
+	lazy = true,
 	cond = not vim.g.vscode,
 	event = "VeryLazy",
 	config = function() -- This is the function that runs, AFTER loading
@@ -20,7 +21,6 @@ return { -- Useful plugin to show you pending keybinds.
 			{ "<leader>g", group = "[G]it" },
 			{ "<leader>gt", group = "[G]it [T]oggle" },
 			{ "<leader>n", group = "[N]eogen" },
-			{ "<leader>q", group = "[Q]uickfix" },
 			{ "<leader>r", group = "[R]efactor" },
 			{ "<leader>re", group = "[R]efactor [E]xtract" },
 			{ "<leader>ri", group = "[R]efactor [I]nline" },

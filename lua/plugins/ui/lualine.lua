@@ -74,28 +74,21 @@ end
 
 return {
 	"nvim-lualine/lualine.nvim",
+    event = "VeryLazy",
 	cond = not vim.g.vscode,
 	opts = {
 		options = {
-			icons_enabled = true,
-			theme = "auto",
 			component_separators = { left = "|", right = "|" },
 			section_separators = { left = "", right = "" },
-			disabled_filetypes = {
-				statusline = {},
-				winbar = {},
-			},
-			ignore_focus = {},
-			always_divide_middle = true,
-			globalstatus = true,
+            always_show_tabline = false,
 			refresh = {
-				statusline = 1000,
-				tabline = 1000,
-				winbar = 1000,
+				statusline = 50,
+				tabline = 50,
+				winbar = 50,
 			},
 		},
 		sections = {
-			lualine_a = { "mode", "paste" },
+			lualine_a = { "mode" },
 			lualine_b = { "branch", "diff", "diagnostics" },
 			lualine_c = {
 				{
@@ -153,22 +146,26 @@ return {
 					hide_filename_extension = false, -- Hide filename extension when set to true.
 					show_modified_status = true, -- Shows indicator when the tab is modified.
 
-					mode = 2, -- 0: Shows tab name
+                    -- 0: Shows tab name
 					-- 1: Shows tab index
 					-- 2: Shows tab name + tab index
 					-- 3: Shows tab number
 					-- 4: Shows tab name + tab number
+					mode = 2,
 
-					max_length = vim.o.columns * 2 / 3, -- Maximum width of tabs component,
-					-- it can also be a function that returns
-					-- the value of `max_length` dynamically.
+                    -- Maximum width of tabs component,
+                    -- it can also be a function that returns
+                    -- the value of `max_length` dynamically.
+                    max_length = vim.o.columns * 2 / 3,
+
+                    -- Shows specific tab name for that filetype ( { `filetype` = `tab_name`, ... } )
 					filetype_names = {
 						TelescopePrompt = "Telescope",
 						dashboard = "Dashboard",
 						packer = "Packer",
 						fzf = "FZF",
 						alpha = "Alpha",
-					}, -- Shows specific tab name for that filetype ( { `filetype` = `tab_name`, ... } )
+					},
 
 					-- Automatically updates active tab color to match color of other components (will be overidden if tabs_color is set)
 					use_mode_colors = true,

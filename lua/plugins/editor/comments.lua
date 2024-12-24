@@ -2,6 +2,7 @@ return {
 	{
 		"numToStr/Comment.nvim",
 		event = "VeryLazy",
+		lazy = true,
 		cond = not vim.g.vscode,
 		opts = {},
 		init = function()
@@ -11,14 +12,19 @@ return {
 	},
 	{ -- Highlight todo, notes, etc in comments
 		"folke/todo-comments.nvim",
+		lazy = true,
 		cond = not vim.g.vscode,
 		event = "VeryLazy",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		opts = {
 			signs = false,
 		},
-		init = function()
-			vim.keymap.set("n", "<leader>tc", [[<Cmd>TodoTrouble<CR>]], { desc = "[T]rouble TODO [C]omments" })
-		end,
+        keys = {
+            {
+                "<leader>tc",
+                "<CMD>TodoTrouble<CR>",
+                desc = "[T]rouble TODO [C]omments",
+            },
+        },
 	},
 }

@@ -1,5 +1,7 @@
 return {
 	"folke/zen-mode.nvim",
+    cond = not vim.g.vscode,
+	lazy = true,
 	cmd = "ZenMode",
 	opts = {
 		window = {

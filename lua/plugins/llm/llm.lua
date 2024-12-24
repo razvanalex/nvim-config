@@ -178,6 +178,8 @@ end
 return {
 	{
 		"huggingface/llm.nvim",
+        enabled = false,
+		lazy = true,
 		cond = not vim.g.vscode,
 		event = "InsertEnter",
 		cmd = {
@@ -217,6 +219,7 @@ return {
 	},
 	{
 		"jackMort/ChatGPT.nvim",
+		lazy = true,
 		cond = not vim.g.vscode,
 		cmd = {
 			"ChatGPT",

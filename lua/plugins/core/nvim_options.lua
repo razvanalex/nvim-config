@@ -136,6 +136,12 @@ vim.g.python3_host_prog = vim.fn.expand(vim.g.pyenv .. "/bin/python3")
 vim.filetype.add({
 	pattern = {
 		[".*.ipynb"] = "ipynb",
+        [".*.png"] = "png",
+        [".*.jpg"] = "jpg",
+        [".*.jpeg"] = "jpeg",
+        [".*.gif"] = "gif",
+        [".*.webp"] = "webp",
+        [".*.avif"] = "avif",
 	},
 })
 vim.treesitter.language.register("markdown", { "vimwiki", "octo" })

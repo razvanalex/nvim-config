@@ -1,6 +1,7 @@
 return { -- Session
 	"rmagatti/auto-session",
-	enabled = false,
+	lazy = true,
+	enabled = false, -- Disabled ATM
 	dependencies = {
 		"nvim-telescope/telescope.nvim",
 	},
@@ -16,9 +17,7 @@ return { -- Session
 		},
 		suppressed_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
 	},
-	config = function(_, opts)
-		vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
-
-		require("auto-session").setup(opts)
-	end,
+    init = function()
+        vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+    end,
 }

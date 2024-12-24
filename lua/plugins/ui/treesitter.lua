@@ -32,7 +32,7 @@ return {
 			"TSUpdate",
 			"TSUpdateSync",
 		},
-		lazy = true,
+		lazy = false,
 		config = function()
 			-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
 

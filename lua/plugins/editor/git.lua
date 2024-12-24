@@ -3,6 +3,9 @@ return {
 		"tpope/vim-fugitive",
 		cond = not vim.g.vscode,
 		lazy = true,
+        dependencies = {
+            "tpope/vim-rhubarb",
+        },
 		cmd = {
 			"Git",
 			"Gedit",
@@ -42,6 +45,7 @@ return {
 	},
 	{
 		"lewis6991/gitsigns.nvim",
+		lazy = true,
 		event = "VeryLazy",
 		cond = not vim.g.vscode,
 		config = function()
@@ -145,6 +149,7 @@ return {
 	},
 	{
 		"pwntester/octo.nvim",
+		lazy = true,
 		cond = not vim.g.vscode,
 		cmd = {
 			"Octo",
