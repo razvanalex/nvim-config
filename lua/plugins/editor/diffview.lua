@@ -18,7 +18,7 @@ return {
 			view_opened = function(view)
 				-- Highlight 'DiffChange' as 'DiffDelete' on the left, and 'DiffAdd' on the right.
 				local function post_layout()
-                    local tbl = require("plugins.utils.table")
+					local tbl = require("plugins.utils.table")
 
 					tbl.ensure(view, "winopts.diff2.a")
 					tbl.ensure(view, "winopts.diff2.b")

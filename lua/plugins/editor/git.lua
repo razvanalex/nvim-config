@@ -3,9 +3,9 @@ return {
 		"tpope/vim-fugitive",
 		cond = not vim.g.vscode,
 		lazy = true,
-        dependencies = {
-            "tpope/vim-rhubarb",
-        },
+		dependencies = {
+			"tpope/vim-rhubarb",
+		},
 		cmd = {
 			"Git",
 			"Gedit",

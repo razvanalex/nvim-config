@@ -19,12 +19,12 @@ return {
 		opts = {
 			signs = false,
 		},
-        keys = {
-            {
-                "<leader>tc",
-                "<CMD>TodoTrouble<CR>",
-                desc = "[T]rouble TODO [C]omments",
-            },
-        },
+		keys = {
+			{
+				"<leader>tc",
+				"<CMD>TodoTrouble<CR>",
+				desc = "[T]rouble TODO [C]omments",
+			},
+		},
 	},
 }

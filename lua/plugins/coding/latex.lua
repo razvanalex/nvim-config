@@ -2,8 +2,8 @@ return {
 	{
 		"lervag/vimtex",
 		lazy = true,
-        cond = not vim.g.vscode,
-        ft = { "latex", "tex" },
+		cond = not vim.g.vscode,
+		ft = { "latex", "tex" },
 		-- tag = "v2.15", -- uncomment to pin to a specific release
 		init = function()
 			vim.g.vimtex_view_method = "zathura"

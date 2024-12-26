@@ -5,7 +5,7 @@ return {
 			"leafo/magick",
 			"moteus/lua-path",
 		},
-        -- lazy = true,
+		-- lazy = true,
 		-- ft = { "markdown", "vimwiki", "quatro", "norg", "typst", "png", "jpg", "jpeg", "gif", "webp", "avif" },
 		cond = not vim.g.vscode,
 		opts = {
@@ -18,10 +18,10 @@ return {
 			max_height = 12,
 			max_height_window_percentage = math.huge,
 			max_width_window_percentage = math.huge,
-            editor_only_render_when_focused = true,
-            tmux_show_only_in_active_window = true,
+			editor_only_render_when_focused = true,
+			tmux_show_only_in_active_window = true,
 			window_overlap_clear_enabled = true,
-			window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "", },
+			window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
 		},
 	},
 }

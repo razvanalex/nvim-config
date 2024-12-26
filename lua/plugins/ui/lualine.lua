@@ -74,13 +74,13 @@ end
 
 return {
 	"nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
+	event = "VeryLazy",
 	cond = not vim.g.vscode,
 	opts = {
 		options = {
 			component_separators = { left = "|", right = "|" },
 			section_separators = { left = "", right = "" },
-            always_show_tabline = false,
+			always_show_tabline = false,
 			refresh = {
 				statusline = 50,
 				tabline = 50,
@@ -146,19 +146,19 @@ return {
 					hide_filename_extension = false, -- Hide filename extension when set to true.
 					show_modified_status = true, -- Shows indicator when the tab is modified.
 
-                    -- 0: Shows tab name
+					-- 0: Shows tab name
 					-- 1: Shows tab index
 					-- 2: Shows tab name + tab index
 					-- 3: Shows tab number
 					-- 4: Shows tab name + tab number
 					mode = 2,
 
-                    -- Maximum width of tabs component,
-                    -- it can also be a function that returns
-                    -- the value of `max_length` dynamically.
-                    max_length = vim.o.columns * 2 / 3,
+					-- Maximum width of tabs component,
+					-- it can also be a function that returns
+					-- the value of `max_length` dynamically.
+					max_length = vim.o.columns * 2 / 3,
 
-                    -- Shows specific tab name for that filetype ( { `filetype` = `tab_name`, ... } )
+					-- Shows specific tab name for that filetype ( { `filetype` = `tab_name`, ... } )
 					filetype_names = {
 						TelescopePrompt = "Telescope",
 						dashboard = "Dashboard",

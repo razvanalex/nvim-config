@@ -8,7 +8,7 @@ return {
 			"nvim-telescope/telescope.nvim", -- For picking b/w different remote methods
 		},
 		lazy = true,
-        cond = not vim.g.vscode,
+		cond = not vim.g.vscode,
 		cmd = {
 			"RemoteCleanup",
 			"RemoteConfigDel",
