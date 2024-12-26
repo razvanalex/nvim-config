@@ -145,3 +145,23 @@ vim.filetype.add({
 	},
 })
 vim.treesitter.language.register("markdown", { "vimwiki", "octo" })
+
+-- Terminal settings
+vim.api.nvim_create_autocmd("TermOpen", {
+	group = vim.api.nvim_create_augroup("custom-term-open", { clear = true }),
+	callback = function()
+		vim.opt_local.number = false
+		vim.opt_local.relativenumber = false
+		vim.opt_local.statuscolumn = ""
+		vim.opt_local.spell = false
+		vim.opt_local.foldcolumn = "0"
+		vim.opt_local.signcolumn = "no"
+	end,
+})
+
+vim.api.nvim_create_user_command("Terminal", function()
+	vim.cmd.vnew()
+	vim.cmd.term()
+	vim.cmd.wincmd("J")
+	vim.api.nvim_win_set_height(0, 10)
+end, {})
