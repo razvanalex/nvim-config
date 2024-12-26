@@ -23,6 +23,7 @@ vim.opt.splitright = true
 -- line numbers
 vim.opt.number = true
 vim.opt.relativenumber = true
+vim.opt.numberwidth = 1
 
 -- tabs
 vim.opt.tabstop = 4
