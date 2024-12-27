@@ -16,31 +16,30 @@ return {
 		"NvimTreeResize",
 		"NvimTreeToggle",
 	},
-	config = function()
-		require("nvim-tree").setup({
-			hijack_directories = {
+	keys = {
+		{ "<C-b>", ":NvimTreeToggle<CR>", mode = { "n", "v", "s", "o" }, desc = "Toggle NvimTree" },
+	},
+	opts = {
+		hijack_directories = {
+			enable = true,
+			auto_open = false,
+		},
+		git = {
+			enable = false,
+			ignore = true,
+		},
+		renderer = {
+			indent_markers = {
 				enable = true,
-				auto_open = false,
 			},
-			git = {
-				enable = false,
-				ignore = true,
-			},
-			renderer = {
-				indent_markers = {
-					enable = true,
-				},
-				icons = {
-					show = {
-						file = true,
-						folder = true,
-						folder_arrow = true,
-						git = false,
-					},
+			icons = {
+				show = {
+					file = true,
+					folder = true,
+					folder_arrow = true,
+					git = false,
 				},
 			},
-
-			vim.keymap.set({ "n", "v", "s", "o" }, "<C-b>", ":NvimTreeToggle<CR>"),
-		})
-	end,
+		},
+	},
 }

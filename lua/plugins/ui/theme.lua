@@ -1,6 +1,7 @@
 return {
 	{ -- vscode color theme
 		"Mofiqul/vscode.nvim",
+		lazy = true,
 		priority = 1000, -- make sure to load this before all the other start plugins
 		cond = not vim.g.vscode,
 		opts = {
@@ -26,7 +27,7 @@ return {
 			},
 		},
 	},
-	{
+	{ -- catppuccin color scheme
 		"catppuccin/nvim",
 		name = "catppuccin",
 		event = "VimEnter",
@@ -99,14 +100,15 @@ return {
 			vim.cmd.colorscheme("catppuccin")
 		end,
 	},
-	{
+	{ -- web icons
 		"nvim-tree/nvim-web-devicons",
-		lazy = true,
+		cond = not vim.g.vscode,
 		enabled = vim.g.have_nerd_font,
 	},
 	{ -- syntax highlight for kitty terminal config
 		"fladson/vim-kitty",
 		lazy = true,
+		ft = { "kitty" },
 		cond = not vim.g.vscode,
 	},
 }

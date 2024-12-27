@@ -1,19 +1,22 @@
 return { -- manage buffers easier
 	"theprimeagen/harpoon",
+	dependencies = {
+		"nvim-lua/plenary.nvim",
+		"nvim-telescope/telescope.nvim", -- for theming
+	},
 	lazy = true,
-	branch = "harpoon2",
-	dependencies = { "nvim-lua/plenary.nvim" },
 	cond = not vim.g.vscode,
+	branch = "harpoon2",
 	keys = {
 		{
-			"<leader>a",
+			"<M-a>",
 			function()
 				require("harpoon"):list():add()
 			end,
 			desc = "Harpoon [A]dd Buffer",
 		},
 		{
-			"<C-e>",
+			"<M-e>",
 			function()
 				local harpoon = require("harpoon")
 				harpoon.ui:toggle_quick_menu(harpoon:list(), {
@@ -24,7 +27,7 @@ return { -- manage buffers easier
 					ui_max_width = 100,
 				})
 			end,
-			desc = "Open Harpoon List",
+			desc = "Op[e]n Harpoon List",
 		},
 		{
 			"<C-h>",

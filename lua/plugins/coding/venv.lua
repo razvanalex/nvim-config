@@ -1,9 +1,9 @@
 return {
 	"linux-cultist/venv-selector.nvim",
+	lazy = true,
 	ft = "python",
 	branch = "regexp",
 	cond = not vim.g.vscode,
-	event = "VeryLazy",
 	dependencies = {
 		"neovim/nvim-lspconfig",
 		"nvim-telescope/telescope.nvim",

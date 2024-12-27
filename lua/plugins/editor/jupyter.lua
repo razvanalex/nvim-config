@@ -319,7 +319,7 @@ return {
 	{
 		-- LSP inside markdown and quarto
 		"jmbuhr/otter.nvim",
-		event = "VeryLazy",
+		lazy = true,
 		ft = { "quatro", "markdown" },
 		cond = not vim.g.vscode,
 		dependencies = {
@@ -330,6 +330,7 @@ return {
 	{
 		-- Convert jupyter notebooks to quarto/markdown and the other way
 		"GCBallesteros/jupytext.nvim",
+		lazy = true,
 		ft = "ipynb",
 		cond = not vim.g.vscode,
 		opts = {

@@ -1,14 +1,7 @@
 return { -- fancy undo
 	"mbbill/undotree",
-	cmd = {
-		"UndotreeFocus",
-		"UndotreeHide",
-		"UndotreePersistUndo",
-		"UndotreeShow",
-		"UndotreeToggle",
-	},
 	cond = not vim.g.vscode,
-	lazy = true,
+	event = "VeryLazy",
 	keys = {
 		{ "<leader>u", vim.cmd.UndotreeToggle, desc = "[U]ndoTree Toggle" },
 	},

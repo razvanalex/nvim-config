@@ -178,6 +178,8 @@ end
 return {
 	{
 		"huggingface/llm.nvim",
+		enabled = false,
+		lazy = true,
 		cond = not vim.g.vscode,
 		event = "InsertEnter",
 		cmd = {
@@ -217,6 +219,7 @@ return {
 	},
 	{
 		"jackMort/ChatGPT.nvim",
+		lazy = true,
 		cond = not vim.g.vscode,
 		cmd = {
 			"ChatGPT",
@@ -348,8 +351,74 @@ return {
 	},
 	{
 		"yetone/avante.nvim",
-		event = "VeryLazy",
-		lazy = false,
+		lazy = true,
+		cmd = {
+			"AvanteAsk",
+			"AvanteBuild",
+			"AvanteChat",
+			"AvanteClear",
+			"AvanteEdit",
+			"AvanteFocus",
+			"AvanteRefresh",
+			"AvanteShowRepoMap",
+			"AvanteSwitchProvider",
+			"AvanteToggle",
+		},
+		keys = function(_, keys)
+			---@type avante.Config
+			local opts = require("lazy.core.plugin").values(
+				require("lazy.core.config").spec.plugins["avante.nvim"],
+				"opts",
+				false
+			)
+
+			local mappings = {
+				{
+					opts.mappings.ask,
+					function()
+						require("avante.api").ask()
+					end,
+					desc = "avante: ask",
+					mode = { "n", "v" },
+				},
+				{
+					opts.mappings.edit,
+					function()
+						require("avante.api").edit()
+					end,
+					desc = "avante: edit",
+					mode = { "n", "v" },
+				},
+				{
+					opts.mappings.refresh,
+					function()
+						require("avante.api").refresh()
+					end,
+					desc = "avante: refresh",
+					mode = "n",
+				},
+				{
+					opts.mappings.focus,
+					function()
+						require("avante.api").focus()
+					end,
+					desc = "avante: focus",
+					mode = "n",
+				},
+				{
+					opts.mappings.files.add_current,
+					function()
+						require("avante.api").focus()
+					end,
+					desc = "avante: add current buffer to file selector",
+					mode = "n",
+				},
+			}
+			mappings = vim.tbl_filter(function(m)
+				return m[1] and #m[1] > 0
+			end, mappings)
+			return vim.list_extend(mappings, keys)
+		end,
 		opts = {
 			provider = "openai", -- Recommend using Claude
 			auto_suggestions_provider = "openai",
@@ -394,16 +463,19 @@ return {
 					reverse_switch_windows = "<S-Tab>",
 				},
 				-- Overwrite defaults
-				ask = "<leader>Aa",
-				edit = "<leader>Ae",
-				refresh = "<leader>Ar",
-				focus = "<leader>Af",
+				ask = "<leader>aa",
+				edit = "<leader>ae",
+				refresh = "<leader>ar",
+				focus = "<leader>af",
 				toggle = {
-					default = "<leader>At",
-					debug = "<leader>Ad",
-					hint = "<leader>Ah",
-					suggestion = "<leader>As",
-					repomap = "<leader>AR",
+					default = "<leader>at",
+					debug = "<leader>ad",
+					hint = "<leader>ah",
+					suggestion = "<leader>as",
+					repomap = "<leader>aR",
+				},
+				files = {
+					add_current = "<leader>ac", -- Add current buffer to selected files
 				},
 			},
 			hints = { enabled = false },

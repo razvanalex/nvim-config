@@ -32,14 +32,14 @@ return {
 			"TSUpdate",
 			"TSUpdateSync",
 		},
-		lazy = true,
+		lazy = false,
 		config = function()
 			-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
 
 			---@diagnostic disable-next-line: missing-fields
 			require("nvim-treesitter.configs").setup({
 				-- A list of parser names, or "all"
-				ensure_installed = { "bash", "lua", "python", "markdown" },
+				ensure_installed = { "bash", "lua", "python", "markdown", "markdown_inline" },
 
 				-- Install parsers synchronously (only applied to `ensure_installed`)
 				sync_install = false,

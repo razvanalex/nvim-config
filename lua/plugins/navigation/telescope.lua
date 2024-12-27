@@ -1,11 +1,7 @@
 return {
-	{
-		-- FIXME: not working yet
-		"nvim-telescope/telescope-media-files.nvim",
-		lazy = true,
-	},
 	{ -- fuzzy finder
 		"nvim-telescope/telescope.nvim",
+		lazy = true,
 		cond = not vim.g.vscode,
 		cmd = "Telescope",
 		branch = "master", -- stable: 0.1.x
@@ -26,6 +22,7 @@ return {
 			},
 			{ "nvim-telescope/telescope-ui-select.nvim" },
 			{ "nvim-telescope/telescope-live-grep-args.nvim" },
+			{ "nvim-telescope/telescope-media-files.nvim" }, -- FIXME: not working
 
 			-- Useful for getting pretty icons, but requires a Nerd Font.
 			{ "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
@@ -252,11 +249,10 @@ return {
 	},
 	{
 		"ibhagwan/fzf-lua",
-		-- optional for icon support
 		dependencies = { "nvim-tree/nvim-web-devicons" },
-		config = function()
-			-- calling `setup` is optional for customization
-			require("fzf-lua").setup({})
-		end,
+		cond = not vim.g.vscode,
+		lazy = true,
+		cmd = { "FzfLua" },
+		opts = {},
 	},
 }

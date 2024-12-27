@@ -1,7 +1,11 @@
 return {
 	{ -- git commands inside vim (e.g., diff, commit, mergetool, blame)
 		"tpope/vim-fugitive",
+		cond = not vim.g.vscode,
 		lazy = true,
+		dependencies = {
+			"tpope/vim-rhubarb",
+		},
 		cmd = {
 			"Git",
 			"Gedit",
@@ -32,6 +36,7 @@ return {
 	},
 	{ -- enable :GBrowse to open current repo in GitHub
 		"tpope/vim-rhubarb",
+		cond = not vim.g.vscode,
 		dependencies = {
 			"tpope/vim-fugitive",
 		},
@@ -40,6 +45,7 @@ return {
 	},
 	{
 		"lewis6991/gitsigns.nvim",
+		lazy = true,
 		event = "VeryLazy",
 		cond = not vim.g.vscode,
 		config = function()
@@ -143,6 +149,8 @@ return {
 	},
 	{
 		"pwntester/octo.nvim",
+		lazy = true,
+		cond = not vim.g.vscode,
 		cmd = {
 			"Octo",
 		},
@@ -155,13 +163,14 @@ return {
 	},
 	{
 		"polarmutex/git-worktree.nvim",
+		cond = not vim.g.vscode,
 		branch = "main",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-telescope/telescope-ui-select.nvim",
 		},
 		opts = {},
-		lazy = false,
+		lazy = true,
 		config = function()
 			require("telescope").load_extension("git_worktree")
 

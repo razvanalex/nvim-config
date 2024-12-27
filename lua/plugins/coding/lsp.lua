@@ -1,124 +1,10 @@
 return {
 	{
-		"folke/neodev.nvim",
-		lazy = true,
-		opts = {},
-	},
-	{ -- shows issues in code (like Problems in vscode)
-		"folke/trouble.nvim",
+		"folke/lazydev.nvim",
 		cond = not vim.g.vscode,
-		cmd = "Trouble",
-		dependencies = {
-			{ "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
-		},
-		opts = {
-			use_diagnostic_signs = true,
-		},
-		keys = {
-			{
-				"<leader>tt",
-				function()
-					local trouble = require("trouble")
-					if trouble.last_mode == nil then
-						require("trouble").toggle("diagnostics")
-					else
-						require("trouble").toggle(trouble.last_mode)
-					end
-				end,
-				desc = "[T]rouble [T]oggle",
-			},
-			{
-				"<leader>td",
-				function()
-					require("trouble").toggle("diagnostics")
-				end,
-				desc = "[T]rouble [D]iagnostics",
-			},
-			{
-				"<leader>tq",
-				function()
-					require("trouble").toggle("quickfix")
-				end,
-				desc = "[T]rouble [Q]uickfix",
-			},
-			{
-				"<leader>tL",
-				function()
-					require("trouble").toggle("loclist")
-				end,
-				desc = "[T]rouble [L]oclist",
-			},
-			{
-				"<leader>tlD",
-				function()
-					require("trouble").toggle("lsp_declarations")
-				end,
-				desc = "[T]rouble [L]SP [D]eclarations",
-			},
-			{
-				"<leader>tld",
-				function()
-					require("trouble").toggle("lsp_definitions")
-				end,
-				desc = "[T]rouble [L]SP [D]efinitions",
-			},
-			{
-				"<leader>tls",
-				function()
-					require("trouble").toggle("lsp_document_symbols")
-				end,
-				desc = "[T]rouble [L]SP Document [S]ymbols",
-			},
-			{
-				"<leader>tlI",
-				function()
-					require("trouble").toggle("lsp_implementations")
-				end,
-				desc = "[T]rouble [L]SP [I]mplementations",
-			},
-			{
-				"<leader>tli",
-				function()
-					require("trouble").toggle("lsp_incoming_calls")
-				end,
-				desc = "[T]rouble [L]SP [I]ncomming Calls",
-			},
-			{
-				"<leader>tlo",
-				function()
-					require("trouble").toggle("lsp_outgoing_calls")
-				end,
-				desc = "[T]rouble [L]SP [O]utgoing Calls",
-			},
-			{
-				"<leader>tlr",
-				function()
-					require("trouble").toggle("lsp_references")
-				end,
-				desc = "[T]rouble [L]SP [R]references",
-			},
-			{
-				"<leader>tlt",
-				function()
-					require("trouble").toggle("lsp_type_definitions")
-				end,
-				desc = "[T]rouble [L]SP [T]ype Definitions",
-			},
-			{
-				"]t",
-				function()
-					require("trouble").next({ skip_groups = true, jump = true })
-				end,
-				desc = "[T]rouble Next",
-			},
-			{
-				"[t",
-				function()
-					require("trouble").prev({ skip_groups = true, jump = true })
-				end,
-				desc = "[T]rouble Previous",
-			},
-		},
+		lazy = true,
+		ft = "lua",
+		opts = {},
 	},
 	{
 		"neovim/nvim-lspconfig",
@@ -131,7 +17,7 @@ return {
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 
 			-- Useful status updates for LSP.
-			{ "j-hui/fidget.nvim", event = "VeryLazy", opts = {} },
+			{ "j-hui/fidget.nvim", opts = {} },
 		},
 		config = function()
 			vim.diagnostic.config({
@@ -139,7 +25,6 @@ return {
 			})
 
 			-- init neodev
-			require("neodev").setup({})
 			local lspconfig = require("lspconfig")
 			lspconfig.lua_ls.setup({
 				settings = {
@@ -149,17 +34,6 @@ return {
 						},
 					},
 				},
-			})
-
-			-- lsp theming
-			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-				border = "single",
-			})
-			vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-				border = "single",
-				focusable = true,
-				relative = "cursor",
-				silent = true,
 			})
 
 			-- attach
@@ -213,10 +87,14 @@ return {
 					map("gl", vim.diagnostic.open_float, "Show Diagnostics")
 
 					-- Next diagnostics
-					map("[d", vim.diagnostic.goto_next, "Next Diagnostic")
+					map("[d", function()
+						vim.diagnostic.jump({ count = 1, float = true })
+					end, "Next Diagnostic")
 
 					-- Next diagnostics
-					map("]d", vim.diagnostic.goto_prev, "Next Diagnostic")
+					map("]d", function()
+						vim.diagnostic.jump({ count = -1, float = true })
+					end, "Next Diagnostic")
 
 					-- Fuzzy find all the symbols in your current document.
 					--  Symbols are things like variables, functions, types, etc.
@@ -317,7 +195,7 @@ return {
 						)(fname) or require("lspconfig.util").root_pattern(
 							"compile_commands.json",
 							"compile_flags.txt"
-						)(fname) or require("lspconfig.util").find_git_ancestor(fname)
+						)(fname) or vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
 					end,
 					capabilities = {
 						offsetEncoding = { "utf-16" },
@@ -407,6 +285,7 @@ return {
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 			require("mason-lspconfig").setup({
+				automatic_installation = false,
 				ensure_installed = {
 					"lua_ls", -- Lua LSP
 					"basedpyright", -- Python LSP
@@ -440,16 +319,22 @@ return {
 				border = "single", -- double, rounded, single, shadow, none, or a table of borders
 			},
 		},
-		config = function(_, opts)
-			require("lsp_signature").setup(opts)
-
-			vim.keymap.set({ "n" }, "<leader>k", function()
-				require("lsp_signature").toggle_float_win()
-			end, { silent = true, noremap = true, desc = "LSP: Toggle Signature" })
-		end,
+		keys = {
+			{
+				"<leader>k",
+				function()
+					require("lsp_signature").toggle_float_win()
+				end,
+				mode = "n",
+				silent = true,
+				noremap = true,
+				desc = "LSP: Toggle Signature",
+			},
+		},
 	},
 	{ -- auto-generate docstrings
 		"danymat/neogen",
+		cond = not vim.g.vscode,
 		cmd = "Neogen",
 		opts = {
 			snippet_engine = "luasnip",

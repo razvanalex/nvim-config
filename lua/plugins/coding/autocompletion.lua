@@ -1,5 +1,6 @@
 return {
 	"hrsh7th/nvim-cmp",
+	lazy = true,
 	event = "InsertEnter",
 	cond = not vim.g.vscode,
 	dependencies = {
@@ -82,6 +83,7 @@ return {
 				end, { "i", "s" }),
 			}),
 			sources = {
+				{ name = "lazydev" },
 				{ name = "path" },
 				{ name = "nvim_lsp" },
 				{ name = "nvim_lua" },
