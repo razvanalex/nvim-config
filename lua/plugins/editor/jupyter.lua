@@ -20,7 +20,20 @@ local function init_molten()
 			if kernel_name ~= nil and vim.tbl_contains(kernels, kernel_name) then
 				vim.cmd(("MoltenInit %s"):format(kernel_name))
 			end
-			vim.cmd("MoltenImportOutput")
+			local function molten_import_output()
+				vim.cmd("MoltenImportOutput")
+			end
+			local function delayed_molten_import_output()
+				local timer = vim.loop.new_timer()
+				if timer == nil then
+					vim.schedule_wrap(molten_import_output)
+					return
+				end
+				-- Need to delay, since it seems MoltenInit is async.
+				-- 500ms should be enough.
+				timer:start(500, 0, vim.schedule_wrap(molten_import_output))
+			end
+			delayed_molten_import_output()
 		end)
 	end
 
@@ -117,7 +130,11 @@ return {
 		ft = { "quarto", "markdown", "ipynb" },
 		lazy = true,
 		cond = not vim.g.vscode,
-		dependencies = { "3rd/image.nvim" },
+		dependencies = {
+			"3rd/image.nvim",
+			"nvim-telescope/telescope.nvim",
+			"GCBallesteros/jupytext.nvim",
+		},
 		build = ":UpdateRemotePlugins",
 		init = function()
 			local jobs = require("plugins.utils.jobs")
