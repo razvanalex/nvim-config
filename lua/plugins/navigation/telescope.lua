@@ -124,6 +124,14 @@ return {
 				desc = "[F]uzzy File [F]inder",
 			},
 			{
+				"<leader>fb",
+				function()
+					require("telescope.builtin").buffers()
+				end,
+				mode = "n",
+				desc = "[F]uzzy [B]uffers",
+			},
+			{
 				"<leader>fg",
 				function()
 					require("telescope").extensions.live_grep_args.live_grep_args()
