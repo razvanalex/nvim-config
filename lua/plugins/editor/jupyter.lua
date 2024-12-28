@@ -186,7 +186,6 @@ return {
 				end,
 			})
 
-			-- FIXME:
 			init_molten()
 		end,
 		keys = {
@@ -215,26 +214,8 @@ return {
 			"nvim-treesitter/nvim-treesitter",
 		},
 		opts = {
-			debug = false,
-			closePreviewOnExit = true,
 			lspFeatures = {
-				enabled = true,
 				chunks = "all",
-				languages = { "r", "python", "julia", "bash", "html" },
-				diagnostics = {
-					enabled = true,
-					triggers = { "BufWritePost" },
-				},
-				completion = {
-					enabled = true,
-				},
-			},
-			keymap = {
-				hover = "K",
-				definition = "gd",
-				rename = "<F2>",
-				references = "grr",
-				format = "==",
 			},
 			codeRunner = {
 				enabled = true,
@@ -244,10 +225,6 @@ return {
 				never_run = { "yaml" }, -- filetypes which are never sent to a code runner
 			},
 		},
-		config = function(_, opts)
-			require("quarto").setup(opts)
-			require("quarto").activate()
-		end,
 		keys = {
 			{
 				"<localleader><CR>",
