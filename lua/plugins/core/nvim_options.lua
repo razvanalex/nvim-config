@@ -98,7 +98,9 @@ vim.opt.showmode = false
 vim.opt.laststatus = 3
 
 -- spell check
-vim.opt.spell = true
+if not vim.g.vscode then
+	vim.opt.spell = true
+end
 
 -- mouse support
 vim.opt.mouse = "a"
