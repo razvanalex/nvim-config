@@ -351,6 +351,7 @@ return {
 	},
 	{
 		"yetone/avante.nvim",
+		cond = not vim.g.vscode,
 		lazy = true,
 		cmd = {
 			"AvanteAsk",
