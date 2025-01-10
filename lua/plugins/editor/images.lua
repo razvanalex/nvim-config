@@ -1,9 +1,8 @@
 return {
 	{
 		"3rd/image.nvim",
-		dependencies = {
-			"leafo/magick",
-			"moteus/lua-path",
+		rocks = {
+			hererocks = true,
 		},
 		-- lazy = true,
 		-- ft = { "markdown", "vimwiki", "quatro", "norg", "typst", "png", "jpg", "jpeg", "gif", "webp", "avif" },

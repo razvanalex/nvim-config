@@ -1,1 +1,3 @@
-return {}
+return {
+	"moteus/lua-path",
+}
