@@ -40,22 +40,12 @@ return {
 			vim.api.nvim_set_hl(0, "DapStopped", { bg = "#494a10" })
 
 			-- set dap ui
-			local dap, dapui = require("dap"), require("dapui")
+			local dapui = require("dapui")
 
 			---@diagnostic disable-next-line: missing-fields
 			dapui.setup({
 				expand_lines = false,
 			})
-
-			dap.listeners.before.attach.dapui_config = function()
-				dapui.open()
-			end
-			dap.listeners.before.launch.dapui_config = function()
-				dapui.open()
-			end
-			dap.listeners.before.event_exited.dapui_config = function()
-				dapui.close()
-			end
 		end,
 		keys = {
 			{
@@ -195,28 +185,56 @@ return {
 				desc = "[D]ebugger [S]tep [O]ut",
 			},
 			{
-				"<leader>db",
+				"<leader>dB",
 				function()
 					require("dap").toggle_breakpoint()
 				end,
 				mode = "n",
-				desc = "[D]ebugger Toggle [B]reakpoint",
+				desc = "[D]ebugger [B]reakpoint Toggle",
 			},
 			{
-				"<leader>dB",
+				"<leader>dbb",
 				function()
 					require("dap").set_breakpoint()
 				end,
 				mode = "n",
-				desc = "[D]ebugger Set [B]reakpoint",
+				desc = "[D]ebugger [B]reakpoint Set",
 			},
 			{
-				"<leader>dLp",
+				"<leader>dbc",
+				function()
+					require("dap").set_breakpoint(vim.fn.input("Condition: "), nil, nil)
+				end,
+				mode = "n",
+				desc = "[D]ebugger [B]reakpoint [C]ondition",
+			},
+			{
+				"<leader>dbh",
+				function()
+					require("dap").set_breakpoint(nil, vim.fn.input("Hit condition:"), nil)
+				end,
+				mode = "n",
+				desc = "[D]ebugger [B]reakpoint [H]it Condition",
+			},
+			{
+				"<leader>dbl",
 				function()
 					require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
 				end,
 				mode = "n",
-				desc = "[D]ebugger Set [L]og [P]oint",
+				desc = "[D]ebugger [B]reakpoint [L]og Point",
+			},
+			{
+				"<leader>dbC",
+				function()
+					require("dap").set_breakpoint(
+						vim.fn.input("Condition: "),
+						vim.fn.input("Hit Condition: "),
+						vim.fn.input("Log point message: ")
+					)
+				end,
+				mode = "n",
+				desc = "[D]ebugger [B]reakpoint [C]ustom",
 			},
 			{
 				"<leader>dor",
@@ -291,14 +309,14 @@ return {
 				function()
 					require("dapui").open()
 				end,
-				desc = "[D]ebugger Open [D]AP mode",
+				desc = "[D]ebugger [D]AP UI",
 			},
 			{
 				"<leader>dc",
 				function()
 					require("dapui").close()
 				end,
-				desc = "[D]ebugger [C]lose DAP mode",
+				desc = "[D]ebugger [C]lose DAP UI",
 			},
 		},
 	},
