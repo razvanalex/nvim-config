@@ -532,4 +532,40 @@ return {
 			require("avante").setup(opts)
 		end,
 	},
+	{
+		"olimorris/codecompanion.nvim",
+		dependencies = {
+			"nvim-telescope/telescope.nvim",
+			{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+			{ "nvim-lua/plenary.nvim" },
+			{ "hrsh7th/nvim-cmp" },
+		},
+		opts = {
+			--Refer to: https://github.com/olimorris/codecompanion.nvim/blob/main/lua/codecompanion/config.lua
+			strategies = {
+				agent = { adapter = "ollama" },
+				chat = { adapter = "ollama" },
+				inline = { adapter = "ollama" },
+			},
+			opts = {
+				log_level = "DEBUG",
+			},
+			display = {
+				chat = {
+					show_settings = true,
+				},
+			},
+			adapters = {
+				ollama = function()
+					return require("codecompanion.adapters").extend("ollama", {
+						schema = {
+							model = {
+								default = "qwen2.5-coder:14b",
+							},
+						},
+					})
+				end,
+			},
+		},
+	},
 }
