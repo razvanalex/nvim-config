@@ -540,6 +540,16 @@ return {
 			{ "nvim-lua/plenary.nvim" },
 			{ "hrsh7th/nvim-cmp" },
 		},
+		cmd = {
+			"CodeCompanion",
+			"CodeCompanionActions",
+			"CodeCompanionChat",
+			"CodeCompanionCmd",
+		},
+		keys = {
+			{ "<leader>cc", ":CodeCompanionChat<CR>", desc = "Open [C]odeCompanion [C]hat", mode = "n" },
+			{ "<leader>ca", ":CodeCompanionActions<CR>", desc = "Open [C]odeCompanion [A]ctions", mode = "n" },
+		},
 		opts = {
 			--Refer to: https://github.com/olimorris/codecompanion.nvim/blob/main/lua/codecompanion/config.lua
 			strategies = {
