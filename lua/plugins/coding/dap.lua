@@ -185,7 +185,7 @@ return {
 				desc = "[D]ebugger [S]tep [O]ut",
 			},
 			{
-				"<leader>dB",
+				"<leader>db",
 				function()
 					require("dap").toggle_breakpoint()
 				end,
@@ -193,7 +193,7 @@ return {
 				desc = "[D]ebugger [B]reakpoint Toggle",
 			},
 			{
-				"<leader>dbb",
+				"<leader>dBb",
 				function()
 					require("dap").set_breakpoint()
 				end,
@@ -201,7 +201,7 @@ return {
 				desc = "[D]ebugger [B]reakpoint Set",
 			},
 			{
-				"<leader>dbc",
+				"<leader>dBc",
 				function()
 					require("dap").set_breakpoint(vim.fn.input("Condition: "), nil, nil)
 				end,
@@ -209,7 +209,7 @@ return {
 				desc = "[D]ebugger [B]reakpoint [C]ondition",
 			},
 			{
-				"<leader>dbh",
+				"<leader>dBh",
 				function()
 					require("dap").set_breakpoint(nil, vim.fn.input("Hit condition:"), nil)
 				end,
@@ -217,7 +217,7 @@ return {
 				desc = "[D]ebugger [B]reakpoint [H]it Condition",
 			},
 			{
-				"<leader>dbl",
+				"<leader>dBl",
 				function()
 					require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
 				end,
@@ -225,7 +225,7 @@ return {
 				desc = "[D]ebugger [B]reakpoint [L]og Point",
 			},
 			{
-				"<leader>dbC",
+				"<leader>dBC",
 				function()
 					require("dap").set_breakpoint(
 						vim.fn.input("Condition: "),

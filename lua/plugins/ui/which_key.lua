@@ -14,7 +14,7 @@ return { -- Useful plugin to show you pending keybinds.
 			{ "<leader>T", group = "[T]est" },
 			{ "<leader>U", group = "[U]I" },
 			{ "<leader>d", group = "[D]ebugger", mode = { "n", "v" } },
-			{ "<leader>db", group = "[D]ebugger [B]reakpoint" },
+			{ "<leader>dB", group = "[D]ebugger [B]reakpoint" },
 			{ "<leader>df", group = "[D]ebugger [F]loating Window/[F]rames" },
 			{ "<leader>do", group = "[D]ebugger [O]pen" },
 			{ "<leader>dr", group = "[D]ebugger [R]un" },
