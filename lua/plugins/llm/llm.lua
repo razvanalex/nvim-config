@@ -8,11 +8,12 @@ local LLMConfig = {}
 ---@return string[] llms a list of LLMs
 local function get_available_llms(endpoint, backend)
 	local llms = {}
+	local api_key = os.getenv("OPENAI_API_KEY") or "x"
 
 	local Job = require("plenary.job")
 	local response = Job:new({
 		command = "curl",
-		args = { endpoint },
+		args = { endpoint, "-H", "Authorization: Bearer " .. api_key },
 	}):sync()
 
 	if #response ~= 1 then
@@ -143,7 +144,7 @@ local function toggle_telescope(available_llms)
 					local selection = action_state.get_selected_entry()
 					local llm_index = selection.index
 
-					if llm_index ~= nil and llm_index < #llm_list then
+					if llm_index ~= nil and llm_index <= #llm_list then
 						LLMConfig["model"] = llm_list[llm_index]
 						vim.notify(LLMConfig["model"] .. " was selected", vim.log.levels.INFO)
 						save_config()
@@ -426,6 +427,7 @@ return {
 			openai = {
 				temperature = 0,
 				max_tokens = 8196,
+				tool_ids = { "web_search" },
 			},
 			behaviour = {
 				auto_suggestions = false, -- Experimental stage
@@ -527,7 +529,7 @@ return {
 			end
 
 			opts.openai.model = LLMConfig["model"]
-			opts.openai.endpoint = LLMConfig["endpoint"] .. "/v1/"
+			opts.openai.endpoint = LLMConfig["endpoint"]
 
 			require("avante").setup(opts)
 		end,
