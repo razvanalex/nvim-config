@@ -105,7 +105,7 @@ local function get_models_endpoint()
 		return LLMConfig["endpoint"] .. "/api/tags"
 	end
 	-- openai default
-	return LLMConfig["endpoint"] .. "/v1/models"
+	return LLMConfig["endpoint"] .. "/models"
 end
 
 --- Show the available LLMs in a telescope view.
