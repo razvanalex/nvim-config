@@ -102,6 +102,9 @@ if not vim.g.vscode then
 	vim.opt.spell = true
 end
 
+-- netrw
+vim.g.netrw_banner = 0
+
 -- mouse support
 vim.opt.mouse = "a"
 
