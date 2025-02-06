@@ -17,27 +17,14 @@ return {
 		},
 		lazy = true,
 		config = function()
-			-- Nicer icons. From docs:
-			--  - DapBreakpoint for breakpoints (default: B)
-			--  - DapBreakpointCondition for conditional breakpoints (default: C)
-			--  - DapLogPoint for log points (default: L)
-			--  - DapStopped to indicate where the debugee is stopped (default: →)
-			--  - DapBreakpointRejected to indicate breakpoints rejected by the debug adapter (default: R)
-			--
-			vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "DiagnosticError", linehl = "", numhl = "" })
-			vim.fn.sign_define("DapBreakpointCondition", { text = "C", texthl = "", linehl = "", numhl = "" })
-			vim.fn.sign_define(
-				"DapBreakpointRejected",
-				{ text = "", texthl = "DiagnosticError", linehl = "", numhl = "" }
-			)
-			vim.fn.sign_define(
-				"DapStopped",
-				{ text = "→", texthl = "DiagnosticOk", linehl = "DapStopped", numhl = "" }
-			)
-			vim.fn.sign_define("DapLogPoint", { text = "", texthl = "DiagnosticInfo", linehl = "", numhl = "" })
-
 			-- Set highlight
 			vim.api.nvim_set_hl(0, "DapStopped", { bg = "#494a10" })
+
+			vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "DiagnosticError" })
+			vim.fn.sign_define("DapBreakpointCondition", { text = "C" })
+			vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "DiagnosticError" })
+			vim.fn.sign_define("DapStopped", { text = "→", texthl = "DiagnosticOk", linehl = "DapStopped" })
+			vim.fn.sign_define("DapLogPoint", { text = "", texthl = "DiagnosticInfo" })
 
 			-- set dap ui
 			local dapui = require("dapui")
