@@ -109,12 +109,30 @@ return {
 					map("K", vim.lsp.buf.hover, "Hover Documentation")
 
 					-- Diagnostic icons
-					local symbols = { Error = "󰅙", Info = "󰋼", Hint = "󰌵", Warn = "" }
-
-					for name, icon in pairs(symbols) do
-						local hl = "DiagnosticSign" .. name
-						vim.fn.sign_define(hl, { text = icon, numhl = hl, texthl = hl })
-					end
+					vim.diagnostic.config({
+						signs = {
+							enable = true,
+							text = {
+								[vim.diagnostic.severity.ERROR] = "󰅙",
+								[vim.diagnostic.severity.INFO] = "󰋼",
+								[vim.diagnostic.severity.HINT] = "󰌵",
+								[vim.diagnostic.severity.WARN] = "",
+							},
+							numhl = {
+								[vim.diagnostic.severity.ERROR] = "DiagnosticSignError",
+								[vim.diagnostic.severity.INFO] = "DiagnosticSignInfo",
+								[vim.diagnostic.severity.HINT] = "DiagnosticSignHint",
+								[vim.diagnostic.severity.WARN] = "DiagnosticSignWarn",
+							},
+							texthl = {
+								[vim.diagnostic.severity.ERROR] = "DiagnosticSignError",
+								[vim.diagnostic.severity.INFO] = "DiagnosticSignInfo",
+								[vim.diagnostic.severity.HINT] = "DiagnosticSignHint",
+								[vim.diagnostic.severity.WARN] = "DiagnosticSignWarn",
+							},
+							severity_sort = true,
+						},
+					})
 
 					-- The following two autocommands are used to highlight references of the
 					-- word under your cursor when your cursor rests there for a little while.
@@ -166,7 +184,7 @@ return {
 								-- FIXME: bear may hang if make fails.
 								Job:new({
 									command = "bash",
-									args = { "-c", "make clean && bear -- make all -j" },
+									args = { "-c", "make clean && bear -- make all -j -i 2>/dev/null" },
 									on_stderr = function(_, data)
 										stderr = stderr .. data
 									end,
