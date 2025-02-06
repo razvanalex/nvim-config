@@ -3,10 +3,10 @@ return { -- Autoformat
 	event = "VeryLazy",
 	cond = not vim.g.vscode,
 	opts = {
-		notify_on_error = false,
+		notify_on_error = true,
 		format_on_save = {
 			timeout_ms = 500,
-			lsp_fallback = true,
+			lsp_format = "fallback",
 		},
 		formatters_by_ft = {
 			lua = { "stylua" },
@@ -27,7 +27,7 @@ return { -- Autoformat
 					["end"] = { args.line2, end_line:len() },
 				}
 			end
-			conform.format({ async = true, lsp_fallback = true, range = range })
+			conform.format({ async = true, lsp_format = "fallback", range = range })
 		end, { range = true })
 
 		-- Temporarily disable formatting on save. Useful to avoid git diffs
