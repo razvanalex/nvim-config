@@ -48,4 +48,7 @@ vim.keymap.set({ "n", "v", "s", "o" }, "<C-W>o", "<Plug>(wintabs_only_window)", 
 vim.api.nvim_create_user_command("Tabc", "WintabsCloseVimtab", {})
 vim.api.nvim_create_user_command("Tabo", "WintabsOnlyVimtab", {})
 
+-- Too often press :W instead of :w to save a file
+vim.api.nvim_create_user_command("W", "w", {})
+
 vim.keymap.set("t", "<ESC>", "<C-\\><C-n>", { desc = "Exit terminal mode", noremap = true })
