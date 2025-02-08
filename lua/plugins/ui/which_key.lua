@@ -3,13 +3,11 @@ return { -- Useful plugin to show you pending keybinds.
 	lazy = true,
 	cond = not vim.g.vscode,
 	event = "VeryLazy",
-	config = function() -- This is the function that runs, AFTER loading
-		local wk = require("which-key")
-
-		wk.setup()
-
-		-- Document existing key chains
-		wk.add({
+	opts = {
+		delay = function(ctx)
+			return ctx.plugin and 0 or 500
+		end,
+		spec = {
 			{ "<leader>a", group = "[A]vante", mode = { "n", "v" } },
 			{ "<leader>T", group = "[T]est" },
 			{ "<leader>U", group = "[U]I" },
@@ -35,6 +33,6 @@ return { -- Useful plugin to show you pending keybinds.
 			{ "<localleader>qr", group = "[Q]uarto [R]un" },
 			{ "<localleader>qR", group = "[Q]uarto [R]un All Languages" },
 			{ "<localleader>M", group = "[M]olten" },
-		})
-	end,
+		},
+	},
 }
