@@ -53,4 +53,23 @@ return {
 			end,
 		},
 	},
+	init = function()
+		local group = vim.api.nvim_create_augroup("CodeCompanionHooks", {})
+
+		vim.api.nvim_create_autocmd({ "User" }, {
+			pattern = "CodeCompanionRequestStreaming",
+			group = group,
+			callback = function(request)
+				vim.treesitter.stop(request.buf)
+			end,
+		})
+
+		vim.api.nvim_create_autocmd({ "User" }, {
+			pattern = "CodeCompanionRequestFinished",
+			group = group,
+			callback = function(request)
+				vim.treesitter.start(request.buf)
+			end,
+		})
+	end,
 }
