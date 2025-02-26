@@ -173,7 +173,7 @@ return {
 		},
 	},
 	config = function(_, opts)
-		local llm = require("lua.plugins.utils.llm")
+		local llm = require("plugins.utils.llm")
 		local cfg = llm.get_config()
 
 		opts.openai.model = cfg["model"]
