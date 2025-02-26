@@ -1,11 +1,8 @@
 return {
 	{
 		"3rd/image.nvim",
-		rocks = {
-			hererocks = true,
-		},
 		-- lazy = true,
-		-- ft = { "markdown", "vimwiki", "quatro", "norg", "typst", "png", "jpg", "jpeg", "gif", "webp", "avif" },
+		ft = { "markdown", "vimwiki", "quatro", "norg", "typst", "png", "jpg", "jpeg", "gif", "webp", "avif" },
 		cond = not vim.g.vscode,
 		opts = {
 			integrations = {
