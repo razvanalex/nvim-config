@@ -95,3 +95,11 @@ JSON
 configs
 #ifficile
 SBATCH
+labse_model
+gcm_op_file/!
+results_json/!
+displayInfo
+env
+return
+codecompanion
+ctx
