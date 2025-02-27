@@ -13,7 +13,8 @@ return {
 		"CodeCompanionCmd",
 	},
 	keys = {
-		{ "<leader>cc", ":CodeCompanionChat<CR>", desc = "Open [C]odeCompanion [C]hat", mode = "n" },
+		{ "<leader>cc", ":CodeCompanionChat Add<CR>", desc = "Open [C]odeCompanion [C]hat", mode = "v" },
+		{ "<leader>cc", ":CodeCompanionChat Toggle<CR>", desc = "Open [C]odeCompanion [C]hat", mode = "n" },
 		{ "<leader>ca", ":CodeCompanionActions<CR>", desc = "Open [C]odeCompanion [A]ctions", mode = "n" },
 	},
 	opts = {
