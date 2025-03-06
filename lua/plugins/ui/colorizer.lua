@@ -4,7 +4,7 @@ return {
 	cond = not vim.g.vscode,
 	lazy = true,
 	opts = { -- set to setup table
-		filetypes = { "lua", "html", "javascript", "typescript", "css" },
+		filetypes = { "lua", "html", "javascript", "typescript", "css", "conf", "cfg", "config" },
 		user_default_options = {
 			mode = "virtualtext",
 			virtualtext_inline = true,
