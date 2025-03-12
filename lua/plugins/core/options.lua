@@ -171,3 +171,10 @@ vim.api.nvim_create_user_command("Terminal", function()
 	vim.cmd.wincmd("J")
 	vim.api.nvim_win_set_height(0, 10)
 end, {})
+
+-- Restore cursor shape on exit
+vim.api.nvim_create_autocmd({ "VimLeave" }, {
+	group = vim.api.nvim_create_augroup("restore_cursor_shape_on_exit", { clear = true }),
+	desc = "restore the cursor shape on exit of neovim",
+	command = "set guicursor=a:ver20",
+})
