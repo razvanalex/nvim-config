@@ -20,9 +20,9 @@ return {
 	opts = {
 		--Refer to: https://github.com/olimorris/codecompanion.nvim/blob/main/lua/codecompanion/config.lua
 		strategies = {
-			agent = { adapter = "openai_compatible" },
-			chat = { adapter = "openai_compatible" },
-			inline = { adapter = "openai_compatible" },
+			agent = { adapter = "copilot" },
+			chat = { adapter = "copilot" },
+			inline = { adapter = "copilot" },
 		},
 		opts = {
 			log_level = "ERROR",
