@@ -103,3 +103,7 @@ env
 return
 codecompanion
 ctx
+inference_model/!
+system_template_path/!
+chat/!
+category_links/!
