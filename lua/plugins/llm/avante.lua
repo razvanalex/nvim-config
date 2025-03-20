@@ -9,82 +9,44 @@ return {
 		"AvanteClear",
 		"AvanteEdit",
 		"AvanteFocus",
+		"AvanteHistory",
+		"AvanteModels",
 		"AvanteRefresh",
 		"AvanteShowRepoMap",
+		"AvanteSwitchFileSelectorProvider",
 		"AvanteSwitchProvider",
 		"AvanteToggle",
 	},
-	keys = function(_, keys)
-		---@type avante.Config
-		local opts =
-			require("lazy.core.plugin").values(require("lazy.core.config").spec.plugins["avante.nvim"], "opts", false)
-
-		local mappings = {
-			{
-				opts.mappings.ask,
-				function()
-					require("avante.api").ask()
-				end,
-				desc = "avante: ask",
-				mode = { "n", "v" },
-			},
-			{
-				opts.mappings.edit,
-				function()
-					require("avante.api").edit()
-				end,
-				desc = "avante: edit",
-				mode = { "n", "v" },
-			},
-			{
-				opts.mappings.refresh,
-				function()
-					require("avante.api").refresh()
-				end,
-				desc = "avante: refresh",
-				mode = "n",
-			},
-			{
-				opts.mappings.focus,
-				function()
-					require("avante.api").focus()
-				end,
-				desc = "avante: focus",
-				mode = "n",
-			},
-			{
-				opts.mappings.files.add_current,
-				function()
-					require("avante.api").focus()
-				end,
-				desc = "avante: add current buffer to file selector",
-				mode = "n",
-			},
-		}
-		mappings = vim.tbl_filter(function(m)
-			return m[1] and #m[1] > 0
-		end, mappings)
-		return vim.list_extend(mappings, keys)
-	end,
-	opts = {
-		provider = "openai", -- Recommend using Claude
-		cursor_applying_provider = "fastapply",
-		auto_suggestions_provider = "openai",
-		openai = {
-			temperature = 0,
-			max_new_tokens = 16000,
-			max_tokens = 16000,
-			-- tool_ids = { "web_search" },
-			disable_tools = true,
+	keys = {
+		{
+			"<leader>aa",
+			function()
+				require("avante.api").ask()
+			end,
+			desc = "avante: ask",
+			mode = { "n", "v" },
 		},
-		vendors = {
-			fastapply = {
-				__inherited_from = "openai",
-				api_key_name = "",
-				endpoint = "http://localhost:11434/v1",
-				model = "qwen2.5-coder:14b",
-				max_tokens = 16000,
-			},
+		{
+			"<leader>ae",
+			function()
+				require("avante.api").edit()
+			end,
+			desc = "avante: edit",
+			mode = { "n", "v" },
+		},
+	},
+	opts = {
+		provider = "copilot",
+		auto_suggestions_provider = nil,
+		cursor_applying_provider = nil,
+		copilot = {
+			endpoint = "https://api.githubcopilot.com",
+			model = "claude-3.7-sonnet",
+			proxy = nil, -- [protocol://]host[:port] Use this proxy
+			allow_insecure = false, -- Allow insecure server connections
+			timeout = 30000, -- Timeout in milliseconds
+			temperature = 0,
+			max_tokens = 20480,
 		},
 		behaviour = {
 			auto_suggestions = false, -- Experimental stage
@@ -93,53 +55,9 @@ return {
 			auto_apply_diff_after_generation = false,
 			support_paste_from_clipboard = false,
 			minimize_diff = true,
-			enable_token_counting = false,
-			enable_cursor_planning_mode = true,
-		},
-		mappings = {
-			--- @class AvanteConflictMappings
-			diff = {
-				ours = "co",
-				theirs = "ct",
-				all_theirs = "ca",
-				both = "cb",
-				cursor = "cc",
-				next = "]x",
-				prev = "[x",
-			},
-			suggestion = {
-				accept = "<M-y>", -- alt + y
-				next = "<M-]>", -- alt + ]
-				prev = "<M-[>", -- alt + [
-				dismiss = "<M-e>", -- alt + e
-			},
-			jump = {
-				next = "]]",
-				prev = "[[",
-			},
-			submit = {
-				normal = "<CR>",
-				insert = "<C-s>",
-			},
-			sidebar = {
-				switch_windows = "<Tab>",
-				reverse_switch_windows = "<S-Tab>",
-			},
-			-- Overwrite defaults
-			ask = "<leader>aa",
-			edit = "<leader>ae",
-			refresh = "<leader>ar",
-			focus = "<leader>af",
-			toggle = {
-				default = "<leader>at",
-				debug = "<leader>ad",
-				hint = "<leader>ah",
-				suggestion = "<leader>as",
-				repomap = "<leader>aR",
-			},
-			files = {
-				add_current = "<leader>ac", -- Add current buffer to selected files
-			},
+			enable_token_counting = true,
+			enable_cursor_planning_mode = false,
+			enable_claude_text_editor_tool_mode = false,
 		},
 		hints = { enabled = false },
 		windows = {
@@ -154,6 +72,7 @@ return {
 		"nvim-treesitter/nvim-treesitter",
 		"nvim-lua/plenary.nvim",
 		"MunifTanjim/nui.nvim",
+		"nvim-telescope/telescope.nvim",
 		{
 			-- support for image pasting
 			"HakonHarnes/img-clip.nvim",
@@ -173,11 +92,13 @@ return {
 		},
 	},
 	config = function(_, opts)
-		local llm = require("plugins.utils.llm")
-		local cfg = llm.get_config()
+		if opts.vendors ~= nil then
+			local llm = require("plugins.utils.llm")
+			local cfg = llm.get_config()
 
-		opts.openai.model = cfg["model"]
-		opts.openai.endpoint = cfg["endpoint"] .. "/v1/"
+			opts.vendors.openai.model = cfg["model"]
+			opts.vendors.openai.endpoint = cfg["endpoint"] .. "/v1/"
+		end
 
 		require("avante").setup(opts)
 	end,
