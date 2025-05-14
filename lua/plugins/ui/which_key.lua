@@ -17,6 +17,7 @@ return { -- Useful plugin to show you pending keybinds.
 			{ "<leader>do", group = "[D]ebugger [O]pen" },
 			{ "<leader>dr", group = "[D]ebugger [R]un" },
 			{ "<leader>ds", group = "[D]ebugger [S]tep" },
+			{ "<leader>l", group = "[L]aTex" },
 			{ "<leader>f", group = "[F]uzzy Finder" },
 			{ "<leader>g", group = "[G]it", mode = { "n", "v" } },
 			{ "<leader>gt", group = "[G]it [T]oggle" },
