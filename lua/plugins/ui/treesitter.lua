@@ -4,6 +4,7 @@ return {
 		cond = not vim.g.vscode,
 		opts = {
 			max_lines = 5,
+			multiline_threshold = 1,
 		},
 	},
 	{ -- Highlight, edit, and navigate code
