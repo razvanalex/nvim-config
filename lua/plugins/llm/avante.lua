@@ -39,14 +39,16 @@ return {
 		provider = "copilot",
 		auto_suggestions_provider = nil,
 		cursor_applying_provider = nil,
-		copilot = {
-			endpoint = "https://api.githubcopilot.com",
-			model = "claude-3.7-sonnet",
-			proxy = nil, -- [protocol://]host[:port] Use this proxy
-			allow_insecure = false, -- Allow insecure server connections
-			timeout = 30000, -- Timeout in milliseconds
-			temperature = 0,
-			max_tokens = 20480,
+		providers = {
+			copilot = {
+				endpoint = "https://api.githubcopilot.com",
+				model = "claude-3.7-sonnet",
+				proxy = nil, -- [protocol://]host[:port] Use this proxy
+				allow_insecure = false, -- Allow insecure server connections
+				timeout = 30000, -- Timeout in milliseconds
+				temperature = 0,
+				max_tokens = 20480,
+			},
 		},
 		behaviour = {
 			auto_suggestions = false, -- Experimental stage
