@@ -8,6 +8,9 @@ return {
 		opts = {
 			file_types = { "markdown", "vimwiki", "Avante", "quarto", "codecompanion" },
 			render_modes = true,
+			code = {
+				border = "thin",
+			},
 		},
 	},
 }
