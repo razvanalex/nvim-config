@@ -1,10 +1,14 @@
 return {
 	{
 		"3rd/image.nvim",
-		-- lazy = true,
 		ft = { "markdown", "vimwiki", "quatro", "norg", "typst", "png", "jpg", "jpeg", "gif", "webp", "avif" },
+		dependencies = {
+			"kiyoon/magick.nvim",
+		},
 		cond = not vim.g.vscode,
 		opts = {
+			backend = "kitty",
+			processor = "magick_rock",
 			integrations = {
 				markdown = {
 					only_render_image_at_cursor = true,
