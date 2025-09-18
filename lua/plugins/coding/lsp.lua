@@ -131,6 +131,9 @@ return {
 							},
 							severity_sort = true,
 						},
+						float = {
+							border = "single",
+						},
 					})
 
 					-- The following two autocommands are used to highlight references of the
@@ -261,6 +264,9 @@ return {
 					settings = {
 						Lua = {
 							runtime = { version = "LuaJIT" },
+							diagnostics = {
+								globals = { "hs" },
+							},
 							workspace = {
 								checkThirdParty = false,
 								-- Tells lua_ls where to find all the Lua files that you have loaded
@@ -268,6 +274,7 @@ return {
 								library = {
 									"${3rd}/luv/library",
 									unpack(vim.api.nvim_get_runtime_file("", true)),
+									["/Applications/Hammerspoon.app/Contents/Resources/extensions"] = true,
 								},
 								-- If lua_ls is really slow on your computer, you can try this instead:
 								-- library = { vim.env.VIMRUNTIME },

@@ -64,6 +64,9 @@ vim.opt.splitbelow = true
 -- enhanced colors
 vim.opt.termguicolors = true
 
+-- Set the border style of floating windows.
+vim.opt.winborder = "single"
+
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 8
 
