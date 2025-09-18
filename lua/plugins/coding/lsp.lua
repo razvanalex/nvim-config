@@ -25,8 +25,7 @@ return {
 			})
 
 			-- init neodev
-			local lspconfig = require("lspconfig")
-			lspconfig.lua_ls.setup({
+			vim.lsp.config.luals = {
 				settings = {
 					Lua = {
 						completion = {
@@ -34,7 +33,7 @@ return {
 						},
 					},
 				},
-			})
+			}
 
 			-- attach
 			vim.api.nvim_create_autocmd("LspAttach", {
@@ -318,7 +317,7 @@ return {
 						-- by the server configuration above. Useful when disabling
 						-- certain features of an LSP (for example, turning off formatting for tsserver)
 						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-						require("lspconfig")[server_name].setup(server)
+						vim.lsp.config[server_name] = server
 					end,
 				},
 			})
