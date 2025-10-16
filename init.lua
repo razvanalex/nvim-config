@@ -33,7 +33,7 @@ require("lazy").setup({
 	{ import = "plugins.core.luarocks" },
 	{ import = "plugins.editor" },
 	{ import = "plugins.extras" },
-	{ import = "plugins.llm" },
+	{ import = "plugins.ai" },
 	{ import = "plugins.navigation" },
 	{ import = "plugins.ui" },
 }, {

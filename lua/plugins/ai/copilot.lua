@@ -12,7 +12,7 @@ return {
 		enabled = not vim.g.vscode,
 		opts = {
 			nes = {
-				enabled = true,
+				enabled = false,
 				auto_trigger = true,
 				keymap = {
 					accept_and_goto = "<Tab>",
