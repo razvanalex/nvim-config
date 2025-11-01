@@ -49,7 +49,20 @@ return {
 			completion = { completeopt = "menu,menuone,noinsert" },
 			window = {
 				completion = {
-					winhighlight = "Normal:CmpNormal",
+					winhighlight = "Normal:CmpNormal,FloatBorder:CmpNormal",
+					border = "none",
+				},
+				documentation = {
+					border = {
+						"", -- Top-left
+						"", -- Top
+						"", -- Top-right
+						" ", -- Right
+						"", -- Bottom-right
+						"", -- Bottom
+						"", -- Bottom-left
+						" ", -- Left
+					},
 				},
 			},
 
