@@ -1,7 +1,10 @@
 return {
 	"folke/sidekick.nvim",
+	dependencies = {
+		"nvim-telescope/telescope.nvim",
+	},
 	enabled = true,
-	lazy = false,
+	event = "VeryLazy",
 	opts = {
 		cli = {
 			mux = {
@@ -10,7 +13,7 @@ return {
 			},
 		},
 		nes = {
-			enabled = true,
+			enabled = false,
 		},
 	},
 	config = function(_, opts)
