@@ -63,6 +63,7 @@ return {
 						"", -- Bottom-left
 						" ", -- Left
 					},
+					scrollbar = true,
 				},
 			},
 
