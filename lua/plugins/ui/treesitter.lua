@@ -2,6 +2,7 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter-context",
 		cond = not vim.g.vscode,
+		event = "VeryLazy",
 		opts = {
 			max_lines = 3,
 			multiline_threshold = 1,
@@ -34,6 +35,7 @@ return {
 			"TSUpdateSync",
 		},
 		lazy = false,
+		event = "VeryLazy",
 		config = function()
 			-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
 
