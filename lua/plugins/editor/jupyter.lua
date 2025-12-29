@@ -110,7 +110,92 @@ local function new_notebook_snippet(callback)
 	})
 end
 
---- Setup auto-cleanup on vim exit
+--- Check if cursor is currently inside a code cell
+--- @param cell_markers table Table of cell marker patterns per filetype
+--- @return boolean
+local function is_inside_cell(cell_markers)
+	local current_line = vim.fn.line(".")
+	local ft = vim.bo.filetype
+	local patterns = cell_markers[ft] or cell_markers.quarto
+
+	local cell_start = 0
+	for _, pattern in ipairs(patterns) do
+		cell_start = vim.fn.search(pattern, "bnW")
+		if cell_start > 0 then
+			break
+		end
+	end
+
+	return cell_start > 0 and cell_start < current_line
+end
+
+--- Jump to a code cell in the specified direction
+--- @param cell_markers table Table of cell marker patterns per filetype
+--- @param direction string "next" or "prev"
+--- @return boolean Whether a cell was found and jumped to
+local function jump_to_cell(cell_markers, direction)
+	local current_line = vim.fn.line(".")
+	local total_lines = vim.fn.line("$")
+	local ft = vim.bo.filetype
+
+	local patterns = cell_markers[ft] or cell_markers.quarto
+
+	-- Search flags:
+	--   "n" = don't move cursor
+	--   "W" = don't wrap
+	--   "b" = search backwards for previous
+	local flags = direction == "prev" and "bnW" or "nW"
+
+	local target_line = 0
+	for _, pattern in ipairs(patterns) do
+		target_line = vim.fn.search(pattern, flags)
+		if target_line > 0 then
+			break
+		end
+	end
+
+	local is_valid = false
+	if direction == "next" then
+		is_valid = target_line > current_line and target_line <= total_lines
+	else
+		is_valid = target_line > 0 and target_line < current_line
+	end
+
+	if is_valid then
+		-- Moving to the next line ensures quarto can detect the language
+		-- from the code block.
+		vim.fn.cursor(target_line + 1, 0)
+		vim.cmd("normal! zz")
+		return true
+	end
+
+	return false
+end
+
+local cell_markers = {
+	quarto = { "^```{.*}$" },
+	markdown = { "^```{.*}$" },
+	python = { "^# *%%", "^#%%", "^# *<codecell>" },
+}
+
+local function jump_to_next_cell()
+	jump_to_cell(cell_markers, "next")
+end
+
+local function jump_to_prev_cell()
+	jump_to_cell(cell_markers, "prev")
+end
+
+local function run_cell_and_jump()
+	if not is_inside_cell(cell_markers) then
+		jump_to_next_cell()
+	end
+
+	require("quarto.runner").run_cell()
+
+	jump_to_next_cell()
+end
+
 local function setup_auto_cleanup()
 	vim.api.nvim_create_autocmd("VimLeavePre", {
 		group = vim.api.nvim_create_augroup("quarto-cleanup-on-exit", { clear = true }),
@@ -147,11 +232,8 @@ return {
 		keys = {
 			{
 				"<localleader><CR>",
-				function()
-					-- TODO: jump next cell
-					require("quarto.runner").run_cell()
-				end,
-				desc = "Quarto Run Cell",
+				run_cell_and_jump,
+				desc = "Run Cell & Jump to Next",
 				silent = true,
 				mode = "n",
 			},
@@ -234,6 +316,20 @@ return {
 					cleanup_preview_files(true)
 				end,
 				desc = "[Q]uarto Stop [P]review & Cleanup",
+				silent = true,
+				mode = "n",
+			},
+			{
+				"]x",
+				jump_to_next_cell,
+				desc = "Jump to Next Cell",
+				silent = true,
+				mode = "n",
+			},
+			{
+				"[x",
+				jump_to_prev_cell,
+				desc = "Jump to Previous Cell",
 				silent = true,
 				mode = "n",
 			},
