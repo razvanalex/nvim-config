@@ -210,6 +210,35 @@ local function execute_and_save_notebook()
 	end)
 end
 
+local function convert_to_python()
+	local current_file = vim.fn.expand("%:p")
+	local ipynb_file = current_file
+
+	if vim.bo.filetype == "quarto" then
+		ipynb_file = vim.fn.expand("%:p:r") .. ".ipynb"
+		if vim.fn.filereadable(ipynb_file) == 0 then
+			vim.notify("No corresponding .ipynb file found", vim.log.levels.ERROR)
+			return
+		end
+	end
+
+	local output_file = vim.fn.expand("%:p:r") .. ".py"
+	vim.notify("Converting to Python script...", vim.log.levels.INFO)
+
+	local cmd = string.format(
+		"jupytext --to py:percent --output %s %s",
+		vim.fn.shellescape(output_file),
+		vim.fn.shellescape(ipynb_file)
+	)
+
+	local promise = jobs.async_exec(cmd)
+	promise(function()
+		vim.notify("Converted to " .. vim.fn.fnamemodify(output_file, ":t"), vim.log.levels.INFO)
+	end, function(exit_code, stderr)
+		vim.notify(jobs.format_error("Conversion failed", exit_code, stderr), vim.log.levels.ERROR)
+	end)
+end
+
 local cell_markers = {
 	quarto = { "^```{.*}$" },
 	markdown = { "^```{.*}$" },
@@ -234,7 +263,7 @@ local function run_cell_and_jump()
 	jump_to_next_cell()
 end
 
-local function setup_auto_cleanup()
+local function setup_quatro()
 	vim.api.nvim_create_autocmd("VimLeavePre", {
 		group = vim.api.nvim_create_augroup("quarto-cleanup-on-exit", { clear = true }),
 		pattern = { "*.qmd", "*.ipynb" },
@@ -243,6 +272,10 @@ local function setup_auto_cleanup()
 				cleanup_preview_files(false)
 			end
 		end,
+	})
+
+	vim.api.nvim_create_user_command("ConvertToPython", convert_to_python, {
+		desc = "Convert current notebook to Python script",
 	})
 end
 
@@ -365,6 +398,13 @@ return {
 				mode = "n",
 			},
 			{
+				"<localleader>qc",
+				convert_to_python,
+				desc = "[Q]uarto [C]onvert to Python",
+				silent = true,
+				mode = "n",
+			},
+			{
 				"]x",
 				jump_to_next_cell,
 				desc = "Jump to Next Cell",
@@ -389,7 +429,7 @@ return {
 			end
 
 			require("quarto").setup(opts)
-			setup_auto_cleanup()
+			setup_quatro()
 		end,
 	},
 	{
