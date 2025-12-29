@@ -1,5 +1,21 @@
 local M = {}
 
+---@alias OnSuccessFun fun()
+---@alias OnFailureFun fun(exit_code: number, stderr: string)
+
+--- Format an error message from execution failure.
+---@param msg string The base error message.
+---@param exit_code integer The exit code of the failed execution.
+---@param stderr string? The stderr output from the execution.
+---@return string error_msg The formatted error message.
+function M.format_error(msg, exit_code, stderr)
+	local error_msg = string.format("%s. Execution failed (exit code: %d)", msg, exit_code)
+	if stderr and stderr ~= "" then
+		error_msg = error_msg .. "\n" .. stderr
+	end
+	return error_msg
+end
+
 --- Create a function that can run only once.
 ---@param func function The function to be run once.
 ---@return function once The function to be run once.
@@ -19,23 +35,37 @@ end
 
 --- Execute a shell command. This is quite simple, as we don't pass state to callbacks.
 ---@param cmd string the shell command to execute
----@param opts table? Opts to be passed to jobstart. Note that on_exit cannot be overwritten.
+---@param opts table? Opts to be passed to jobstart. Note that on_exit and on_stderr cannot be overwritten.
 function M.async_exec(cmd, opts)
 	if opts == nil then
 		opts = {}
 	end
 
-	---@param on_success function The callback on success
-	---@param on_failure function The callback on failure
+	---@param on_success OnSuccessFun The callback on success
+	---@param on_failure OnFailureFun The callback on failure with exit code and stderr
 	---@return integer retcode The channel-id or failure
 	return function(on_success, on_failure)
+		local stderr_output = {}
+
+		opts.on_stderr = function(_, data, _)
+			if data then
+				for _, line in ipairs(data) do
+					if line ~= "" then
+						table.insert(stderr_output, line)
+					end
+				end
+			end
+		end
+
 		opts.on_exit = function(_, exit_code, _)
 			if exit_code == 0 then
 				on_success()
 			else
-				on_failure()
+				local stderr = table.concat(stderr_output, "\n")
+				on_failure(exit_code, stderr)
 			end
 		end
+
 		return vim.fn.jobstart(cmd, opts)
 	end
 end
@@ -97,8 +127,8 @@ function M.create_pyenv(path, name, callback)
 			if callback ~= nil then
 				callback(pyenv)
 			end
-		end, function()
-			vim.notify("Failed to create " .. pyenv, vim.log.levels.ERROR)
+		end, function(exit_code, stderr)
+			vim.notify(M.format_error("Failed to create `" .. pyenv .. "`", exit_code, stderr), vim.log.levels.ERROR)
 		end)
 
 		if job <= 0 then
