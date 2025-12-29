@@ -41,7 +41,7 @@ return {
 					return ft
 				end,
 				dap_integration = true,
-				repl_open_cmd = view.right(40),
+				repl_open_cmd = view.split.vertical.botright(0.4),
 			},
 			keymaps = {
 				send_motion = "<space>Rsc",
