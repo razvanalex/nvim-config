@@ -146,6 +146,12 @@ local function jump_to_cell(cell_markers, direction)
 	--   "b" = search backwards for previous
 	local flags = direction == "prev" and "bnW" or "nW"
 
+	if direction == "prev" and current_line > 2 then
+		-- For backwards search, temporarily move up 2 lines to skip
+		-- current cell marker
+		vim.fn.cursor(current_line - 2, 0)
+	end
+
 	local target_line = 0
 	for _, pattern in ipairs(patterns) do
 		target_line = vim.fn.search(pattern, flags)
@@ -153,6 +159,9 @@ local function jump_to_cell(cell_markers, direction)
 			break
 		end
 	end
+
+	-- Restore original position
+	vim.fn.cursor(current_line, 0)
 
 	local is_valid = false
 	if direction == "next" then
