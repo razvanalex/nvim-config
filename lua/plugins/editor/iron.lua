@@ -32,7 +32,7 @@ return {
 					},
 					python = {
 						command = { "ipython", "--no-autoindent" },
-						format = common.bracketed_paste_python,
+						format = common.bracketed_paste,
 						block_dividers = { "# %%", "#%%" },
 						env = { PYTHON_BASIC_REPL = "1" },
 					},
