@@ -1,3 +1,5 @@
+local jobs = require("plugins.utils.jobs")
+
 ---@alias NewNotebookCallback fun(): nil
 
 --- Get file paths for cleanup
@@ -181,6 +183,33 @@ local function jump_to_cell(cell_markers, direction)
 	return false
 end
 
+local function execute_and_save_notebook()
+	local current_file = vim.fn.expand("%:p")
+	local ipynb_file = current_file
+
+	if vim.bo.filetype == "quarto" then
+		ipynb_file = vim.fn.expand("%:p:r") .. ".ipynb"
+		if vim.fn.filereadable(ipynb_file) == 0 then
+			vim.notify("No corresponding .ipynb file found", vim.log.levels.ERROR)
+			return
+		end
+	end
+
+	vim.notify("Executing notebook and saving outputs...", vim.log.levels.INFO)
+
+	local cmd = string.format("jupyter nbconvert --execute --to notebook --inplace %s", vim.fn.shellescape(ipynb_file))
+
+	local promise = jobs.async_exec(cmd)
+	promise(function()
+		vim.notify("Executed and saved outputs to notebook", vim.log.levels.INFO)
+		if current_file == ipynb_file then
+			vim.cmd("checktime")
+		end
+	end, function(exit_code, stderr)
+		vim.notify(jobs.format_error("Failed to execute notebook", exit_code, stderr), vim.log.levels.ERROR)
+	end)
+end
+
 local cell_markers = {
 	quarto = { "^```{.*}$" },
 	markdown = { "^```{.*}$" },
@@ -329,6 +358,13 @@ return {
 				mode = "n",
 			},
 			{
+				"<localleader>qe",
+				execute_and_save_notebook,
+				desc = "[Q]uarto [E]xecute and Save",
+				silent = true,
+				mode = "n",
+			},
+			{
 				"]x",
 				jump_to_next_cell,
 				desc = "Jump to Next Cell",
@@ -383,9 +419,9 @@ return {
 			},
 			formats = "ipynb,qmd",
 			sync_on_save = true,
+			notebook_metadata_filter = "-jupytext.text_representation",
 		},
 		config = function(_, opts)
-			local jobs = require("plugins.utils.jobs")
 			local callback = jobs.exec_once(function()
 				require("jupytext").setup(opts)
 			end)
