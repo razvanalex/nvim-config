@@ -1,71 +1,65 @@
-local function init_molten()
-	-- automatically import output chunks from a jupyter notebook
-	-- tries to find a kernel that matches the kernel in the jupyter notebook
-	-- falls back to a kernel that matches the name of the active venv (if any)
-	local imb = function(e) -- init molten buffer
-		vim.schedule(function()
-			local kernels = vim.fn.MoltenAvailableKernels()
-			local try_kernel_name = function()
-				local metadata = vim.json.decode(io.open(e.file, "r"):read("a"))["metadata"]
-				return metadata.kernelspec.name
-			end
-			local ok, kernel_name = pcall(try_kernel_name)
-			if not ok or not vim.tbl_contains(kernels, kernel_name) then
-				kernel_name = nil
-				local venv = os.getenv("VIRTUAL_ENV") or os.getenv("CONDA_PREFIX")
-				if venv ~= nil then
-					kernel_name = string.match(venv, "/.+/(.+)")
-				end
-			end
-			if kernel_name ~= nil and vim.tbl_contains(kernels, kernel_name) then
-				vim.cmd(("MoltenInit %s"):format(kernel_name))
-			end
-			local function molten_import_output()
-				vim.cmd("MoltenImportOutput")
-			end
-			local function delayed_molten_import_output()
-				local timer = vim.loop.new_timer()
-				if timer == nil then
-					vim.schedule_wrap(molten_import_output)
-					return
-				end
-				-- Need to delay, since it seems MoltenInit is async.
-				-- 500ms should be enough.
-				timer:start(500, 0, vim.schedule_wrap(molten_import_output))
-			end
-			delayed_molten_import_output()
-		end)
-	end
+---@alias NewNotebookCallback fun(): nil
 
-	-- automatically import output chunks from a jupyter notebook
-	vim.api.nvim_create_autocmd("BufAdd", {
-		pattern = { "*.ipynb" },
-		callback = imb,
-	})
+--- Get file paths for cleanup
+---@param base_dir string|nil The directory (defaults to current file directory)
+---@param base_name string|nil The base filename (defaults to current file basename)
+---@return table { html: string, files_dir: string }
+local function get_preview_paths(base_dir, base_name)
+	local dir = base_dir or vim.fn.expand("%:p:h")
+	local name = base_name or vim.fn.expand("%:t:r")
 
-	-- we have to do this as well so that we catch files opened like nvim ./hi.ipynb
-	vim.api.nvim_create_autocmd("BufEnter", {
-		pattern = { "*.ipynb" },
-		callback = function(e)
-			if vim.api.nvim_get_vvar("vim_did_enter") ~= 1 then
-				imb(e)
-			end
-		end,
-	})
-
-	-- automatically export output chunks to a jupyter notebook on write
-	vim.api.nvim_create_autocmd("BufWritePost", {
-		pattern = { "*.ipynb" },
-		callback = function()
-			if require("molten.status").initialized() == "Molten" then
-				vim.cmd("MoltenExportOutput!")
-			end
-		end,
-	})
+	return {
+		html = dir .. "/" .. name .. ".html",
+		files_dir = dir .. "/" .. name .. "_files",
+	}
 end
 
---- Add snippet for new files.
----@param callback function The function to run after the snippet is added.
+--- Check if file should be cleaned up (notebook or jupytext-generated qmd)
+---@return boolean
+local function should_cleanup_preview()
+	local current_ext = vim.fn.expand("%:e")
+
+	if current_ext == "ipynb" then
+		return true
+	end
+	if current_ext == "qmd" then
+		local current_dir = vim.fn.expand("%:p:h")
+		local basename = vim.fn.expand("%:t:r")
+		local ipynb_file = current_dir .. "/" .. basename .. ".ipynb"
+
+		return vim.fn.filereadable(ipynb_file) == 1
+	end
+
+	return false
+end
+
+--- Clean up preview HTML files
+---@param notify boolean|nil Whether to show notifications (default: false)
+local function cleanup_preview_files(notify)
+	local paths = get_preview_paths()
+	local cleaned = false
+
+	if vim.fn.filereadable(paths.html) == 1 then
+		vim.fn.delete(paths.html)
+		cleaned = true
+		if notify then
+			vim.notify("Deleted: " .. vim.fn.fnamemodify(paths.html, ":t"), vim.log.levels.INFO)
+		end
+	end
+
+	if vim.fn.isdirectory(paths.files_dir) == 1 then
+		vim.fn.delete(paths.files_dir, "rf")
+		cleaned = true
+		if notify then
+			vim.notify("Deleted: " .. vim.fn.fnamemodify(paths.files_dir, ":t") .. "/", vim.log.levels.INFO)
+		end
+	end
+
+	return cleaned
+end
+
+--- Add snippet for new notebook files
+---@param callback NewNotebookCallback | nil The function to run after the snippet is added.
 local function new_notebook_snippet(callback)
 	local buf = require("plugins.utils.buffer")
 	local lines = {
@@ -107,107 +101,34 @@ local function new_notebook_snippet(callback)
 		callback = function(args)
 			if (args.event ~= "BufReadCmd" and buf.is_buffer_empty()) or vim.fn.filereadable(args.match) == 0 then
 				vim.api.nvim_buf_set_lines(args.buf, 0, -1, true, lines)
-				vim.cmd(":w") -- The file must be created
-				callback()
+				vim.cmd(":w")
+				if callback then
+					callback()
+				end
 			end
 		end,
 	})
 end
 
----@return string
-local function get_project_name()
-	local active_venv_path = os.getenv("VIRTUAL_ENV") or os.getenv("CONDA_PREFIX")
-	if active_venv_path == nil then
-		active_venv_path = vim.cmd("!pwd")
-	end
-	return "kernel-" .. active_venv_path:gsub("[^%w%.%-_]", "-")
+--- Setup auto-cleanup on vim exit
+local function setup_auto_cleanup()
+	vim.api.nvim_create_autocmd("VimLeavePre", {
+		group = vim.api.nvim_create_augroup("quarto-cleanup-on-exit", { clear = true }),
+		pattern = { "*.qmd", "*.ipynb" },
+		callback = function()
+			if should_cleanup_preview() then
+				cleanup_preview_files(false)
+			end
+		end,
+	})
 end
 
 return {
 	{
-		"benlubas/molten-nvim",
-		version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
-		ft = { "quarto", "markdown", "ipynb" },
-		lazy = true,
-		cond = not vim.g.vscode,
-		dependencies = {
-			"3rd/image.nvim",
-			"nvim-telescope/telescope.nvim",
-			"GCBallesteros/jupytext.nvim",
-		},
-		build = ":UpdateRemotePlugins",
-		init = function()
-			local jobs = require("plugins.utils.jobs")
-			local install_ipykernel = jobs.exec_once(function()
-				jobs.maybe_pip_install("ipykernel", {
-					prompt_installation = true,
-					newly_installed_cb = function()
-						local project_name = get_project_name()
-						local cmd = string.format("python -m ipykernel install --user --name %s", project_name)
-						local job = jobs.async_exec(cmd)
-
-						job(function()
-							vim.notify(string.format("Created ipykernel kernel: %s", project_name), vim.log.levels.INFO)
-						end, function()
-							vim.notify(string.format("Failed to create kernel: %s", cmd), vim.log.levels.ERROR)
-						end)
-					end,
-				})
-			end)
-
-			vim.g.molten_image_provider = "image.nvim"
-			vim.g.molten_output_win_max_height = 20
-			vim.g.molten_auto_open_output = false
-			vim.g.molten_wrap_output = true
-			vim.g.molten_virt_text_output = false
-			vim.g.molten_virt_lines_off_by_1 = false
-
-			-- Make sure deps are installed
-			vim.api.nvim_create_autocmd({ "BufEnter" }, {
-				pattern = { "*.ipynb" },
-				callback = function(_)
-					jobs.maybe_pip_install({
-						-- required
-						"pynvim",
-						"jupyter_client",
-						-- optional
-						"CairoSVG",
-						"pnglatex",
-						"plotly",
-						"kaleido",
-						"pyperclip",
-						"nbformat",
-						"pillow",
-						"requests",
-						"websocket-client",
-					}, { pyenv = vim.g.pyenv })
-
-					install_ipykernel()
-				end,
-			})
-
-			init_molten()
-		end,
-		keys = {
-			{ "<localleader>me", ":MoltenEvaluateOperator<CR>", desc = "[M]olten [E]valuate Operator", silent = true },
-			{ "<localleader>mi", ":MoltenInterrupt<CR>", desc = "[M]olten [I]nterrupt", silent = true },
-			{ "<localleader>mr", ":MoltenReevaluateCell<CR>", desc = "[M]olten [R]e-evaluate Cell", silent = true },
-			{
-				"<localleader>moe",
-				":noautocmd MoltenEnterOutput<CR>",
-				desc = "[M]olten [O]utput [E]nter Window",
-				silent = true,
-			},
-			{ "<localleader>moh", ":MoltenHideOutput<CR>", desc = "[M]olten [O]utput [H]ide Window", silent = true },
-			{ "<localleader>md", ":MoltenDelete<CR>", desc = "[M]olten [D]elete [C]ell", silent = true },
-			{ "<localleader>mx", ":MoltenOpenInBrowser<CR>", desc = "[M]olten Open Output in Browser", silent = true },
-		},
-	},
-	{
-		-- Special format that works the best.
+		-- Quarto integration for notebooks and literate programming
 		"quarto-dev/quarto-nvim",
 		lazy = true,
-		ft = { "quarto", "markdown" },
+		ft = { "ipynb", "quarto" },
 		cond = not vim.g.vscode,
 		dependencies = {
 			"jmbuhr/otter.nvim",
@@ -219,10 +140,8 @@ return {
 			},
 			codeRunner = {
 				enabled = true,
-				default_method = "molten", -- 'molten' or 'slime'
-				-- ft_runners = {}, -- filetype to runner, ie. `{ python = "molten" }`.
-				-- Takes precedence over `default_method`
-				never_run = { "yaml" }, -- filetypes which are never sent to a code runner
+				default_method = "iron",
+				never_run = { "yaml" },
 			},
 		},
 		keys = {
@@ -302,19 +221,41 @@ return {
 			{
 				"<localleader>qp",
 				function()
-					require("quarto").quartoPreview()
+					require("quarto").quartoPreview({})
 				end,
 				desc = "[Q]uarto [P]review",
 				silent = true,
 				mode = "n",
 			},
+			{
+				"<localleader>qP",
+				function()
+					require("quarto").quartoClosePreview()
+					cleanup_preview_files(true)
+				end,
+				desc = "[Q]uarto Stop [P]review & Cleanup",
+				silent = true,
+				mode = "n",
+			},
 		},
+		config = function(_, opts)
+			if vim.fn.executable("quarto") ~= 1 then
+				vim.notify(
+					"Error: quarto-cli not found. Please download from https://quarto.org/docs/download/",
+					vim.log.levels.ERROR
+				)
+				return
+			end
+
+			require("quarto").setup(opts)
+			setup_auto_cleanup()
+		end,
 	},
 	{
-		-- LSP inside markdown and quarto
+		-- LSP support inside markdown and quarto code blocks
 		"jmbuhr/otter.nvim",
 		lazy = true,
-		ft = { "quatro", "markdown" },
+		ft = { "quarto" },
 		cond = not vim.g.vscode,
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter",
@@ -322,40 +263,28 @@ return {
 		opts = {},
 	},
 	{
-		-- Convert jupyter notebooks to quarto/markdown and the other way
+		-- Convert jupyter notebooks to quarto/markdown
 		"GCBallesteros/jupytext.nvim",
-		lazy = true,
+		lazy = false,
 		ft = "ipynb",
 		cond = not vim.g.vscode,
 		opts = {
 			custom_language_formatting = {
 				python = {
-					extension = "md",
-					style = "markdown",
-					force_ft = "markdown", -- you can set whatever filetype you want here
-					-- extension = "qmd",
-					-- style = "quarto",
-					-- force_ft = "quarto", -- you can set whatever filetype you want here
+					extension = "qmd",
+					style = "quarto",
+					force_ft = "quarto",
 				},
 			},
+			formats = "ipynb,qmd",
+			sync_on_save = true,
 		},
 		config = function(_, opts)
-			-- Here is where the magic happens:
-			--   - it installs jupytext automatically in the current environment
-			--   - it auto-generates an empty notebook upon file/buffer creation
-			--   - if the ipynb file is empty, it will be auto-generated
-			--
-			-- One caveat though: the file will be automatically saved on creation,
-			-- otherwise the plugin doesn't work.
 			local jobs = require("plugins.utils.jobs")
-			local reopen_file = function()
-				vim.cmd(":e") -- Reopen the file to trigger BufReadCmd event
-			end
 			local callback = jobs.exec_once(function()
 				require("jupytext").setup(opts)
-				reopen_file()
 			end)
-			new_notebook_snippet(reopen_file)
+			new_notebook_snippet()
 
 			jobs.maybe_pip_install("jupytext", {
 				newly_installed_cb = callback,
