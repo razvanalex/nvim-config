@@ -1,25 +1,66 @@
-local check_version = function()
+local function check_version()
 	local verstr = string.format("%s.%s.%s", vim.version().major, vim.version().minor, vim.version().patch)
 	if not vim.version.cmp then
 		vim.health.error(string.format("Neovim out of date: '%s'. Upgrade to latest stable or nightly", verstr))
 		return
 	end
 
-	if vim.version.cmp(vim.version(), { 0, 9, 5 }) >= 0 then
+	if vim.version.cmp(vim.version(), { 0, 11, 0 }) >= 0 then
 		vim.health.ok(string.format("Neovim version is: '%s'", verstr))
 	else
 		vim.health.error(string.format("Neovim out of date: '%s'. Upgrade to latest stable or nightly", verstr))
 	end
 end
 
-local check_external_reqs = function()
-	local required_exec = { "git", "make", "unzip", "rg", "curl", "wget", "fd", "devpod", "zathura" }
-	for _, exe in ipairs(required_exec) do
-		local is_executable = vim.fn.executable(exe) == 1
-		if is_executable then
-			vim.health.ok(string.format("Found executable: '%s'", exe))
-		else
-			vim.health.warn(string.format("Could not find executable: '%s'", exe))
+local required_executables = {
+	core = {
+		"git",
+		"make",
+		"unzip",
+		"curl",
+		"wget",
+		"rg",
+		"fd",
+		"fzf",
+	},
+	python = {
+		"python3",
+		"ipython",
+		"jupyter",
+		"quarto",
+	},
+	go = {
+		"dlv",
+	},
+	cpp = {
+		"bear",
+	},
+	latex = {
+		"latexmk",
+		"zathura",
+	},
+	terminal = {
+		"tmux",
+	},
+	containers = {
+		"devpod",
+		"podman",
+	},
+	github = {
+		"gh",
+	},
+}
+
+local function check_external_reqs()
+	for category, executables in pairs(required_executables) do
+		vim.health.start(string.format("External requirements: %s", category))
+		for _, exe in ipairs(executables) do
+			local is_executable = vim.fn.executable(exe) == 1
+			if is_executable then
+				vim.health.ok(string.format("Found executable: '%s'", exe))
+			else
+				vim.health.warn(string.format("Could not find executable: '%s'", exe))
+			end
 		end
 	end
 
