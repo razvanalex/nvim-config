@@ -18,6 +18,9 @@ return {
 			"RemoteStop",
 		},
 		opts = {
+			devpod = {
+				docker_binary = "podman",
+			},
 			client_callback = function(port, workspace_config)
 				local cmd_nvim = ("nvim --server localhost:%s --remote-ui"):format(port)
 				local cmd_tmux_new_win = ("tmux-windowizer '%s' '%s'"):format(workspace_config.host, cmd_nvim)
