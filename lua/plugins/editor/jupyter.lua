@@ -205,7 +205,7 @@ local function execute_and_save_notebook()
 		if current_file == ipynb_file then
 			vim.cmd("checktime")
 		end
-	end, function(exit_code, stderr)
+	end, function(exit_code, stdout, stderr)
 		vim.notify(jobs.format_error("Failed to execute notebook", exit_code, stderr), vim.log.levels.ERROR)
 	end)
 end
@@ -234,7 +234,7 @@ local function convert_to_python()
 	local promise = jobs.async_exec(cmd)
 	promise(function()
 		vim.notify("Converted to " .. vim.fn.fnamemodify(output_file, ":t"), vim.log.levels.INFO)
-	end, function(exit_code, stderr)
+	end, function(exit_code, stdout, stderr)
 		vim.notify(jobs.format_error("Conversion failed", exit_code, stderr), vim.log.levels.ERROR)
 	end)
 end

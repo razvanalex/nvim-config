@@ -1,7 +1,7 @@
 local M = {}
 
 ---@alias OnSuccessFun fun()
----@alias OnFailureFun fun(exit_code: number, stderr: string)
+---@alias OnFailureFun fun(exit_code: number, stdout: string, stderr: string)
 
 --- Format an error message from execution failure.
 ---@param msg string The base error message.
@@ -46,6 +46,17 @@ function M.async_exec(cmd, opts)
 	---@return integer retcode The channel-id or failure
 	return function(on_success, on_failure)
 		local stderr_output = {}
+		local stdout_output = {}
+
+		opts.on_stdout = function(_, data, _)
+			if data then
+				for _, line in ipairs(data) do
+					if line ~= "" then
+						table.insert(stdout_output, line)
+					end
+				end
+			end
+		end
 
 		opts.on_stderr = function(_, data, _)
 			if data then
@@ -62,7 +73,8 @@ function M.async_exec(cmd, opts)
 				on_success()
 			else
 				local stderr = table.concat(stderr_output, "\n")
-				on_failure(exit_code, stderr)
+				local stdout = table.concat(stdout_output, "\n")
+				on_failure(exit_code, stdout, stderr)
 			end
 		end
 
@@ -127,7 +139,7 @@ function M.create_pyenv(path, name, callback)
 			if callback ~= nil then
 				callback(pyenv)
 			end
-		end, function(exit_code, stderr)
+		end, function(exit_code, stdout, stderr)
 			vim.notify(M.format_error("Failed to create `" .. pyenv .. "`", exit_code, stderr), vim.log.levels.ERROR)
 		end)
 
