@@ -6,6 +6,7 @@ local function fix_transparency(common, C)
 	if os.getenv("TRANSPARENT") == "true" then
 		local transparent_overwrites = {
 			NormalFloat = { fg = C.text, bg = C.mantle }, -- Normal text in floating windows.
+			SidekickChat = { fg = C.text, bg = "NONE" }, -- Sidekick terminal window transparent background
 		}
 		for k, v in pairs(transparent_overwrites) do
 			common[k] = v
