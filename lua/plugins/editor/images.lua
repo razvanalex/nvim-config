@@ -1,7 +1,7 @@
 return {
 	{
 		"3rd/image.nvim",
-		ft = { "markdown", "vimwiki", "quatro", "norg", "typst", "png", "jpg", "jpeg", "gif", "webp", "avif" },
+		ft = { "markdown", "vimwiki", "quatro", "norg", "typst" },
 		dependencies = {
 			"kiyoon/magick.nvim",
 		},
@@ -24,6 +24,7 @@ return {
 			tmux_show_only_in_active_window = true,
 			window_overlap_clear_enabled = true,
 			window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
+			hijack_file_patterns = {},
 		},
 	},
 }
