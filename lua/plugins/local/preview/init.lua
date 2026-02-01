@@ -63,7 +63,7 @@ function M.setup(opts)
 			end
 		end,
 	})
-	
+
 	-- Manual clear command for troubleshooting
 	vim.api.nvim_create_user_command("PreviewClear", function()
 		render.clear_all()
