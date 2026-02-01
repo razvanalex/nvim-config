@@ -232,6 +232,17 @@ return {
 			{
 				"<leader>fd",
 				function()
+					require("telescope.builtin").find_files({
+						find_command = { "fd", "--type", "d", "--hidden", "--exclude", ".git" },
+						prompt_title = "Find Directories",
+					})
+				end,
+				mode = "n",
+				desc = "[F]uzzy [D]irectories",
+			},
+			{
+				"<leader>fD",
+				function()
 					require("telescope.builtin").diagnostics()
 				end,
 				mode = "n",
