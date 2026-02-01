@@ -50,7 +50,8 @@ return {
 			-- See `:help telescope` and `:help telescope.setup()`
 			local telescope = require("telescope")
 			local lga_actions = require("telescope-live-grep-args.actions")
-			local image = require("plugins.utils.image")
+			-- Use image utilities from preview.nvim
+			local image = require("plugins.local.preview.image")
 
 			-- Create autocmd group for telescope image cleanup
 			local telescope_image_group = vim.api.nvim_create_augroup("TelescopeImageCleanup", {
