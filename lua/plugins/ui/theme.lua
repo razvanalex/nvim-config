@@ -135,6 +135,10 @@ return {
 			},
 		},
 		init = function()
+			-- This is temporary fix, the colors were not loaded properly for dark theme.
+			-- Performance-wise,  it doesn't seem to cause any issues.
+			require("catppuccin").compile()
+
 			vim.cmd.colorscheme("catppuccin")
 		end,
 	},
