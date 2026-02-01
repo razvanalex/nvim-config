@@ -135,7 +135,7 @@ return {
 			},
 		},
 		init = function()
-			vim.cmd.colorscheme("catppuccin-mocha")
+			vim.cmd.colorscheme("catppuccin")
 		end,
 	},
 	{ -- web icons
