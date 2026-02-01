@@ -22,7 +22,6 @@ return {
 			},
 			{ "nvim-telescope/telescope-ui-select.nvim" },
 			{ "nvim-telescope/telescope-live-grep-args.nvim" },
-			{ "nvim-telescope/telescope-media-files.nvim" }, -- FIXME: not working
 
 			-- Useful for getting pretty icons, but requires a Nerd Font.
 			{ "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
@@ -51,15 +50,53 @@ return {
 			-- See `:help telescope` and `:help telescope.setup()`
 			local telescope = require("telescope")
 			local lga_actions = require("telescope-live-grep-args.actions")
+			local image = require("plugins.utils.image")
+
+			-- Create autocmd group for telescope image cleanup
+			local telescope_image_group = vim.api.nvim_create_augroup("TelescopeImageCleanup", {
+				clear = true,
+			})
+			vim.api.nvim_create_autocmd("User", {
+				pattern = "TelescopeLeave",
+				group = telescope_image_group,
+				callback = function()
+					image.clear_images()
+				end,
+			})
+			vim.api.nvim_create_autocmd("FocusLost", {
+				group = telescope_image_group,
+				callback = function()
+					image.clear_images()
+				end,
+			})
 
 			telescope.setup({
+				defaults = {
+					buffer_previewer_maker = function(filepath, bufnr, opts)
+						if opts.winid then
+							image.clear_images(opts.winid)
+						end
+
+						filepath = vim.fn.expand(filepath)
+
+						if image.is_native_image(filepath) then
+							image.preview_image(filepath, bufnr, opts.winid)
+						elseif image.is_convertible(filepath) then
+							image.convert_to_png(filepath, function(converted_path)
+								vim.schedule(function()
+									if vim.api.nvim_buf_is_valid(bufnr) and vim.api.nvim_win_is_valid(opts.winid) then
+										image.preview_image(converted_path, bufnr, opts.winid)
+									end
+								end)
+							end)
+						else
+							require("telescope.previewers").buffer_previewer_maker(filepath, bufnr, opts)
+						end
+					end,
+				},
 				extensions = {
 					["ui-select"] = {
 						require("telescope.themes").get_dropdown(),
-					},
-					media_files = {
-						filetypes = { "png", "webp", "mp4", "jpg", "jpeg", "pdf" },
-						find_cmd = "rg",
 					},
 					live_grep_args = {
 						auto_quoting = true, -- enable/disable auto-quoting
