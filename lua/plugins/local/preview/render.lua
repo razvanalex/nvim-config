@@ -387,6 +387,40 @@ function M.scroll_or_nav(bufnr, direction, count)
 	M.render(bufnr)
 end
 
+---Clear the current image for a buffer
+---@param bufnr number Buffer number
+function M.clear(bufnr)
+	local state = M.states[bufnr]
+	if state and state.current_image then
+		pcall(function()
+			state.current_image:clear()
+		end)
+	end
+end
+
+---Clear images for all managed buffers
+function M.clear_all()
+	for bufnr, state in pairs(M.states) do
+		if state.current_image then
+			pcall(function()
+				state.current_image:clear()
+			end)
+		end
+	end
+end
+
+---Render all visible preview buffers
+function M.render_all_visible()
+	for bufnr, _ in pairs(M.states) do
+		if vim.api.nvim_buf_is_valid(bufnr) then
+			local wins = vim.fn.win_findbuf(bufnr)
+			if #wins > 0 then
+				M.render(bufnr)
+			end
+		end
+	end
+end
+
 ---Pan horizontally
 ---@param bufnr number Buffer number
 ---@param direction "left"|"right" Direction to pan

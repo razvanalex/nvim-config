@@ -15,14 +15,7 @@ function M.setup(opts)
 	-- Re-render on window resize
 	vim.api.nvim_create_autocmd("WinResized", {
 		callback = function()
-			for bufnr, _ in pairs(render.states) do
-				if vim.api.nvim_buf_is_valid(bufnr) then
-					local wins = vim.fn.win_findbuf(bufnr)
-					if #wins > 0 then
-						render.render(bufnr)
-					end
-				end
-			end
+			render.render_all_visible()
 		end,
 	})
 
@@ -46,6 +39,35 @@ function M.setup(opts)
 			end
 		end,
 	})
+
+	-- Restore all visible previews when gaining focus
+	vim.api.nvim_create_autocmd("FocusGained", {
+		callback = function()
+			render.render_all_visible()
+		end,
+	})
+
+	-- Clear ALL images when losing focus or switching tabs
+	vim.api.nvim_create_autocmd({ "TabLeave", "FocusLost" }, {
+		callback = function()
+			render.clear_all()
+		end,
+	})
+
+	-- Clear specific buffer image when hidden
+	vim.api.nvim_create_autocmd("BufHidden", {
+		pattern = patterns,
+		callback = function(ev)
+			if render.states[ev.buf] then
+				render.clear(ev.buf)
+			end
+		end,
+	})
+	
+	-- Manual clear command for troubleshooting
+	vim.api.nvim_create_user_command("PreviewClear", function()
+		render.clear_all()
+	end, {})
 end
 
 -- Expose modules for external use
