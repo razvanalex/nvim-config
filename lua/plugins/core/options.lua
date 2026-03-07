@@ -155,6 +155,9 @@ vim.filetype.add({
 })
 vim.treesitter.language.register("markdown", { "vimwiki", "octo" })
 
+-- Distinguish <Tab> and <C-i> in terminals that support it
+vim.keymap.set("n", "<C-i>", "<C-i>", { noremap = true })
+
 -- Terminal settings
 vim.api.nvim_create_autocmd("TermOpen", {
 	group = vim.api.nvim_create_augroup("custom-term-open", { clear = true }),
