@@ -40,7 +40,7 @@ return {
 			-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
 
 			---@diagnostic disable-next-line: missing-fields
-			require("nvim-treesitter.configs").setup({
+			require("nvim-treesitter").setup({
 				-- A list of parser names, or "all"
 				ensure_installed = { "bash", "lua", "python", "markdown", "markdown_inline" },
 
