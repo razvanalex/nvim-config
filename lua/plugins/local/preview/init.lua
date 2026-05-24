@@ -83,6 +83,7 @@ M.cache = cache
 return {
 	dir = vim.fn.stdpath("config") .. "/lua/plugins/local/preview",
 	name = "preview.nvim",
+	health = "preview.health",
 	config = function(_, opts)
 		M.setup(opts)
 	end,
