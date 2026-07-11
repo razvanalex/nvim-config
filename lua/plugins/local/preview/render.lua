@@ -211,7 +211,7 @@ function M.render(bufnr)
 				buffer = bufnr,
 				with_virtual_padding = true,
 				x = 0,
-				y = 1,
+				y = 0,
 				width = geom.display_width,
 			})
 

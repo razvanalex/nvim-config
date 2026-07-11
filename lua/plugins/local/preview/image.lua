@@ -111,15 +111,83 @@ function M.convert_pdf_page(filepath, page, density, callback)
 	local hash = vim.fn.sha256(filepath .. tostring(mtime) .. tostring(page) .. tostring(density)):sub(1, 16)
 	local cached_path = cache_dir .. "/" .. hash .. ".png"
 
+	local function finalize_if_ready()
+		if vim.fn.filereadable(cached_path) == 1 then
+			local uv = vim.uv or vim.loop
+			local cstat = uv.fs_stat(cached_path)
+			if not cstat or cstat.size == 0 then
+				return false
+			end
+			M.get_dimensions(cached_path, function(w, h)
+				callback(cached_path, w, h)
+			end)
+			return true
+		end
+		return false
+	end
+
 	-- Check cache
-	if vim.fn.filereadable(cached_path) == 1 then
-		M.get_dimensions(cached_path, function(w, h)
-			callback(cached_path, w, h)
-		end)
+	if finalize_if_ready() then
 		return
 	end
 
-	-- Convert
+	local function convert_with_pdftoppm()
+		if vim.fn.executable("pdftoppm") ~= 1 then
+			return false
+		end
+		local base = cached_path:gsub("%.png$", "")
+		local page_num = tostring(page + 1)
+		local cmd = {
+			"pdftoppm",
+			"-png",
+			"-singlefile",
+			"-f",
+			page_num,
+			"-l",
+			page_num,
+			"-r",
+			tostring(density),
+			filepath,
+			base,
+		}
+		queue_job({
+			cmd = cmd,
+			on_exit = function(_, code)
+				if code == 0 then
+					finalize_if_ready()
+				end
+			end,
+		})
+		return true
+	end
+
+	local function convert_with_mutool()
+		if vim.fn.executable("mutool") ~= 1 then
+			return false
+		end
+		local page_num = tostring(page + 1)
+		local cmd = {
+			"mutool",
+			"draw",
+			"-o",
+			cached_path,
+			"-r",
+			tostring(density),
+			filepath,
+			page_num,
+		}
+		queue_job({
+			cmd = cmd,
+			on_exit = function(_, code)
+				if code == 0 then
+					finalize_if_ready()
+				end
+			end,
+		})
+		return true
+	end
+
+	-- Convert via ImageMagick, then fall back to pdftoppm or mutool
 	local input = filepath .. "[" .. page .. "]"
 	local cmd = {
 		"magick",
@@ -135,11 +203,16 @@ function M.convert_pdf_page(filepath, page, density, callback)
 	queue_job({
 		cmd = cmd,
 		on_exit = function(_, code)
-			if code == 0 and vim.fn.filereadable(cached_path) == 1 then
-				M.get_dimensions(cached_path, function(w, h)
-					callback(cached_path, w, h)
-				end)
+			if code == 0 and finalize_if_ready() then
+				return
 			end
+			if vim.fn.filereadable(cached_path) == 1 then
+				pcall(vim.fn.delete, cached_path)
+			end
+			if convert_with_pdftoppm() then
+				return
+			end
+			convert_with_mutool()
 		end,
 	})
 end
