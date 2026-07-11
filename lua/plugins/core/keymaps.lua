@@ -37,7 +37,7 @@ vim.keymap.set(
 vim.keymap.set(
 	"v",
 	"<leader>s",
-	[[y:%s/<C-r>=escape(@", '/\^$*.[~')<CR>//gc<Left><Left><Left>]],
+	[[y:%s/<C-r>=escape(@", '/\^$*.[~')<CR>//gI<Left><Left><Left>]],
 	{ desc = "Replace all occurrences of visual selection" }
 )
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true, desc = "Make current file executable" })
