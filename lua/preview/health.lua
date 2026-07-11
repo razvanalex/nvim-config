@@ -79,6 +79,16 @@ function M.check()
 	health.start("preview.nvim")
 
 	check_executable(health, "magick", "Install ImageMagick for PDF/SVG rendering")
+	if vim.fn.executable("pdftoppm") == 1 then
+		health.ok("pdftoppm found (PDF fallback)")
+	else
+		health.warn("pdftoppm not found (install poppler for faster PDF rendering)")
+	end
+	if vim.fn.executable("mutool") == 1 then
+		health.ok("mutool found (PDF fallback)")
+	else
+		health.warn("mutool not found (install mupdf-tools for PDF fallback)")
+	end
 	check_image_module(health)
 	check_cache_dir(health)
 	check_tmux(health)
