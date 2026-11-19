@@ -16,7 +16,7 @@ return {
 				auto_trigger = true,
 				keymap = {
 					accept_and_goto = "<Tab>",
-					accept = "<S-Tab",
+					accept = "<S-Tab>",
 					dismiss = "<Esc>",
 				},
 			},
