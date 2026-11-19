@@ -135,7 +135,10 @@ return {
 			"nvim-telescope/telescope.nvim",
 			"nvim-tree/nvim-web-devicons",
 		},
-		opts = {},
+		opts = {
+			enable_builtin = true,
+			picker = "telescope",
+		},
 	},
 	{
 		"polarmutex/git-worktree.nvim",

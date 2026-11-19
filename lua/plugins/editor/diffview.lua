@@ -10,7 +10,6 @@ return {
 		"DiffviewOpen",
 		"DiffviewRefresh",
 		"DiffviewToggleFiles",
-		"DisableAutoSave",
 	},
 	opts = {
 		hooks = {
