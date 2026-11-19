@@ -128,11 +128,12 @@ end
 ---@return string pyenv path/name
 function M.create_pyenv(path, name, callback)
 	local pyenv = path .. "/" .. name
-	local cmd = "mkdir -p " .. path .. " && \
+	local cmd = "rm -rf " .. pyenv .. " && \
+				mkdir -p " .. path .. " && \
 				cd " .. path .. " && \
 				python3 -m venv " .. name
 
-	if os.execute("[ -d " .. pyenv .. " ]") ~= 0 then
+	if os.execute("[ -x " .. pyenv .. "/bin/python ]") ~= 0 then
 		local promise = M.async_exec(cmd, { detach = true })
 		local job = promise(function()
 			vim.notify("Created " .. pyenv, vim.log.levels.INFO)

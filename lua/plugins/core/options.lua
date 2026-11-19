@@ -140,6 +140,10 @@ vim.api.nvim_create_autocmd("BufEnter", {
 -- Set python paths
 vim.g.pyenv = vim.fn.expand("~/.virtualenvs/neovim")
 vim.g.python3_host_prog = vim.fn.expand(vim.g.pyenv .. "/bin/python3")
+local pyenv_bin = vim.g.pyenv .. "/bin"
+if not string.find(vim.env.PATH or "", pyenv_bin, 1, true) then
+	vim.env.PATH = (vim.env.PATH or "") .. ":" .. pyenv_bin
+end
 
 -- Custom filetypes
 vim.filetype.add({
