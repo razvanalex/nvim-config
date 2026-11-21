@@ -25,6 +25,7 @@ return {
 				cloak_pattern = {
 					"(.*[tT][oO][kK][eE][nN].*=).+",
 					"(.*[pP][aA][sS][sS].*=).+",
+					"(.*[aA][pP][iI]_[kK][eE][yY].*=).+",
 				},
 				-- A function, table or string to generate the replacement.
 				-- The actual replacement will contain the 'cloak_character'
